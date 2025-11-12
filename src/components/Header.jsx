@@ -88,7 +88,7 @@ const Header = () => {
 
       {/* ✅ Sidebar Menu (Left to Right – Professional Look) */}
       <div
-        className={`fixed top-0 left-0 h-[90%] bg-white/95 backdrop-blur-md shadow-2xl border-r border-gray-200 sidebar-menu z-40 transition-all duration-300 ease-in-out ${menuOpen ? "translate-x-0 w-[70%] sm:w-[40%] md:w-[30%]" : "-translate-x-full w-[70%]"
+        className={`fixed top-0 left-0 h-[97%] bg-white/95 backdrop-blur-md shadow-2xl border-r border-gray-200 sidebar-menu z-40 transition-all duration-300 ease-in-out ${menuOpen ? "translate-x-0 w-[70%] sm:w-[40%] md:w-[30%]" : "-translate-x-full w-[70%]"
           }`}
       >
         {/* Top Section – Brand */}
