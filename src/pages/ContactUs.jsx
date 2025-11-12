@@ -1,10 +1,14 @@
 import React, { useState } from "react";
+import { MdLocationOn, MdPhone, MdEmail, MdAccessTime } from "react-icons/md";
+import { FaWhatsapp } from "react-icons/fa";
 
 export default function ContactUs() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
+    phone: "",
+    subject: "",
     message: "",
   });
 
@@ -15,86 +19,103 @@ export default function ContactUs() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
-    // 👉 here you can send form data to backend or email service
     alert("Thank you for contacting us!");
   };
 
   return (
-    <section className="relative bg-gray-50 py-16 px-6 md:px-12 mt-24">
-      {/* Background */}
-      {/* <div className="absolute inset-0">
-        <img
-          src="/assets/contact-bg.jpg" // change to your background image
-          alt="Contact background"
-          className="w-full h-full object-cover opacity-70"
-        />
-      </div> */}
+    <section className="mt-24 px-6 md:px-10">
+      {/* Hero */}
+      <div className="max-w-6xl mx-auto mb-8 rounded-2xl bg-gradient-to-br from-[#161616] via-[#121212] to-[#0f0f0f] ring-1 ring-amber-400/25 p-8 text-white">
+        <h2 className="text-3xl md:text-4xl font-serif font-semibold">Contact Us</h2>
+        <p className="mt-2 text-sm md:text-base text-amber-100/80">We respond within 24 hours. Let’s fit your perfect look.</p>
+      </div>
 
-      <div className="relative max-w-3xl mx-auto bg-white/80 backdrop-blur-md rounded-xl shadow-lg p-8">
-        <h2 className="text-4xl font-semibold text-center text-gray-900 mb-8">Contact Us</h2>
-
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* First Name */}
-          <div className="flex flex-col">
-            <label className="mb-2 text-gray-700">First Name *</label>
-            <input
-              type="text"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              required
-              className="border-b border-gray-400 bg-transparent focus:outline-none focus:border-black py-2"
-            />
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Info cards */}
+        <div className="space-y-4">
+          <div className="rounded-2xl bg-[#151515] ring-1 ring-amber-400/20 p-5 text-gray-200">
+            <div className="flex items-start gap-3">
+              <MdLocationOn className="text-amber-400 mt-0.5" />
+              <div>
+                <div className="text-xs uppercase tracking-wider text-amber-200">Store Address</div>
+                <p className="mt-1 text-gray-400">Chand Tara Dawakhana ke samne,<br/>Badwali Chowki, Indore 452001</p>
+                <a href="https://maps.google.com/?q=Chand%20Tara%20Dawakhana%20Badwali%20Chowki%20Indore%20452001" target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-amber-300 hover:text-amber-200">View on Maps</a>
+              </div>
+            </div>
+          </div>
+          <div className="rounded-2xl bg-[#151515] ring-1 ring-amber-400/20 p-5 text-gray-200">
+            <div className="flex items-start gap-3">
+              <MdPhone className="text-amber-400 mt-0.5" />
+              <div>
+                <div className="text-xs uppercase tracking-wider text-amber-200">Call Us</div>
+                <p className="mt-1 text-gray-400">+91 7351227054 · +91 8878802784</p>
+              </div>
+            </div>
+          </div>
+          <div className="rounded-2xl bg-[#151515] ring-1 ring-amber-400/20 p-5 text-gray-200">
+            <div className="flex items-start gap-3">
+              <MdEmail className="text-amber-400 mt-0.5" />
+              <div>
+                <div className="text-xs uppercase tracking-wider text-amber-200">Email</div>
+                <p className="mt-1 text-gray-400">zafardesigner339@gmail.com</p>
+              </div>
+            </div>
+          </div>
+          <div className="rounded-2xl bg-[#151515] ring-1 ring-amber-400/20 p-5 text-gray-200">
+            <div className="flex items-start gap-3">
+              <MdAccessTime className="text-amber-400 mt-0.5" />
+              <div>
+                <div className="text-xs uppercase tracking-wider text-amber-200">Hours</div>
+                <p className="mt-1 text-gray-400">Mon–Sun: 10:00 AM – 8:00 PM IST</p>
+              </div>
+            </div>
           </div>
 
-          {/* Last Name */}
-          <div className="flex flex-col">
-            <label className="mb-2 text-gray-700">Last Name *</label>
-            <input
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              required
-              className="border-b border-gray-400 bg-transparent focus:outline-none focus:border-black py-2"
-            />
-          </div>
+          <a
+            href="https://wa.me/919102548287"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 rounded-full bg-green-500 text-white px-4 py-3 shadow-lg ring-1 ring-green-400/40 hover:bg-green-600 transition"
+            aria-label="Chat on WhatsApp"
+          >
+            <FaWhatsapp /> <span className="text-sm font-medium">Chat on WhatsApp</span>
+          </a>
+        </div>
 
-          {/* Email */}
-          <div className="flex flex-col md:col-span-2">
-            <label className="mb-2 text-gray-700">Email *</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="border-b border-gray-400 bg-transparent focus:outline-none focus:border-black py-2"
-            />
-          </div>
-
-          {/* Message */}
-          <div className="flex flex-col md:col-span-2">
-            <label className="mb-2 text-gray-700">Message</label>
-            <textarea
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              rows="4"
-              className="border-b border-gray-400 bg-transparent focus:outline-none focus:border-black py-2"
-            ></textarea>
-          </div>
-
-          {/* Submit */}
-          <div className="md:col-span-2 flex justify-center">
-            <button
-              type="submit"
-              className="px-8 py-3 border rounded-md text-lg font-medium text-black hover:bg-black hover:text-white transition"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
+        {/* Form */}
+        <div className="rounded-2xl bg-white/90 backdrop-blur-md shadow-lg ring-1 ring-gray-200 p-6">
+          <h3 className="text-xl font-semibold text-gray-900">Send a message</h3>
+          <form onSubmit={handleSubmit} className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="flex flex-col">
+              <label className="mb-1 text-gray-700">First Name *</label>
+              <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required className="px-3 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-gray-900 placeholder:text-gray-400" />
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-1 text-gray-700">Last Name *</label>
+              <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required className="px-3 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-gray-900 placeholder:text-gray-400" />
+            </div>
+            <div className="flex flex-col sm:col-span-2">
+              <label className="mb-1 text-gray-700">Email *</label>
+              <input type="email" name="email" value={formData.email} onChange={handleChange} required className="px-3 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-gray-900 placeholder:text-gray-400" />
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-1 text-gray-700">Phone</label>
+              <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="px-3 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-gray-900 placeholder:text-gray-400" />
+            </div>
+            <div className="flex flex-col">
+              <label className="mb-1 text-gray-700">Subject</label>
+              <input type="text" name="subject" value={formData.subject} onChange={handleChange} className="px-3 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-gray-900 placeholder:text-gray-400" />
+            </div>
+            <div className="flex flex-col sm:col-span-2">
+              <label className="mb-1 text-gray-700">Message</label>
+              <textarea name="message" value={formData.message} onChange={handleChange} rows="4" className="px-3 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-gray-900 placeholder:text-gray-400"></textarea>
+            </div>
+            <div className="sm:col-span-2 flex gap-3">
+              <button type="submit" className="flex-1 px-6 py-3 rounded-full bg-amber-400 text-black font-medium hover:bg-amber-300 transition">Submit</button>
+              <a href="tel:+917351227054" className="px-6 py-3 rounded-full border border-gray-300 text-gray-900 hover:bg-gray-900 hover:text-white transition">Call now</a>
+            </div>
+          </form>
+        </div>
       </div>
     </section>
   );
