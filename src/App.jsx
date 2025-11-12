@@ -19,6 +19,7 @@ import LocationDashboard from './pages/LocationDashboard';
 import RewardDetail from './pages/RewardDetail';
 import Signup from './pages/SignUp';
 import Login from './pages/Login';
+import UnderDevelopmentPopup from './components/UnderDevelopmentPopup';
 
 
 
@@ -29,6 +30,7 @@ const App = () => {
     <BrowserRouter>
       {/* <ScrollToTop/> */}
       <Header/>
+      <UnderDevelopmentPopup/>
       <Routes>
         <Route  path="/" element={<Home />}/>
         <Route  path="/ProductDetail" element={<ProductDetail />}/>
