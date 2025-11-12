@@ -31,13 +31,13 @@ const Login = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border border-gray-300 p-2.5 focus:ring-2 focus:ring-black focus:border-black outline-none"
+              className="mt-1 block w-full text-black rounded-md border border-gray-300 p-2.5 focus:ring-2 focus:ring-black focus:border-black outline-none"
               placeholder="Enter your email"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <label className="block text-sm text-black font-medium text-gray-700">Password</label>
             <input
               type="password"
               name="password"

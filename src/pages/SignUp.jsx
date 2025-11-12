@@ -32,7 +32,7 @@ const Signup = () => {
               value={formData.name}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border border-gray-300 p-2.5 focus:ring-2 focus:ring-black focus:border-black outline-none"
+              className="mt-1 block w-full text-black rounded-md border border-gray-300 p-2.5 focus:ring-2 focus:ring-black focus:border-black outline-none"
               placeholder="Enter your full name"
             />
           </div>
@@ -45,7 +45,7 @@ const Signup = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border border-gray-300 p-2.5 focus:ring-2 focus:ring-black focus:border-black outline-none"
+              className="mt-1 block w-full text-black rounded-md border border-gray-300 p-2.5 focus:ring-2 focus:ring-black focus:border-black outline-none"
               placeholder="Enter your email"
             />
           </div>
@@ -58,7 +58,7 @@ const Signup = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              className="mt-1 block w-full rounded-md border border-gray-300 p-2.5 focus:ring-2 focus:ring-black focus:border-black outline-none"
+              className="mt-1 block w-full text-black rounded-md border border-gray-300 p-2.5 focus:ring-2 focus:ring-black focus:border-black outline-none"
               placeholder="Create a password"
             />
           </div>
