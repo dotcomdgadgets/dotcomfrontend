@@ -26,6 +26,7 @@ const Login = () => {
 
       // Expecting { message, token, user } on success
       if (res.status === 200) {
+        alert("Login Successful!"); 
         const { token, user } = res.data;
 
         // Save token (and optionally user) in localStorage

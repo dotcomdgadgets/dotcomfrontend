@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Signup = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -13,17 +15,24 @@ const Signup = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Signup data:", formData);
-    try{
-        const res=axios.post("https://dotcombackend.onrender.com/api/useroutes/signup",formData);
-        if(res.status===200 || res.status===201){
-            alert("Signup Successfully");
-            setFormData({name:"", email:"",password:""});
-        }
-    }catch(err){
-        console.error("Signup error:", err);
+
+    try {
+      const res = await axios.post(
+        "https://dotcombackend.onrender.com/api/useroutes/signup",
+        formData
+      );
+
+      if (res.status === 200 || res.status === 201) {
+        alert("Signup Successfully 🎉");
+        setFormData({ name: "", email: "", password: "" });
+
+        navigate("/login"); // Redirect to login page
+      }
+    } catch (err) {
+      console.error("Signup error:", err);
       alert(
         err.response?.data?.message ||
           "❌ Signup failed. Please try again later."
@@ -32,13 +41,17 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex  items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 space-y-6">
-        <h2 className="text-2xl font-bold text-center text-gray-800">Create Account</h2>
+        <h2 className="text-2xl font-bold text-center text-gray-800">
+          Create Account
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Full Name</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Full Name
+            </label>
             <input
               type="text"
               name="name"
@@ -51,7 +64,9 @@ const Signup = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
             <input
               type="email"
               name="email"
@@ -64,7 +79,9 @@ const Signup = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
             <input
               type="password"
               name="password"
