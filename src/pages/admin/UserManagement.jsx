@@ -22,6 +22,31 @@ const UserManagement = () => {
     userDetail();
   },[]);
 
+
+  const handleRoleChange = async (userId, newRole) => {
+  try {
+    const res = await axios.put(
+      "https://dotcombackend.onrender.com/api/useroutes/update-role",
+      { userId, role: newRole }
+    );
+
+    if (res.status === 200) {
+      alert("Role updated successfully!");
+
+      // refresh the user list
+      userDetail();
+    }
+  } catch (err) {
+    console.log("Role change error:", err);
+    alert("Failed to update role");
+  }
+};
+
+
+
+
+
+
   return (
     <div className="p-6 pt-20">
       {/* Page Title */}
@@ -46,14 +71,23 @@ const UserManagement = () => {
           </thead>
 
           <tbody>
-            {user?.length > 0?(user.map((user) => (
+            {user?.length > 0?(user.map((user,id) => (
               <tr
-                key={user.id}
+                key={id}
                 className="border-b hover:bg-gray-50 transition"
               >
                 <td className="px-6 py-4 text-black">{user.name}</td>
                 <td className="px-6 py-4 text-black">{user.email}</td>
-                <td className="px-6 py-4 text-black">{user.role}</td>
+                <td className="px-6 py-4 text-black">
+                    <select
+                        className="border rounded-md px-3 py-2 text-black"
+                        value={user.role || "user"}
+                        onChange={(e) => handleRoleChange(user._id, e.target.value)}
+                    >
+                        <option value="user">user</option>
+                        <option value="admin">admin</option>
+                    </select>
+                </td>
 
                 <td className="px-6 py-4">
                   <div className="flex justify-center gap-4">

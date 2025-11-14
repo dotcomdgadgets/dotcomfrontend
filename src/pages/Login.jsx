@@ -32,6 +32,7 @@ const Login = () => {
         // Save token (and optionally user) in localStorage
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
+        
 
         // Optionally set axios default header for future requests
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
