@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const PayWithReward = () => {
   const [formData, setFormData] = useState({
     name: "",
-    mobile: "",
+    email: "",
     amount: "",
     rewardCoins: 0,
   });
@@ -40,7 +40,7 @@ const PayWithReward = () => {
         alert(
           `✅ Payment saved successfully!\nYou earned ${formData.rewardCoins} reward coin(s)!`
         );
-        setFormData({ name: "", mobile: "", amount: "", rewardCoins: 0 });
+        setFormData({ name: "", email: "", amount: "", rewardCoins: 0 });
       }
     } catch (error) {
       console.error("Payment error:", error);
@@ -96,14 +96,29 @@ const PayWithReward = () => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="Enter your name"
+              placeholder="Enter name"
               required
               className="w-full border border-gray-300 text-gray-900 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
             />
           </div>
-
-          {/* Mobile Number */}
           <div>
+            <label className="block text-gray-600 mb-1 font-medium">
+              Enter Email
+            </label>
+            <input
+              type="text"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter email"
+              required
+              pattern="[6-9]{1}[0-9]{9}"
+              maxLength="10"
+              className="w-full border border-gray-300 text-gray-900 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+            />
+          </div>
+          {/* Mobile Number */}
+          {/* <div>
             <label className="block text-gray-600 mb-1 font-medium">
               Mobile Number
             </label>
@@ -118,7 +133,7 @@ const PayWithReward = () => {
               maxLength="10"
               className="w-full border border-gray-300 text-gray-900 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
             />
-          </div>
+          </div> */}
 
           {/* Amount */}
           <div>
