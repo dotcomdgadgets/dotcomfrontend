@@ -10,7 +10,9 @@ const UserProfile = () => {
     localStorage.removeItem("token");
     window.location.href = "/login";
   };
-
+ console.log('====================================');
+ console.log(user);
+ console.log('====================================');
   return (
     <div className="max-w-lg mx-auto mt-24 p-6">
       {/* Outer Card */}
@@ -59,6 +61,12 @@ const UserProfile = () => {
         <div className="space-y-4 text-center">
           <p className="text-gray-700 text-lg">
             <strong className="text-gray-900">Email:</strong> {user?.email}
+          </p>
+        </div>
+        {/* Details */}
+        <div className="space-y-4 text-center">
+          <p className="text-gray-700 text-lg">
+            <strong className="text-gray-900">Email:</strong> {user?.rewardCoins}
           </p>
         </div>
 
