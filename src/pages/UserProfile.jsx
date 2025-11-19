@@ -46,9 +46,10 @@ const UserProfile = () => {
           </div>
 
           {/* Name */}
-          <h1 className="mt-4 text-3xl font-bold text-gray-900 tracking-wide">
+          <h1 className="mt-4 text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 tracking-wide">
             {user?.name}
           </h1>
+
 
           {/* Role Badge */}
           <span
