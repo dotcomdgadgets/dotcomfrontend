@@ -9,7 +9,7 @@ const Signup = () => {
 
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
+    mobile: "",
     password: "",
   });
 
@@ -52,7 +52,6 @@ const Signup = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 space-y-6">
-        
         <h2 className="text-2xl font-bold text-center text-gray-800">
           Create Account
         </h2>
@@ -81,19 +80,20 @@ const Signup = () => {
             />
           </div>
 
-          {/* EMAIL */}
+          {/* MOBILE */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Email
+              Mobile Number
             </label>
             <input
-              type="email"
-              name="email"
+              type="tel"
+              name="mobile"
               required
-              value={formData.email}
+              maxLength={10}
+              value={formData.mobile}
               onChange={handleChange}
               className="mt-1 block w-full text-black rounded-md border border-gray-300 p-2.5 focus:ring-2 focus:ring-black outline-none"
-              placeholder="Enter your email"
+              placeholder="Enter 10-digit mobile number"
             />
           </div>
 
@@ -139,6 +139,3 @@ const Signup = () => {
 };
 
 export default Signup;
-
-
-

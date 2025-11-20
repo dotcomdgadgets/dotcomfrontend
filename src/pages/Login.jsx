@@ -7,11 +7,11 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "../redux/slices/authSlice"; // ⭐ Redux action
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ mobile: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch(); // ⭐ Initialize Redux dispatch
+  const dispatch = useDispatch();
 
   const handleChange = (e) =>
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -32,13 +32,10 @@ const Login = () => {
 
         const { token, user } = res.data;
 
-        // ⭐ Set axios token for future API calls
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-        // ⭐ Redux login action (saves to store + localStorage)
         dispatch(loginUser({ token, user }));
 
-        // ⭐ Navigate without refresh
         navigate("/");
       } else {
         setError("Login failed. Please try again.");
@@ -68,21 +65,25 @@ const Login = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
+
+          {/* MOBILE LOGIN */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Email
+              Mobile Number
             </label>
             <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
+              type="tel"
+              name="mobile"
               required
-              className="mt-1 block w-full text-black rounded-md border border-gray-300 p-2.5 focus:ring-2 focus:ring-black focus:border-black outline-none"
-              placeholder="Enter your email"
+              maxLength={10}
+              value={formData.mobile}
+              onChange={handleChange}
+              className="mt-1 block w-full text-black rounded-md border border-gray-300 p-2.5 focus:ring-2 focus:ring-black outline-none"
+              placeholder="Enter your mobile number"
             />
           </div>
 
+          {/* PASSWORD */}
           <div>
             <label className="block text-sm text-black font-medium text-gray-700">
               Password
@@ -90,10 +91,10 @@ const Login = () => {
             <input
               type="password"
               name="password"
+              required
               value={formData.password}
               onChange={handleChange}
-              required
-              className="mt-1 block w-full text-black rounded-md border border-gray-300 p-2.5 focus:ring-2 focus:ring-black focus:border-black outline-none"
+              className="mt-1 block w-full text-black rounded-md border border-gray-300 p-2.5 focus:ring-2 focus:ring-black outline-none"
               placeholder="Enter your password"
             />
           </div>

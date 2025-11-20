@@ -1,5 +1,6 @@
 // src/pages/EditProfile.jsx
-import React, { useState, useEffect } from "react";
+
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,12 +10,12 @@ const EditProfile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // ⬇️ Get user from Redux instead of localStorage
+  // Get user from Redux store
   const user = useSelector((state) => state.auth.user);
 
   const [formData, setFormData] = useState({
     name: user?.name || "",
-    email: user?.email || "",
+    mobile: user?.mobile || "",     // 👈 MOBILE instead of email
   });
 
   const [avatarFile, setAvatarFile] = useState(null);
@@ -27,7 +28,7 @@ const EditProfile = () => {
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) =>
-    setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleFile = (e) => {
     const file = e.target.files[0];
@@ -52,7 +53,8 @@ const EditProfile = () => {
 
       const fd = new FormData();
       fd.append("name", formData.name);
-      fd.append("email", formData.email);
+      fd.append("mobile", formData.mobile); // 👈 MOBILE not email
+
       if (avatarFile) fd.append("avatar", avatarFile);
 
       const res = await axios.put(
@@ -68,7 +70,7 @@ const EditProfile = () => {
 
       const updatedUser = res.data.updatedUser;
 
-      // ⬇️ Update Redux store instantly
+      // Update Redux store instantly
       dispatch(setUser(updatedUser));
 
       alert("Profile updated successfully!");
@@ -87,27 +89,15 @@ const EditProfile = () => {
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="flex flex-col items-center">
-          <div className="relative">
-            <img
-              src={preview}
-              alt="avatar preview"
-              className="w-28 h-28 rounded-full object-cover shadow-md"
-            />
-          </div>
+          <img
+            src={preview}
+            alt="avatar preview"
+            className="w-28 h-28 rounded-full object-cover shadow-md"
+          />
 
-          <label className="mt-3 cursor-pointer inline-flex items-center gap-2 text-sm text-gray-700">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFile}
-              className="hidden"
-            />
-            <span className="px-3 py-1 bg-gray-50 border border-gray-200 rounded-lg text-sm hover:bg-gray-100">
-              Change Photo
-            </span>
-            <small className="text-xs text-gray-400 ml-2">
-              PNG/JPG, max 2MB
-            </small>
+          <label className="mt-3 cursor-pointer text-sm text-gray-700">
+            <input type="file" accept="image/*" onChange={handleFile} className="hidden" />
+            <span className="px-3 py-1 bg-gray-50 border rounded-lg">Change Photo</span>
           </label>
         </div>
 
@@ -118,19 +108,20 @@ const EditProfile = () => {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full mt-1 p-3 border rounded-xl text-black bg-gray-50 outline-none focus:ring-2 focus:ring-black"
+            className="w-full p-3 border rounded-xl text-black bg-gray-50 focus:ring-2"
             required
           />
         </div>
 
         <div>
-          <label className="text-gray-700 font-medium">Email Address</label>
+          <label className="text-gray-700 font-medium">Mobile Number</label>
           <input
-            type="email"
-            name="email"
-            value={formData.email}
+            type="tel"
+            name="mobile"
+            value={formData.mobile}
             onChange={handleChange}
-            className="w-full mt-1 p-3 border rounded-xl text-black bg-gray-50 outline-none focus:ring-2 focus:ring-black"
+            pattern="[0-9]{10}"
+            className="w-full p-3 border rounded-xl text-black bg-gray-50 focus:ring-2"
             required
           />
         </div>
@@ -138,7 +129,7 @@ const EditProfile = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 rounded-xl bg-black text-white font-medium hover:bg-gray-900 transition"
+          className="w-full py-3 rounded-xl bg-black text-white font-medium"
         >
           {loading ? "Saving..." : "Save Changes"}
         </button>

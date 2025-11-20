@@ -9,11 +9,11 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // ⭐ GET LIVE USER FROM REDUX STORE
+  // ⭐ Get logged-in user from Redux Store
   const { user } = useSelector((state) => state.auth);
 
   const handleLogout = () => {
-    dispatch(logoutUser()); // ⭐ Clear Redux + localStorage
+    dispatch(logoutUser());
     navigate("/login");
   };
 
@@ -23,13 +23,15 @@ const UserProfile = () => {
                       hover:shadow-[0_10px_40px_rgba(0,0,0,0.1)] transition-all duration-300">
 
         {/* ⭐ Coins Badge - Top Right */}
-        <div className="absolute top-4 right-4">
-          <div className="flex items-center gap-2 bg-yellow-100 text-yellow-800 
-                          px-4 py-2 rounded-full shadow-md border border-yellow-300">
-            <span className="text-xl">🪙</span>
-            <span className="font-semibold text-lg">{user?.rewardCoins || 0}</span>
+        {user && (
+          <div className="absolute top-4 right-4">
+            <div className="flex items-center gap-2 bg-yellow-100 text-yellow-800 
+                            px-4 py-2 rounded-full shadow-md border border-yellow-300">
+              <span className="text-xl">🪙</span>
+              <span className="font-semibold text-lg">{user.rewardCoins}</span>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Profile Image */}
         <div className="flex flex-col items-center">
@@ -41,7 +43,7 @@ const UserProfile = () => {
                 user?.avatar && user.avatar.trim() !== ""
                   ? user.avatar
                   : `https://ui-avatars.com/api/?name=${(user?.name || "User")
-                    .replace(" ", "+")}&background=0D8ABC&color=fff&size=150`
+                      .replace(" ", "+")}&background=0D8ABC&color=fff&size=150`
               }
               alt="Profile"
               className="relative w-32 h-32 rounded-full object-cover bg-white shadow-lg"
@@ -49,31 +51,26 @@ const UserProfile = () => {
           </div>
 
           {/* Name */}
-          <h2 className="mt-4 text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 tracking-wide whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
-            {user?.name}
+          <h2 className="mt-4 text-2xl sm:text-3xl font-bold text-gray-900 tracking-wide whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
+            {user ? user.name : "Guest User"}
           </h2>
 
-          {/* Role Badge */}
-          {user? (
+          {/* ⭐ Role Badge */}
+          {user ? (
             <span
-            className={`mt-2 px-4 py-1 text-sm rounded-full uppercase tracking-wider font-semibold ${user?.role === "admin"
-                ? "bg-green-100 text-green-700 border border-green-300"
-                : "bg-blue-100 text-blue-700 border border-blue-300"
+              className={`mt-2 px-4 py-1 text-sm rounded-full uppercase tracking-wider font-semibold ${
+                user.role === "admin"
+                  ? "bg-green-100 text-green-700 border border-green-300"
+                  : "bg-blue-100 text-blue-700 border border-blue-300"
               }`}
-          >
-            {user?.role}
-          </span>
-          ):(
-            <p className="text-black">___</p>
+            >
+              {user.role}
+            </span>
+          ) : (
+            <span className="mt-2 px-4 py-1 text-sm rounded-full bg-gray-100 text-gray-400 border">
+              Not Logged In
+            </span>
           )}
-          {/* <span
-            className={`mt-2 px-4 py-1 text-sm rounded-full uppercase tracking-wider font-semibold ${user?.role === "admin"
-                ? "bg-green-100 text-green-700 border border-green-300"
-                : "bg-blue-100 text-blue-700 border border-blue-300"
-              }`}
-          >
-            {user?.role}
-          </span> */}
         </div>
 
         {/* Divider */}
@@ -82,7 +79,8 @@ const UserProfile = () => {
         {/* Details */}
         <div className="space-y-4 text-center">
           <p className="text-gray-700 text-lg">
-            <strong className="text-gray-900"></strong> {user?.email}
+            <strong className="text-gray-900">Email/Mobile:</strong>{" "}
+            {user ? user.email : "Login to view"}
           </p>
         </div>
 
@@ -90,12 +88,12 @@ const UserProfile = () => {
         <div className="mt-8 space-y-3">
           {user ? (
             <>
-              {/* If USER IS LOGGED IN — show all profile options */}
+              {/* Logged-in buttons */}
               <button
                 onClick={() => navigate("/edit-profile")}
                 className="w-full py-3 rounded-xl bg-gray-50 border border-gray-200 
-                   text-gray-800 font-medium shadow-sm 
-                   hover:bg-gray-100 hover:shadow-md transition-all duration-200"
+                           text-gray-800 font-medium shadow-sm 
+                           hover:bg-gray-100 hover:shadow-md transition-all duration-200"
               >
                 Edit Profile
               </button>
@@ -103,8 +101,8 @@ const UserProfile = () => {
               <button
                 onClick={() => navigate("/change-password")}
                 className="w-full py-3 rounded-xl bg-gray-50 border border-gray-200 
-                   text-gray-800 font-medium shadow-sm
-                   hover:bg-gray-100 hover:shadow-md transition-all duration-200"
+                           text-gray-800 font-medium shadow-sm
+                           hover:bg-gray-100 hover:shadow-md transition-all duration-200"
               >
                 Change Password
               </button>
@@ -112,19 +110,19 @@ const UserProfile = () => {
               <button
                 onClick={handleLogout}
                 className="w-full py-3 rounded-xl bg-red-50 border border-red-200 
-                   text-red-700 font-medium shadow-sm
-                   hover:bg-red-100 hover:shadow-md transition-all duration-200"
+                           text-red-700 font-medium shadow-sm
+                           hover:bg-red-100 hover:shadow-md transition-all duration-200"
               >
                 Logout
               </button>
             </>
           ) : (
             <>
-              {/* If USER IS NOT LOGGED IN — show Login button */}
+              {/* NOT logged in */}
               <button
                 onClick={() => navigate("/login")}
                 className="w-full py-3 rounded-xl bg-black text-white font-medium
-                   hover:bg-gray-900 transition-all duration-200"
+                           hover:bg-gray-900 transition-all duration-200"
               >
                 Login
               </button>
@@ -132,15 +130,13 @@ const UserProfile = () => {
               <button
                 onClick={() => navigate("/signup")}
                 className="w-full py-3 rounded-xl bg-gray-100 border border-gray-300 
-                   text-gray-700 font-medium hover:bg-gray-200 transition"
+                           text-gray-700 font-medium hover:bg-gray-200 transition"
               >
                 Create Account
               </button>
             </>
           )}
         </div>
-
-
       </div>
     </div>
   );
