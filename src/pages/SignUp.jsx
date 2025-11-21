@@ -91,7 +91,7 @@ const Signup = () => {
               required
               value={formData.mobile}
               onChange={handleChange}
-              className="mt-1 block w-full p-2.5 border rounded-md"
+              className="mt-1 text-black block border-gray-300 w-full p-2.5 border rounded-md"
               placeholder="Enter 10-digit mobile"
             />
           </div>
