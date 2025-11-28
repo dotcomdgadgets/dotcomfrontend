@@ -9,8 +9,8 @@ export default function AddProduct() {
     description: "",
   });
 
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [image, setImage] = useState([]);
+  const [preview, setPreview] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -22,7 +22,9 @@ export default function AddProduct() {
     fd.append("price", form.price);
     fd.append("category", form.category);
     fd.append("description", form.description);
-    fd.append("image", image);
+
+    // ✅ Append EACH image
+    image.forEach(img => fd.append("image", img));
 
     try {
       const res = await axios.post(
@@ -35,8 +37,8 @@ export default function AddProduct() {
 
       // reset
       setForm({ name: "", price: "", category: "", description: "" });
-      setImage(null);
-      setPreview(null);
+      setImage([]);
+      setPreview([]);
     } catch (err) {
       console.log(err);
       alert("Product add failed");
@@ -92,14 +94,18 @@ export default function AddProduct() {
             <label className="block text-gray-700 font-medium mb-1">
               Category
             </label>
-            <input
-              type="text"
+            <select
               value={form.category}
               onChange={(e) => setForm({ ...form, category: e.target.value })}
               required
-              className="w-full text-black border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-black outline-none"
-              placeholder="E.g. Mobile, Gadgets, Accessories"
-            />
+              className="w-full text-black border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-black outline-none bg-white"
+            >
+              <option value="">Select Category</option>
+              <option value="mobile">Mobiles</option>
+              <option value="headphone">Headphones</option>
+              <option value="phone-cover">Mobile Cover</option>
+              <option value="sound-box">Sound Box</option>
+            </select>
           </div>
 
           {/* Description */}
@@ -126,23 +132,33 @@ export default function AddProduct() {
 
             <input
               type="file"
+              multiple
               accept="image/*"
               required
               onChange={(e) => {
-                const file = e.target.files[0];
-                setImage(file);
-                setPreview(URL.createObjectURL(file));
+                const files = Array.from(e.target.files);  
+                setImage(files);
+
+                const previewUrls = files.map(file =>
+                  URL.createObjectURL(file)
+                );
+                setPreview(previewUrls);
               }}
               className="w-full text-black border border-gray-300 rounded-lg p-3 cursor-pointer bg-gray-50"
             />
 
-            {preview && (
-              <img
-                src={preview}
-                alt="preview"
-                className="mt-3 rounded-xl shadow-md h-40 w-40 object-cover border mx-auto"
-              />
-            )}
+
+            <div className="flex gap-3 mt-3 flex-wrap">
+              {preview && preview.map((img, i) => (
+                <img
+                  key={i}
+                  src={img}
+                  alt="preview"
+                  className="h-24 w-24 object-cover rounded border"
+                />
+              ))}
+            </div>
+
           </div>
 
           {/* Submit Button */}

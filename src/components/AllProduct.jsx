@@ -1,10 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const AllProduct = () => {
   const [allProduct, setAllProduct] = useState([]);
-
+  const navigate=useNavigate();
+  
   const getAllData = async () => {
     try {
       const res = await axios.get("https://dotcombackend.onrender.com/api/products");
@@ -32,10 +33,11 @@ const AllProduct = () => {
       <div
         key={p._id}
         className="group rounded-2xl bg-white border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
+        onClick={() => navigate(`/ProductDetail/${p._id}`, { state: p })}
       >
         <div className="aspect-square w-full overflow-hidden bg-gray-50">
           <img
-            src={p.image}
+            src={p.image[0]}
             alt={p.name}
             className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform"
           />
