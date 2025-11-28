@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const AllProduct = () => {
   const [allProduct, setAllProduct] = useState([]);
   const navigate=useNavigate();
-  
+
   const getAllData = async () => {
     try {
       const res = await axios.get("https://dotcombackend.onrender.com/api/products");
@@ -26,7 +26,7 @@ const AllProduct = () => {
 
   return (
     <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-16">
-  <h2 className="text-xl sm:text-2xl font-semibold text-gray-900">Featured Picks</h2>
+    <h2 className="text-xl sm:text-2xl pt-8 font-semibold text-gray-900">Top selling Product</h2>
 
   <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
     {allProduct.map((p) => (

@@ -49,42 +49,6 @@ const Home = () => {
       </section>
       <AllProduct/>
       <MostLoved/>
-      {/* Featured Products */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-16">
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900">Featured Picks</h2>
-        <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-          {featured.map((p) => (
-            <div key={p.id} className="group rounded-2xl bg-white border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="aspect-square w-full overflow-hidden bg-gray-50">
-                <img src={p.img} alt={p.name} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform" />
-              </div>
-              <div className="p-4">
-                <p className="text-gray-900 font-semibold tracking-tight">{p.name}</p>
-                <div className="mt-2 flex items-center justify-between">
-                  <span className="text-indigo-700 font-bold">${p.price}</span>
-                  <span className="text-xs text-yellow-600">★ {p.rating}</span>
-                </div>
-                <Link
-                  to="/ProductDetail"
-                  state={{
-                    product: {
-                      title: p.name,
-                      price: p.price,
-                      image: p.img,
-                      images: [p.img],
-                      sale: false,
-                      oldPrice: Math.round(p.price * 1.2),
-                    },
-                  }}
-                  className="mt-3 inline-block px-3 py-1.5 rounded-md bg-indigo-600 text-white text-xs font-medium hover:bg-indigo-700"
-                >
-                  View details
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
     </div>
   )
