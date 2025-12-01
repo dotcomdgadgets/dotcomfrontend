@@ -1,7 +1,12 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addProductThunk } from "../../redux/thunks/productThunk";
+import { resetStatus } from "../../redux/slices/productSlice";
 
 export default function AddProduct() {
+  const dispatch = useDispatch();
+  const { loading, success, error } = useSelector((state) => state.product);
+
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -11,11 +16,9 @@ export default function AddProduct() {
 
   const [image, setImage] = useState([]);
   const [preview, setPreview] = useState([]);
-  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
 
     const fd = new FormData();
     fd.append("name", form.name);
@@ -23,155 +26,110 @@ export default function AddProduct() {
     fd.append("category", form.category);
     fd.append("description", form.description);
 
-    // ✅ Append EACH image
-    image.forEach(img => fd.append("image", img));
+    // ✅ append multiple images
+    image.forEach((img) => fd.append("image", img));
 
-    try {
-      const res = await axios.post(
-        "https://dotcombackend.onrender.com/api/products/add",
-        fd
-      );
+    dispatch(addProductThunk(fd));
+  };
 
-      alert("Product added successfully!");
-      console.log(res.data);
-
-      // reset
+  // ✅ Reset & Toast Handling
+  useEffect(() => {
+    if (success) {
+      alert("✅ Product added successfully!");
       setForm({ name: "", price: "", category: "", description: "" });
       setImage([]);
       setPreview([]);
-    } catch (err) {
-      console.log(err);
-      alert("Product add failed");
-    } finally {
-      setLoading(false);
+      dispatch(resetStatus());
     }
-  };
+
+    if (error) {
+      alert("❌ " + error);
+      dispatch(resetStatus());
+    }
+  }, [success, error, dispatch]);
 
   return (
     <div className="min-h-screen bg-gray-50 flex justify-center pt-24 px-4">
       <div className="bg-white shadow-xl border border-gray-200 rounded-2xl p-8 w-full max-w-2xl">
-        {/* Header */}
+
         <h2 className="text-3xl font-bold text-gray-900 text-center mb-6">
           Add New Product
         </h2>
-        <p className="text-center text-gray-500 mb-6">
-          Fill the details below to add a new product to your shop.
-        </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Product Name */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">
-              Product Name
-            </label>
-            <input
-              type="text"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              required
-              className="w-full text-black border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-black outline-none"
-              placeholder="Enter product name"
-            />
-          </div>
+          {/* Name */}
+          <input
+            type="text"
+            placeholder="Product Name"
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            className="w-full p-3 border rounded bg-white text-black"
+            required
+          />
 
           {/* Price */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">
-              Price (₹)
-            </label>
-            <input
-              type="number"
-              value={form.price}
-              onChange={(e) => setForm({ ...form, price: e.target.value })}
-              required
-              className="w-full text-black border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-black outline-none"
-              placeholder="Enter price"
-            />
-          </div>
+          <input
+            type="number"
+            placeholder="Price"
+            value={form.price}
+            onChange={(e) => setForm({ ...form, price: e.target.value })}
+            className="w-full p-3 border rounded bg-white text-black"
+            required
+          />
 
           {/* Category */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">
-              Category
-            </label>
-            <select
-              value={form.category}
-              onChange={(e) => setForm({ ...form, category: e.target.value })}
-              required
-              className="w-full text-black border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-black outline-none bg-white"
-            >
-              <option value="">Select Category</option>
-              <option value="mobile">Mobiles</option>
-              <option value="headphone">Headphones</option>
-              <option value="phone-cover">Mobile Cover</option>
-              <option value="sound-box">Sound Box</option>
-            </select>
-          </div>
+          <select
+            value={form.category}
+            onChange={(e) => setForm({ ...form, category: e.target.value })}
+            className="w-full p-3 border rounded bg-white text-black"
+            required
+          >
+            <option value="">Select Category</option>
+            <option value="mobile">Mobile</option>
+            <option value="headphone">Headphone</option>
+            <option value="phone-cover">Phone Cover</option>
+            <option value="sound-box">Sound Box</option>
+          </select>
 
           {/* Description */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">
-              Description
-            </label>
-            <textarea
-              value={form.description}
-              onChange={(e) =>
-                setForm({ ...form, description: e.target.value })
-              }
-              required
-              className="w-full text-black border border-gray-300 rounded-lg p-3 h-28 focus:ring-2 focus:ring-black outline-none"
-              placeholder="Write product description"
-            ></textarea>
+          <textarea
+            placeholder="Description"
+            value={form.description}
+            onChange={(e) =>
+              setForm({ ...form, description: e.target.value })
+            }
+            className="w-full p-3 border rounded h-28 bg-white text-black"
+            required
+          />
+
+          {/* Images */}
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            className="w-full p-3 border rounded bg-white text-black"
+            onChange={(e) => {
+              const files = Array.from(e.target.files);
+              setImage(files);
+              setPreview(files.map((f) => URL.createObjectURL(f)));
+            }}
+            required
+          />
+          {/* Preview */}
+          <div className="flex gap-3 flex-wrap">
+            {preview.map((img, i) => (
+              <img key={i} src={img} className="w-20 h-20 object-cover rounded" />
+            ))}
           </div>
 
-          {/* Image Upload */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              Product Image
-            </label>
-
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              required
-              onChange={(e) => {
-                const files = Array.from(e.target.files);  
-                setImage(files);
-
-                const previewUrls = files.map(file =>
-                  URL.createObjectURL(file)
-                );
-                setPreview(previewUrls);
-              }}
-              className="w-full text-black border border-gray-300 rounded-lg p-3 cursor-pointer bg-gray-50"
-            />
-
-
-            <div className="flex gap-3 mt-3 flex-wrap">
-              {preview && preview.map((img, i) => (
-                <img
-                  key={i}
-                  src={img}
-                  alt="preview"
-                  className="h-24 w-24 object-cover rounded border"
-                />
-              ))}
-            </div>
-
-          </div>
-
-          {/* Submit Button */}
+          {/* Submit */}
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 rounded-xl text-white font-semibold text-lg transition ${
-              loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-black hover:bg-gray-900"
-            }`}
+            className={`w-full py-3 rounded text-white ${loading ? "bg-gray-400" : "bg-black"
+              }`}
           >
-            {loading ? "Adding Product..." : "Add Product"}
+            {loading ? "Uploading..." : "Add Product"}
           </button>
         </form>
       </div>
