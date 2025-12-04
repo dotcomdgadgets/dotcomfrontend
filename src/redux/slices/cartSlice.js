@@ -1,59 +1,46 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-// ✅ Safe loader from localStorage
-const loadCartFromStorage = () => {
-  try {
-    const data = localStorage.getItem("cart");
-    return data ? JSON.parse(data) : [];
-  } catch (err) {
-    return [];
-  }
-};
+import {
+  fetchCartThunk,
+  addToCartThunk,
+  removeFromCartThunk,
+  updateCartQtyThunk,
+} from "../thunks/cartThunk";
 
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    items: loadCartFromStorage(), // ✅ Persistent load
+    items: [],
+    loading: false,
+    error: null,
   },
+  reducers: {},
 
-  reducers: {
-    addToCartRedux: (state, action) => {
-      const item = action.payload;
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCartThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchCartThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.items = action.payload;
+      })
+      .addCase(fetchCartThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
 
-      const existing = state.items.find(
-        (p) => p._id === item._id && p.size === item.size
-      );
+      .addCase(addToCartThunk.fulfilled, (state, action) => {
+        state.items = action.payload;
+      })
 
-      if (existing) {
-        existing.quantity += item.quantity;
-      } else {
-        state.items.push(item);
-      }
-    },
+      .addCase(removeFromCartThunk.fulfilled, (state, action) => {
+        state.items = action.payload;
+      })
 
-    removeFromCartRedux: (state, action) => {
-      state.items = state.items.filter(
-        (item) => item._id !== action.payload
-      );
-    },
-
-    updateQtyRedux: (state, action) => {
-      const { id, qty } = action.payload;
-      const item = state.items.find((p) => p._id === id);
-      if (item) item.quantity = qty;
-    },
-
-    clearCartRedux: (state) => {
-      state.items = [];
-    },
+      .addCase(updateCartQtyThunk.fulfilled, (state, action) => {
+        state.items = action.payload;
+      });
   },
 });
-
-export const {
-  addToCartRedux,
-  removeFromCartRedux,
-  updateQtyRedux,
-  clearCartRedux,
-} = cartSlice.actions;
 
 export default cartSlice.reducer;

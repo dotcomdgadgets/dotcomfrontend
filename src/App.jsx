@@ -21,21 +21,21 @@ import UserManagement from "./pages/admin/UserManagement";
 import UserProfile from "./pages/UserProfile";
 import EditProfile from "./pages/EditProfile";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { refreshUser } from "./redux/slices/authSlice"; // ⭐ refresh thunk
 import AddProduct from "./pages/admin/AddProduct";
+import { fetchProductsThunk } from "./redux/thunks/productThunk";
 
 const App = () => {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.auth);
 
-  // ⭐ Load latest user data when app opens
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (!token) return;
 
-    // ⭐ Using Redux Thunk to get fresh user
     dispatch(refreshUser());
-  }, [dispatch]);
+    dispatch(fetchProductsThunk());
+  }, [dispatch, token]);
 
   return (
     <BrowserRouter>

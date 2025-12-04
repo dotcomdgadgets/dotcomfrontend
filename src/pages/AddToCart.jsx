@@ -1,51 +1,53 @@
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { useEffect } from "react";
 import {
-  removeFromCartRedux,
-  updateQtyRedux,
-} from "../redux/slices/cartSlice";
+  fetchCartThunk,
+  removeFromCartThunk,
+  updateCartQtyThunk,
+} from "../redux/thunks/cartThunk";
+import { Minus, Plus, Trash2 } from "lucide-react";
 
 export default function AddToCart() {
   const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.items);
+  const { items, loading } = useSelector((state) => state.cart);
 
-  const total = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
+  useEffect(() => {
+    dispatch(fetchCartThunk());
+  }, [dispatch]);
+
+  const total = items.reduce(
+    (acc, item) => acc + item.product.price * item.quantity,
     0
   );
 
-  return (
-    <div className="max-w-4xl mx-auto pt-20 p-6 bg-white min-h-screen">
-      <h2 className="text-2xl font-bold mb-6 text-black">Your Cart</h2>
+  if (loading) return <p className="pt-32 text-center">Loading...</p>;
 
-      {cartItems.length === 0 ? (
-        <p className="text-center text-gray-700">Cart is empty</p>
+  return (
+    <div className="max-w-4xl mx-auto pt-20 p-6 bg-white text-black min-h-screen">
+      <h2 className="text-2xl font-bold mb-6">Your Cart</h2>
+
+      {items.length === 0 ? (
+        <p className="text-center text-gray-600">Cart is empty</p>
       ) : (
         <>
-          {cartItems.map((item) => (
-            <div
-              key={item._id}
-              className="flex items-center gap-4 border-b py-4"
-            >
+          {items.map((item) => (
+            <div key={item._id} className="flex items-center gap-4 border-b py-4">
               <img
-                src={item.image}
-                className="w-20 h-20 object-cover rounded border"
-                alt={item.name}
+                src={item.product.image[0]}
+                className="w-20 h-20 object-cover rounded"
               />
 
               <div className="flex-1">
-                <p className="font-semibold text-black">{item.name}</p>
-                <p className="text-gray-800">₹{item.price}</p>
+                <p className="font-semibold">{item.product.name}</p>
+                <p className="text-gray-600">₹{item.product.price}</p>
 
                 <div className="flex items-center gap-3 mt-2">
                   <button
-                    className="border p-2 rounded text-black"
                     onClick={() =>
                       dispatch(
-                        updateQtyRedux({
-                          id: item._id,
-                          qty: Math.max(1, item.quantity - 1),
+                        updateCartQtyThunk({
+                          cartItemId: item._id,
+                          quantity: Math.max(1, item.quantity - 1),
                         })
                       )
                     }
@@ -53,17 +55,14 @@ export default function AddToCart() {
                     <Minus size={18} />
                   </button>
 
-                  <span className="font-semibold text-black">
-                    {item.quantity}
-                  </span>
+                  <span>{item.quantity}</span>
 
                   <button
-                    className="border p-2 rounded text-black"
                     onClick={() =>
                       dispatch(
-                        updateQtyRedux({
-                          id: item._id,
-                          qty: item.quantity + 1,
+                        updateCartQtyThunk({
+                          cartItemId: item._id,
+                          quantity: item.quantity + 1,
                         })
                       )
                     }
@@ -74,20 +73,20 @@ export default function AddToCart() {
               </div>
 
               <button
-                onClick={() => dispatch(removeFromCartRedux(item._id))}
-                className="text-red-600 hover:text-red-800"
+                onClick={() => dispatch(removeFromCartThunk(item.product._id))}
+                className="text-red-600"
               >
                 <Trash2 />
               </button>
             </div>
           ))}
 
-          <div className="mt-6 flex justify-between text-xl font-bold text-black">
+          <div className="mt-6 flex justify-between text-xl font-bold">
             <span>Total:</span>
             <span>₹{total}</span>
           </div>
 
-          <button className="w-full mt-6 py-3 bg-black text-white rounded hover:bg-gray-900">
+          <button className="w-full mt-6 py-3 bg-black text-white rounded">
             Proceed to Checkout
           </button>
         </>

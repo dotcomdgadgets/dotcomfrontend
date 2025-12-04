@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Minus, Plus, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import { fetchSingleProductThunk } from "../redux/thunks/productThunk";
-import { addToCartRedux } from "../redux/slices/cartSlice";
+import { addToCartThunk } from "../redux/thunks/cartThunk";
+// import { addToCartRedux } from "../redux/slices/cartSlice";
 
 
 export default function ProductDetail() {
@@ -42,18 +43,46 @@ export default function ProductDetail() {
   }
 
 
+// const addToCart = () => {
+//   const cartItem = {
+//     _id: product._id,
+//     name: product.name,
+//     price: product.price,
+//     image: product.image[0],
+//     quantity,
+//     size: "M",
+//   };
+//   dispatch(
+//   addToCartThunk({
+//     productId: product._id,
+//     quantity,
+//     size: "M",
+//   })
+// );
+// dispatch(
+//   addToCartThunk({
+//     productId: product._id,
+//     quantity,
+//     size: "M",
+//   })
+// );
+
+//   navigate("/addtocart");
+// };
+
+
+
 const addToCart = () => {
-  const cartItem = {
-    _id: product._id,
-    name: product.name,
-    price: product.price,
-    image: product.image[0],
-    quantity,
-    size: "M",
-  };
-  dispatch(addToCartRedux(cartItem));
+  dispatch(
+    addToCartThunk({
+      productId: product._id,
+      quantity,
+      size: "M",
+    })
+  );
   navigate("/addtocart");
 };
+
 
 
   return (
