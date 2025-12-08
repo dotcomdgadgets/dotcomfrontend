@@ -3,7 +3,10 @@ import axios from "axios";
 
 const API = "https://dotcombackend.onrender.com/api/useroutes";
 
-const token = () => ({ Authorization: localStorage.getItem("token") });
+const token = () => ({
+  Authorization: `Bearer ${localStorage.getItem("token")}`
+});
+
 
 // =====================================
 // ⭐ FETCH ADDRESSES

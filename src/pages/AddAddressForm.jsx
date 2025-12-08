@@ -23,7 +23,8 @@ export default function AddAddressForm({ onSuccess }) {
   const submitAddress = () => {
     dispatch(addAddress(form)).then((res) => {
       if (!res.error) {
-        onSuccess(); // close modal + refresh list
+        // onSuccess(); // close modal + refresh list
+        alert("address sucessfully added");
       }
     });
   };

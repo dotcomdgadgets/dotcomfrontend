@@ -6,13 +6,18 @@ import {
   updateCartQtyThunk,
 } from "../redux/thunks/cartThunk";
 import { Minus, Plus, Trash2 } from "lucide-react";
+import { 
+  fetchAddresses,
+  deleteAddress,
+ } from "../redux/thunks/addressThunk";
 
 export default function AddToCart() {
   const dispatch = useDispatch();
   const { items, loading } = useSelector((state) => state.cart);
-
+  const { addresses } = useSelector((state) => state.address);
   useEffect(() => {
     dispatch(fetchCartThunk());
+    dispatch(fetchAddresses());
   }, [dispatch]);
 
   const total = items.reduce(
@@ -85,12 +90,39 @@ export default function AddToCart() {
             <span>Total:</span>
             <span>₹{total}</span>
           </div>
+        </>
+      )}
+
+
+      {addresses.length === 0 ? (
+        <p className="text-center text-gray-600">addresses is empty</p>
+      ) : (
+        <>
+          {addresses.map((address) => (
+            <div key={address._id} className="flex items-center gap-4 border-b py-4">
+
+              <div className="flex-1">
+                <p className="font-semibold">{address.fullName}</p>
+                <p>{address.houseNo}, {address.area}</p>
+                <p>{address.city}, {address.state} - {address.pincode}</p>
+                <p>Phone: {address.phone}</p>
+              </div>
+              <h2
+                onClick={() => dispatch(deleteAddress(address._id))}
+                className="text-red-600 cursor-pointer"
+              >
+                Delete
+              </h2>
+
+            </div>
+          ))}
 
           <button className="w-full mt-6 py-3 bg-black text-white rounded">
             Proceed to Checkout
           </button>
         </>
       )}
+
     </div>
   );
 }
