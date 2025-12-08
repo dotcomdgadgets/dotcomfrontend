@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { refreshUser } from "./redux/slices/authSlice"; // ⭐ refresh thunk
 import AddProduct from "./pages/admin/AddProduct";
 import { fetchProductsThunk } from "./redux/thunks/productThunk";
+import AddAddress from "./pages/AddAddressForm";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -57,6 +58,8 @@ const App = () => {
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/addproduct" element={<AddProduct />} />
+
+        <Route path="/add-address" element={<AddAddress />} />
       </Routes>
 
       <Footer />

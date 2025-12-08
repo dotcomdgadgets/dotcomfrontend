@@ -90,6 +90,14 @@ const UserProfile = () => {
             <>
               {/* Logged-in buttons */}
               <button
+                onClick={() => navigate("/add-address")}
+                className="w-full py-3 rounded-xl bg-gray-50 border border-gray-200 
+                           text-gray-800 font-medium shadow-sm 
+                           hover:bg-gray-100 hover:shadow-md transition-all duration-200"
+              >
+                Add Address
+              </button>
+              <button
                 onClick={() => navigate("/edit-profile")}
                 className="w-full py-3 rounded-xl bg-gray-50 border border-gray-200 
                            text-gray-800 font-medium shadow-sm 
