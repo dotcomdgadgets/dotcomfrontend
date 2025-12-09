@@ -26,6 +26,9 @@ import { refreshUser } from "./redux/slices/authSlice"; // ⭐ refresh thunk
 import AddProduct from "./pages/admin/AddProduct";
 import { fetchProductsThunk } from "./redux/thunks/productThunk";
 import AddAddress from "./pages/AddAddressForm";
+import CheckoutPage from "./pages/CheckoutPage";
+import OrderSuccess from "./pages/OrderSuccess";
+import MyOrders from "./pages/MyOrders";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -48,10 +51,14 @@ const App = () => {
         <Route path="/ProductDetail/:id" element={<ProductDetail />} />
         <Route path="/addtocart" element={<AddToCart />} />
         <Route path="/location" element={<LocationPopup />} />
+
+        
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/pay-with-reward" element={<PayWithReward />} />
         <Route path="/location-dashboard" element={<LocationDashboard />} />
         <Route path="/reward-dashboard" element={<RewardDetail />} />
+
+
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/user-management" element={<UserManagement />} />
@@ -60,6 +67,10 @@ const App = () => {
         <Route path="/addproduct" element={<AddProduct />} />
 
         <Route path="/add-address" element={<AddAddress />} />
+        <Route path="/check-out" element={<CheckoutPage />} />
+        <Route path="/order-success" element={<OrderSuccess />} />
+        <Route path="/my-orders" element={<MyOrders />} />
+
       </Routes>
 
       <Footer />

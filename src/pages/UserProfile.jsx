@@ -114,6 +114,14 @@ const UserProfile = () => {
               >
                 Change Password
               </button>
+              <button
+                onClick={() => navigate("/my-orders")}
+                className="w-full py-3 rounded-xl bg-gray-50 border border-gray-200 
+                           text-gray-800 font-medium shadow-sm 
+                           hover:bg-gray-100 hover:shadow-md transition-all duration-200"
+              >
+                My Orders
+              </button>
 
               <button
                 onClick={handleLogout}

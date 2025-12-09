@@ -11,12 +11,13 @@ import {
   deleteAddress,
 } from "../redux/thunks/addressThunk";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function AddToCart() {
   const dispatch = useDispatch();
   const { items, loading } = useSelector((state) => state.cart);
   const [selectedAddress, setSelectedAddress] = useState(null);
-
+  const navigate=useNavigate();
   const { addresses } = useSelector((state) => state.address);
   useEffect(() => {
     dispatch(fetchCartThunk());
@@ -153,10 +154,10 @@ export default function AddToCart() {
           </div>
 
           <button
-            onClick={() => console.log("Selected Address:", selectedAddress)}
+            onClick={() => navigate("/check-out")}
             className="w-full mt-6 py-3 bg-black text-white rounded"
           >
-            Deliver to This Address
+            Check out 
           </button>
         </>
       )}

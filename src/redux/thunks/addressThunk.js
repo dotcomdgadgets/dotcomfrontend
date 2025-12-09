@@ -18,6 +18,7 @@ export const fetchAddresses = createAsyncThunk("address/fetch", async () => {
 
 // =====================================
 // ⭐ ADD ADDRESS
+// customer can add adress 
 // =====================================
 export const addAddress = createAsyncThunk("address/add", async (data) => {
   const res = await axios.post(`${API}/add-address`, data, { headers: token() });
@@ -26,6 +27,7 @@ export const addAddress = createAsyncThunk("address/add", async (data) => {
 
 // =====================================
 // ⭐ DELETE ADDRESS
+// from here customer can delete address 
 // =====================================
 export const deleteAddress = createAsyncThunk("address/delete", async (id) => {
   const res = await axios.delete(`${API}/address/${id}`, { headers: token() });
@@ -34,6 +36,7 @@ export const deleteAddress = createAsyncThunk("address/delete", async (id) => {
 
 // =====================================
 // ⭐ UPDATE ADDRESS
+// customer can updated address 
 // =====================================
 export const updateAddress = createAsyncThunk(
   "address/update",
@@ -45,6 +48,7 @@ export const updateAddress = createAsyncThunk(
 
 // =====================================
 // ⭐ SET DEFAULT ADDRESS
+// this is customer default parmanent detail where product will delever
 // =====================================
 export const setDefaultAddress = createAsyncThunk(
   "address/default",
