@@ -18,104 +18,162 @@ export default function ContactUs() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
     alert("Thank you for contacting us!");
   };
 
   return (
     <section className="mt-24 px-6 md:px-10">
-      {/* Hero */}
-      <div className="max-w-6xl mx-auto mb-8 rounded-2xl bg-gradient-to-br from-[#161616] via-[#121212] to-[#0f0f0f] ring-1 ring-amber-400/25 p-8 text-white">
-        <h2 className="text-3xl md:text-4xl font-serif font-semibold">Contact Us</h2>
-        <p className="mt-2 text-sm md:text-base text-amber-100/80">We respond within 24 hours. Let’s fit your perfect look.</p>
+
+      {/* 🌟 HERO SECTION */}
+      <div className="max-w-5xl mx-auto text-center mb-10">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">
+          Get in <span className="text-amber-500">Touch</span>
+        </h1>
+        <p className="mt-3 text-gray-500 max-w-xl mx-auto">
+          We’re here to help. Reach out anytime — we reply within 24 hours.
+        </p>
       </div>
 
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Info cards */}
-        <div className="space-y-4">
-          <div className="rounded-2xl bg-[#151515] ring-1 ring-amber-400/20 p-5 text-gray-200">
-            <div className="flex items-start gap-3">
-              <MdLocationOn className="text-amber-400 mt-0.5" />
-              <div>
-                <div className="text-xs uppercase tracking-wider text-amber-200">Store Address</div>
-                <p className="mt-1 text-gray-400">Chand Tara Dawakhana ke samne,<br/>Badwali Chowki, Indore 452001</p>
-                <a href="https://maps.google.com/?q=Chand%20Tara%20Dawakhana%20Badwali%20Chowki%20Indore%20452001" target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-xs text-amber-300 hover:text-amber-200">View on Maps</a>
-              </div>
-            </div>
-          </div>
-          <div className="rounded-2xl bg-[#151515] ring-1 ring-amber-400/20 p-5 text-gray-200">
-            <div className="flex items-start gap-3">
-              <MdPhone className="text-amber-400 mt-0.5" />
-              <div>
-                <div className="text-xs uppercase tracking-wider text-amber-200">Call Us</div>
-                <p className="mt-1 text-gray-400">+91 7351227054 · +91 8878802784</p>
-              </div>
-            </div>
-          </div>
-          <div className="rounded-2xl bg-[#151515] ring-1 ring-amber-400/20 p-5 text-gray-200">
-            <div className="flex items-start gap-3">
-              <MdEmail className="text-amber-400 mt-0.5" />
-              <div>
-                <div className="text-xs uppercase tracking-wider text-amber-200">Email</div>
-                <p className="mt-1 text-gray-400">zafardesigner339@gmail.com</p>
-              </div>
-            </div>
-          </div>
-          <div className="rounded-2xl bg-[#151515] ring-1 ring-amber-400/20 p-5 text-gray-200">
-            <div className="flex items-start gap-3">
-              <MdAccessTime className="text-amber-400 mt-0.5" />
-              <div>
-                <div className="text-xs uppercase tracking-wider text-amber-200">Hours</div>
-                <p className="mt-1 text-gray-400">Mon–Sun: 10:00 AM – 8:00 PM IST</p>
-              </div>
-            </div>
-          </div>
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
 
-          <a
-            href="https://wa.me/919102548287"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 rounded-full bg-green-500 text-white px-4 py-3 shadow-lg ring-1 ring-green-400/40 hover:bg-green-600 transition"
-            aria-label="Chat on WhatsApp"
-          >
-            <FaWhatsapp /> <span className="text-sm font-medium">Chat on WhatsApp</span>
-          </a>
-        </div>
+        {/* 🌟 CONTACT INFO CARDS */}
 
-        {/* Form */}
-        <div className="rounded-2xl bg-white/90 backdrop-blur-md shadow-lg ring-1 ring-gray-200 p-6">
-          <h3 className="text-xl font-semibold text-gray-900">Send a message</h3>
-          <form onSubmit={handleSubmit} className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="flex flex-col">
-              <label className="mb-1 text-gray-700">First Name *</label>
-              <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required className="px-3 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-gray-900 placeholder:text-gray-400" />
-            </div>
-            <div className="flex flex-col">
-              <label className="mb-1 text-gray-700">Last Name *</label>
-              <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required className="px-3 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-gray-900 placeholder:text-gray-400" />
-            </div>
-            <div className="flex flex-col sm:col-span-2">
-              <label className="mb-1 text-gray-700">Email *</label>
-              <input type="email" name="email" value={formData.email} onChange={handleChange} required className="px-3 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-gray-900 placeholder:text-gray-400" />
-            </div>
-            <div className="flex flex-col">
-              <label className="mb-1 text-gray-700">Phone</label>
-              <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="px-3 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-gray-900 placeholder:text-gray-400" />
-            </div>
-            <div className="flex flex-col">
-              <label className="mb-1 text-gray-700">Subject</label>
-              <input type="text" name="subject" value={formData.subject} onChange={handleChange} className="px-3 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-gray-900 placeholder:text-gray-400" />
-            </div>
-            <div className="flex flex-col sm:col-span-2">
-              <label className="mb-1 text-gray-700">Message</label>
-              <textarea name="message" value={formData.message} onChange={handleChange} rows="4" className="px-3 py-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 text-gray-900 placeholder:text-gray-400"></textarea>
-            </div>
-            <div className="sm:col-span-2 flex gap-3">
-              <button type="submit" className="flex-1 px-6 py-3 rounded-full bg-amber-400 text-black font-medium hover:bg-amber-300 transition">Submit</button>
-              <a href="tel:+917351227054" className="px-6 py-3 rounded-full border border-gray-300 text-gray-900 hover:bg-gray-900 hover:text-white transition">Call now</a>
-            </div>
-          </form>
-        </div>
+<div className="space-y-4">
+
+  {[
+    {
+      icon: <MdLocationOn />,
+      label: "Store Address",
+      text: "Ground floor, DotCom Gadgets, Rohtash Nagar, Delhi - 110032",
+    },
+    {
+      icon: <MdPhone />,
+      label: "Call Us",
+      text: "+91 9319058138",
+    },
+    {
+      icon: <MdEmail />,
+      label: "Email",
+      text: "dotcominfo@gmail.com",
+    },
+    {
+      icon: <MdAccessTime />,
+      label: "Working Hours",
+      text: "Mon – Sun: 10:00 AM – 9:00 PM",
+    },
+  ].map((item, i) => (
+    <div
+      key={i}
+      className="rounded-2xl bg-white p-5 shadow-md hover:shadow-xl 
+                 border border-amber-400/20 transition cursor-pointer 
+                 flex items-start gap-4"
+    >
+      <div className="text-amber-500 text-xl">{item.icon}</div>
+      <div>
+        <p className="text-xs uppercase tracking-wide text-amber-600">
+          {item.label}
+        </p>
+        <p className="mt-1 text-gray-700">{item.text}</p>
+      </div>
+    </div>
+  ))}
+
+  {/* WhatsApp Button */}
+  <a
+    href="https://wa.me/919102548287"
+    target="_blank"
+    className="flex items-center gap-3 px-5 py-3 bg-green-600 text-white rounded-full 
+               hover:bg-green-700 transition font-medium shadow-lg"
+  >
+    <FaWhatsapp className="text-xl" /> Chat on WhatsApp
+  </a>
+</div>
+
+
+        {/* 🌟 CONTACT FORM — PREMIUM PROFESSIONAL UI */}
+<div className="rounded-2xl bg-white shadow-xl border border-gray-100 p-8">
+  <h3 className="text-2xl font-semibold text-gray-900">
+    Send a Message
+  </h3>
+  <p className="text-gray-500 text-sm mt-1">
+    Our team will get back to you shortly.
+  </p>
+
+  <form
+    onSubmit={handleSubmit}
+    className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6"
+  >
+    {[ 
+      { name: "firstName", label: "First Name *" },
+      { name: "lastName", label: "Last Name *" },
+      { name: "email", label: "Email *", full: true },
+      { name: "phone", label: "Phone" },
+      { name: "subject", label: "Subject" },
+    ].map((f) => (
+      <div
+        key={f.name}
+        className={f.full ? "sm:col-span-2" : ""}
+      >
+        <label className="text-sm font-medium text-gray-700">
+          {f.label}
+        </label>
+
+        <input
+          type="text"
+          name={f.name}
+          onChange={handleChange}
+          required={f.label.includes("*")}
+          className="mt-1 w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 
+                     text-gray-800 shadow-sm placeholder-gray-400
+                     focus:border-amber-400 focus:ring-2 focus:ring-amber-300 transition"
+        />
+      </div>
+    ))}
+
+    {/* Message box */}
+    <div className="sm:col-span-2">
+      <label className="text-sm font-medium text-gray-700">Message</label>
+      <textarea
+        name="message"
+        rows={4}
+        onChange={handleChange}
+        className="mt-1 w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 
+                   text-gray-800 shadow-sm placeholder-gray-400
+                   focus:border-amber-400 focus:ring-2 focus:ring-amber-300 transition"
+      ></textarea>
+    </div>
+
+    {/* Buttons */}
+    <div className="sm:col-span-2 flex gap-4 mt-3">
+      <button
+        type="submit"
+        className="flex-1 py-3 rounded-full bg-amber-500 text-white font-semibold 
+                   shadow-md hover:bg-amber-600 hover:shadow-lg transition"
+      >
+        Submit
+      </button>
+
+      <a
+        href="tel:+919102548287"
+        className="px-6 py-3 rounded-full border border-gray-300 text-gray-700 
+                   hover:bg-gray-900 hover:text-white transition font-medium"
+      >
+        Call Now
+      </a>
+    </div>
+  </form>
+</div>
+
+      </div>
+
+      {/* ⭐ EXTRA CTA SECTION (Optional) */}
+      <div className="mt-16 text-center">
+        <h3 className="text-xl font-semibold text-gray-800">
+          Still have questions?
+        </h3>
+        <p className="text-gray-500 mt-1">
+          Our support team is always here to help you.
+        </p>
       </div>
     </section>
   );

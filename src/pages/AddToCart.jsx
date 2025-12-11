@@ -8,7 +8,6 @@ import {
 import { Minus, Plus, Trash2 } from "lucide-react";
 import {
   fetchAddresses,
-  deleteAddress,
 } from "../redux/thunks/addressThunk";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +16,7 @@ export default function AddToCart() {
   const dispatch = useDispatch();
   const { items, loading } = useSelector((state) => state.cart);
   const [selectedAddress, setSelectedAddress] = useState(null);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const { addresses } = useSelector((state) => state.address);
   useEffect(() => {
     dispatch(fetchCartThunk());
@@ -40,10 +39,31 @@ export default function AddToCart() {
 
   return (
     <div className="max-w-4xl mx-auto pt-20 p-6 bg-white text-black min-h-screen">
-      <h2 className="text-2xl font-bold mb-6">Your Cart</h2>
+      {/* <h2 className="text-2xl font-bold mb-6">Your Cart</h2> */}
 
       {items.length === 0 ? (
-        <p className="text-center text-gray-600">Cart is empty</p>
+        <div className="text-center mt-20">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png"
+            className="w-40 mx-auto opacity-80"
+            alt="Empty Cart"
+          />
+
+          <h2 className="text-2xl font-bold mt-4">Your cart is empty!</h2>
+
+          <p className="text-gray-600 mt-2">
+            Looks like your cart is feeling lonely 😢
+            Add something to make it smile 😊
+          </p>
+
+          <button
+            onClick={() => navigate("/")}
+            className="mt-5 px-6 py-3 bg-black text-white rounded-lg font-semibold 
+                 hover:bg-gray-900 transition"
+          >
+            Continue Shopping
+          </button>
+        </div>
       ) : (
         <>
           {items.map((item) => (
@@ -101,68 +121,18 @@ export default function AddToCart() {
             <span>Total:</span>
             <span>₹{total}</span>
           </div>
-        </>
-      )}
-
-
-      <h2 className="text-2xl font-bold mt-10 mb-4">Select Delivery Address</h2>
-
-      {addresses.length === 0 ? (
-        <p className="text-center text-gray-600">No saved addresses</p>
-      ) : (
-        <>
-          <div className="space-y-4">
-            {addresses.map((address) => (
-              <label
-                key={address._id}
-                className={`border p-4 rounded-lg cursor-pointer flex items-start gap-4 transition 
-          ${selectedAddress === address._id ? "border-black bg-gray-100" : "border-gray-300"}`}
-              >
-                {/* Radio Button */}
-                <input
-                  type="radio"
-                  name="selectedAddress"
-                  value={address._id}
-                  checked={selectedAddress === address._id}
-                  onChange={() => setSelectedAddress(address._id)}
-                  className="mt-1"
-                />
-
-                {/* Address Details */}
-                <div>
-                  <p className="font-semibold text-lg">{address.fullName}</p>
-                  <p>{address.houseNo}, {address.area}</p>
-                  <p>{address.city}, {address.state} - {address.pincode}</p>
-                  <p className="text-gray-600">Phone: {address.phone}</p>
-
-                  {address.isDefault && (
-                    <span className="text-xs bg-green-600 text-white px-2 py-1 rounded mt-2 inline-block">
-                      Default Address
-                    </span>
-                  )}
-                </div>
-
-                {/* Delete Button */}
-                <button
-                  onClick={() => dispatch(deleteAddress(address._id))}
-                  className="text-red-600 text-sm ml-auto"
-                >
-                  Delete
-                </button>
-              </label>
-            ))}
-          </div>
-
           <button
-            onClick={() => navigate("/check-out")}
-            className="w-full mt-6 py-3 bg-black text-white rounded"
-          >
-            Check out 
-          </button>
+        onClick={() => navigate("/check-out")}
+        className="w-full mt-6 py-3 bg-black text-white rounded"
+      >
+        Check out Details
+      </button>
         </>
       )}
-
-
     </div>
   );
 }
+
+
+
+

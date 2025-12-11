@@ -41,14 +41,10 @@ const Home = () => {
   return (
     <div className="min-h-screen pt-15 bg-gray-50">
       <ProductCategories/>
-      {/* Carousel Section with fullscreen trigger */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mt-4">
-          <Carousel />
-        </div>
-      </section>
+      
+      
       <AllProduct/>
-      <MostLoved/>
+      {/* <MostLoved/> */}
 
     </div>
   )

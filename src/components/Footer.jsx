@@ -82,10 +82,11 @@ const Footer = () => {
           <div>
             <h6 className="text-lg font-serif font-semibold text-amber-300 mb-3 uppercase tracking-wider">Support</h6>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/contactus" className="hover:text-amber-300 transition">Customer Care</Link></li>
-              <li><a href="#" className="hover:text-amber-300 transition">Shipping & Returns</a></li>
-              <li><a href="#" className="hover:text-amber-300 transition">Sizing & Fit</a></li>
-              <li><a href="#" className="hover:text-amber-300 transition">Care Instructions</a></li>
+              <li><Link to="/contact-us" className="hover:text-amber-300 transition">Contact US</Link></li>
+              <li><Link to="/privacy-policy" className="hover:text-amber-300 transition">Privacy Policy</Link></li>
+              <li><Link to="/terms-conditions" className="hover:text-amber-300 transition">Terms and Conditions</Link></li>
+              <li><Link to="/cancellation-refund-policy" className="hover:text-amber-300 transition">Cancellation and Refund</Link></li>
+              <li><Link to="/shipping-delivery-policy" className="hover:text-amber-300 transition">Shipping and Delevery</Link></li>
             </ul>
           </div>
 
@@ -93,20 +94,20 @@ const Footer = () => {
           <div>
             <h6 className="text-lg font-serif font-semibold text-amber-300 mb-3 uppercase tracking-wider">Contact</h6>
             <div className="space-y-3 text-sm">
-              <div className="flex items-start gap-3">
+              <div className="flex items-center gap-3">
                 <MdLocationOn className="text-amber-400 mt-0.5" />
                 <p className="text-gray-400">
                   <br />
-                  
+                  Rohtash nagar , 110032, Delhi , India
                 </p>
               </div>
               <div className="flex items-center gap-3">
                 <MdPhone className="text-amber-400" />
-                <div className="text-gray-400">+91 1111111111 · +91 000000000</div>
+                <div className="text-gray-400">+91 9319058138</div>
               </div>
               <div className="flex items-center gap-3">
                 <MdEmail className="text-amber-400" />
-                <p className="text-gray-400">dotcom@gmail.com</p>
+                <p className="text-gray-400">dotcominfo@gmail.com</p>
               </div>
             </div>
           </div>
@@ -115,22 +116,6 @@ const Footer = () => {
         {/* Divider */}
         <div className="mt-10 border-t border-amber-400/20 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            {/* Newsletter */}
-            {/* <div className="w-full md:w-auto md:flex-1">
-              <form className="flex items-center gap-2" onSubmit={(e) => e.preventDefault()}>
-                <input
-                  type="email"
-                  placeholder="Subscribe with email"
-                  className="flex-1 md:w-96 px-4 py-2 rounded-full bg-[#161616] text-gray-100 placeholder:text-gray-500 border border-amber-400/20 focus:outline-none focus:ring-2 focus:ring-amber-400/30"
-                />
-                <Link
-                  to="/contactus"
-                  className="px-5 py-2 rounded-full bg-amber-400 text-black font-medium hover:bg-amber-300 transition"
-                >
-                  Subscribe
-                </Link>
-              </form>
-            </div> */}
 
             {/* Legal */}
             <div className="text-xs text-gray-500">

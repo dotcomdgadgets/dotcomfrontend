@@ -12,7 +12,7 @@ export default function OrderSuccess() {
   const address = successOrder?.address;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-6">
+    <div className="min-h-screen flex flex-col items-center justify-center pt-20 bg-gray-50 px-6">
       
       {/* Success Icon */}
       <div className="bg-green-600 text-white rounded-full p-6 mb-6">

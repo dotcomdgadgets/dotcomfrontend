@@ -46,7 +46,7 @@ const orderSlice = createSlice({
         state.error = action.payload;
       });
 
-    // GET ORDER DETAILS
+    // GET ORDER DETAILS  
     builder
       .addCase(getOrderDetailsThunk.pending, (state) => {
         state.loading = true;
@@ -63,3 +63,5 @@ const orderSlice = createSlice({
 });
 
 export default orderSlice.reducer;
+
+

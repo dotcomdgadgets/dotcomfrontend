@@ -29,6 +29,12 @@ import AddAddress from "./pages/AddAddressForm";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderSuccess from "./pages/OrderSuccess";
 import MyOrders from "./pages/MyOrders";
+import ScrollToTop from "./components/ScrollToTop";
+import ContactUs from "./pages/ContactUs";
+import Privacy from "./pages/Privacy";
+import TermsAndConditions from "./pages/TermsAndConditions";
+import CancellationRefund from "./pages/CancellationRefund";
+import ShippingDelivery from "./pages/policyPages/ShippingDelivery";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -43,6 +49,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Header />
       <UnderDevelopmentPopup />
 
@@ -52,7 +59,7 @@ const App = () => {
         <Route path="/addtocart" element={<AddToCart />} />
         <Route path="/location" element={<LocationPopup />} />
 
-        
+
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/pay-with-reward" element={<PayWithReward />} />
         <Route path="/location-dashboard" element={<LocationDashboard />} />
@@ -71,6 +78,11 @@ const App = () => {
         <Route path="/order-success" element={<OrderSuccess />} />
         <Route path="/my-orders" element={<MyOrders />} />
 
+        <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/privacy-policy" element={<Privacy />} />
+        <Route path="/terms-conditions" element={<TermsAndConditions />} />
+        <Route path="/cancellation-refund-policy" element={<CancellationRefund />} />
+        <Route path="/shipping-delivery-policy" element={<ShippingDelivery />} />
       </Routes>
 
       <Footer />

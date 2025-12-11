@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchProductsThunk } from "../redux/thunks/productThunk";
 
-const AllProduct = () => {
+export default function AllProduct() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -16,40 +16,45 @@ const AllProduct = () => {
   if (loading) return <div className="text-center pt-20">Loading...</div>;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-16">
-      <h2 className="text-xl sm:text-2xl pt-8 font-semibold text-gray-900">
-        Top selling Product
-      </h2>
+    <section className="max-w-7xl mx-auto px-6 md:px-10 pb-20">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-semibold text-gray-900">Mobile Products</h2>
+        <button className="text-sm text-gray-500 hover:underline">
+          See All →
+        </button>
+      </div>
 
-      <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+      {/* PRODUCT GRID */}
+      <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {products.map((p) => (
           <div
             key={p._id}
-            className="group rounded-2xl bg-white border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+            className="group bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition cursor-pointer"
             onClick={() => navigate(`/ProductDetail/${p._id}`)}
           >
-            <div className="aspect-square w-full overflow-hidden bg-gray-50">
+            {/* Product Image */}
+            <div className="aspect-square overflow-hidden bg-gray-50 rounded-t-2xl">
               <img
                 src={p.image?.[0]}
                 alt={p.name}
-                className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform"
+                className="w-full h-full object-cover group-hover:scale-105 transition"
               />
             </div>
 
+            {/* Product Info */}
             <div className="p-4">
-              <p className="text-gray-900 font-semibold tracking-tight">
+              <h5 className="text-gray-600 font-semibold text-sm mb-1">
                 {p.name}
-              </p>
+              </h5>
 
-              <div className="mt-2 flex items-center justify-between">
-                <span className="text-indigo-700 font-bold">₹{p.price}</span>
-              </div>
+              <span className="text-indigo-600 font-bold text-base">
+                ₹{p.price}
+              </span>
             </div>
+
           </div>
         ))}
       </div>
     </section>
   );
-};
-
-export default AllProduct;
+}

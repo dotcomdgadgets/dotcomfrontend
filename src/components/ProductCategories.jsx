@@ -1,4 +1,5 @@
 import React from "react";
+import Carousel from "./Carousel";
 
 export default function ProductCategories() {
   const categories = [
@@ -52,11 +53,56 @@ export default function ProductCategories() {
           ))}
         </div>
       </div>
+      
 
-
+      {/* Carousel Section with fullscreen trigger */}
+            <section className="mx-auto max-w-7xl px-0 sm:px-6 lg:px-8">
+              <div className="mt-4">
+                <Carousel />
+              </div>
+            </section>
      
 
-      {/* Marquee Banner */}
+      
+
+
+       {/* Promo Banner */}
+      {/* <div className="mt-4 overflow-hidden rounded-md">
+        <div className="bg-gradient-to-r from-yellow-100 via-white to-yellow-100 p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between text-center sm:text-left">
+          <div className="text-sm text-gray-800">
+            Flat 400 off on 1999. Code: MAX400 | Flat 200 off on 1499. Code:
+            MAX200. Free Shipping over 1999 Orders!
+          </div>
+          <div className="mt-2 sm:mt-0 text-xs font-semibold text-indigo-700">
+            Shop Now
+          </div>
+        </div>
+      </div> */}
+      {/* FEATURES ROW */}
+      <section className="py-10 max-w-7xl mx-auto px-4 md:px-10">
+  <div className="grid grid-cols-4 gap-4 text-center">
+    {[
+      { title: "HOT DELIVERY", icon: "🚚" },
+      { title: "FEATURES", icon: "⭐" },
+      { title: "TECH SUPPORT", icon: "🛠️" },
+      { title: "EASY RETURN", icon: "💳" },
+    ].map((item, index) => (
+      <div key={index} className="flex flex-col items-center">
+        <span className="text-2xl md:text-3xl">{item.icon}</span>
+
+        <h3 className="mt-1 md:mt-2 font-semibold text-gray-800 text-xs md:text-sm">
+          {item.title}
+        </h3>
+
+        <p className="hidden md:block text-gray-500 text-xs mt-1">
+          Lorem ipsum dolor sit amet.
+        </p>
+      </div>
+    ))}
+  </div>
+</section>
+
+{/* Marquee Banner */}
       <div className="mt-3 bg-indigo-700 rounded p-2 overflow-hidden">
         <div className="whitespace-nowrap animate-marquee py-1 text-white text-sm">
           <span className="mr-8">Flat 400 off on 9999. Code: DOTCOM4U</span>
@@ -78,19 +124,6 @@ export default function ProductCategories() {
         }
       `}</style>
 
-
-       {/* Promo Banner */}
-      <div className="mt-4 overflow-hidden rounded-md">
-        <div className="bg-gradient-to-r from-yellow-100 via-white to-yellow-100 p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between text-center sm:text-left">
-          <div className="text-sm text-gray-800">
-            Flat 400 off on 1999. Code: MAX400 | Flat 200 off on 1499. Code:
-            MAX200. Free Shipping over 1999 Orders!
-          </div>
-          <div className="mt-2 sm:mt-0 text-xs font-semibold text-indigo-700">
-            Shop Now
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

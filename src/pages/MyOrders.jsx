@@ -30,15 +30,15 @@ export default function MyOrders() {
             {/* Order Header */}
             <div className="flex justify-between items-center mb-4">
               <div>
-                <p className="text-gray-700">
+                {/* <p className="text-gray-700">
                   <span className="font-semibold">Order ID:</span> {order._id}
-                </p>
+                </p> */}
                 <p className="text-gray-600 text-sm">
                   Ordered on: {new Date(order.createdAt).toLocaleDateString()}
                 </p>
               </div>
 
-              <span
+              {/* <span
                 className={`px-3 py-1 text-sm rounded font-semibold ${
                   order.orderStatus === "Delivered"
                     ? "bg-green-100 text-green-600"
@@ -50,13 +50,13 @@ export default function MyOrders() {
                 }`}
               >
                 {order.orderStatus}
-              </span>
+              </span> */}
             </div>
 
             {/* Order Items */}
             <div className="space-y-3">
               {order.items.map((item, i) => (
-                <div key={i} className="flex items-center gap-4">
+                <div key={i} className="flex items-center  gap-4">
                   <img
                     src={item.product?.image?.[0]}
                     className="w-16 h-16 object-cover rounded"

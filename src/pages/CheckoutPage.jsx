@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCartThunk } from "../redux/thunks/cartThunk";
-import { fetchAddresses } from "../redux/thunks/addressThunk";
+import { deleteAddress, fetchAddresses } from "../redux/thunks/addressThunk";
 import { useNavigate } from "react-router-dom";
 import { placeOrderThunk } from "../redux/thunks/orderThunk";
 
@@ -32,46 +32,75 @@ export default function CheckoutPage() {
     0
   );
 
+  const discount = Math.floor(total * 0.45);
+//   const saveMore = 238;
+  const deleveryCharges = 49;
+  const promiseFee = 9;
+
+  const finalAmount = total + promiseFee + deleveryCharges;
+
   const placeOrder = () => {
-  if (!selectedAddress) {
-    alert("Please select a delivery address");
-    return;
-  }
-
-  dispatch(
-    placeOrderThunk({
-      addressId: selectedAddress,
-      paymentMethod,
-    })
-  ).then((res) => {
-    if (!res.error) {
-      navigate("/order-success");  // Redirect after success
-    } else {
-      alert("Order failed. Try again.");
+    if (!selectedAddress) {
+      alert("Please select a delivery address");
+      return;
     }
-  });
-};
 
+    dispatch(
+      placeOrderThunk({
+        addressId: selectedAddress,
+        paymentMethod,
+      })
+    ).then((res) => {
+      if (!res.error) {
+        navigate("/order-success");
+      } else {
+        alert("Order failed. Try again.");
+      }
+    });
+  };
 
   return (
     <div className="max-w-4xl mx-auto pt-20 p-6 bg-white min-h-screen text-black">
+
+      {/* PAGE TITLE */}
       <h1 className="text-3xl font-bold mb-6">Checkout</h1>
 
       {/* ============================
-          DELIVERY ADDRESS
+            ADDRESS SECTION
       ============================ */}
-      <section>
-        <h2 className="text-xl font-semibold mb-3">Select Delivery Address</h2>
+      <section className="mb-8">
+        <h2 className="text-xl font-semibold mb-3">Delivery Address</h2>
 
         {addresses.length === 0 ? (
-          <p className="text-gray-600">No saved address found.</p>
+          <div className="text-center py-8 border rounded-xl bg-gray-50">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/484/484167.png"
+              className="w-10 mx-auto opacity-80"
+              alt="No Address"
+            />
+            <h3 className="text-xl font-semibold mt-4">No Saved Address</h3>
+            <p className="text-gray-600 mt-1">
+              Add an address to continue your order.
+            </p>
+
+            <button
+              onClick={() => navigate("/add-address")}
+              className="mt-5 px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-gray-900 transition"
+            >
+              Add New Address
+            </button>
+          </div>
         ) : (
           <div className="space-y-4">
             {addresses.map((address) => (
               <label
                 key={address._id}
-                className={`border p-4 rounded-lg flex items-start gap-4 cursor-pointer transition 
-             ${selectedAddress === address._id ? "border-black bg-gray-100" : "border-gray-300"}`}
+                className={`border p-4 rounded-xl flex gap-4 cursor-pointer shadow-sm 
+                  transition ${
+                    selectedAddress === address._id
+                      ? "border-black bg-gray-100"
+                      : "border-gray-300"
+                  }`}
               >
                 <input
                   type="radio"
@@ -93,43 +122,97 @@ export default function CheckoutPage() {
                     </span>
                   )}
                 </div>
+
+                <button
+                  onClick={() => dispatch(deleteAddress(address._id))}
+                  className="text-red-600 text-sm ml-auto"
+                >
+                  Remove
+                </button>
               </label>
             ))}
           </div>
         )}
       </section>
 
-      <hr className="my-6" />
-
       {/* ============================
-          ORDER SUMMARY
+            ORDER SUMMARY (Flipkart Style)
       ============================ */}
-      <section>
+      <section className="mt-10">
         <h2 className="text-xl font-semibold mb-3">Order Summary</h2>
 
+        {/* Product List */}
         {items.map((item) => (
-          <div key={item._id} className="flex justify-between py-2 border-b">
+          <div key={item._id} className="flex items-center justify-between gap-4 py-4 border-b">
             <img
-                src={item.product.image[0]}
-                className="w-20 h-20 object-cover rounded"
-              />
-            <span>{item.product.name} × {item.quantity}</span>
-            <span>₹{item.product.price * item.quantity}</span>
+              src={item.product.image[0]}
+              className="w-20 h-20 rounded object-cover"
+            />
+            <div className="flex-1">
+              <p className="font-semibold text-gray-800">{item.product.name}</p>
+              <p className="text-gray-500 text-sm">
+                Qty: {item.quantity}
+              </p>
+            </div>
+
+            <p className="font-medium text-gray-900">
+              ₹{item.product.price * item.quantity}
+            </p>
           </div>
         ))}
 
-        <div className="flex justify-between text-xl font-bold mt-4">
-          <span>Total:</span>
-          <span>₹{total}</span>
+        {/* Price Details Box */}
+        <div className="bg-gray-50 rounded-xl border border-gray-200 mt-8">
+          <div className="px-4 py-3 border-b">
+            <h3 className="font-semibold text-lg">Price Details</h3>
+          </div>
+
+          <div className="px-4 py-3 text-gray-700 space-y-3">
+
+            <div className="flex justify-between">
+              <span>Price ({items.length} items)</span>
+              <span>₹{total}</span>
+            </div>
+
+            <div className="flex justify-between">
+              <span>Delevery Charges</span>
+              <span className="text-green-600 font-semibold">₹ {deleveryCharges}</span>
+            </div>
+
+            {/* <div className="flex justify-between">
+              <span>Buy more & save more</span>
+              <span className="text-green-600">-₹2</span>
+            </div> */}
+
+            {/* <div className="flex justify-between">
+              <span>Coupons for you</span>
+              <span className="text-green-600">-₹129</span>
+            </div> */}
+
+            <div className="flex justify-between">
+              <span>Protect Promise Fee</span>
+              <span>₹{promiseFee}</span>
+            </div>
+
+            <hr />
+
+            <div className="flex justify-between text-xl font-bold">
+              <span>Total Amount</span>
+              <span>₹{finalAmount}</span>
+            </div>
+          </div>
+
+          <div className="bg-green-50 text-green-700 text-center py-3 font-semibold text-sm border-t">
+            {/* 🎉 You'll save ₹{discount + saveMore + coupons} on this order! */}
+            🎉 You'll earn 1 Super Gold Coin on every 100 rupees
+          </div>
         </div>
       </section>
 
-      <hr className="my-6" />
-
       {/* ============================
-          PAYMENT METHOD
+            PAYMENT
       ============================ */}
-      <section>
+      <section className="mt-10">
         <h2 className="text-xl font-semibold mb-3">Payment Method</h2>
 
         <label className="flex items-center gap-2 mb-2">
@@ -153,12 +236,14 @@ export default function CheckoutPage() {
         </label>
       </section>
 
+      {/* PLACE ORDER BUTTON */}
       <button
         onClick={placeOrder}
-        className="w-full mt-8 py-3 bg-black text-white rounded text-lg font-semibold"
+        className="w-full mt-10 py-4 bg-black text-white rounded-lg text-lg font-semibold shadow hover:bg-gray-900 transition"
       >
         Place Order
       </button>
+
     </div>
   );
 }

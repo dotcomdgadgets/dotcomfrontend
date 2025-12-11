@@ -1,15 +1,22 @@
-// src/pages/UserProfile.jsx
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../redux/slices/authSlice";
+import {
+  MdLocationOn,
+  MdOutlineShoppingBag,
+  MdArrowForwardIos,
+  MdNotificationsNone,
+  MdHelpOutline,
+  MdQuestionAnswer,
+  MdGavel,
+  MdCall,
+} from "react-icons/md";
 
 const UserProfile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // ⭐ Get logged-in user from Redux Store
   const { user } = useSelector((state) => state.auth);
 
   const handleLogout = () => {
@@ -18,141 +25,135 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-24 p-6">
-      <div className="relative bg-white shadow-2xl rounded-3xl p-8 border border-gray-100 
-                      hover:shadow-[0_10px_40px_rgba(0,0,0,0.1)] transition-all duration-300">
+    <div className="max-w-md mx-auto pt-20 pb-10 bg-gray-100 min-h-screen pt-4">
 
-        {/* ⭐ Coins Badge - Top Right */}
-        {user && (
-          <div className="absolute top-4 right-4">
-            <div className="flex items-center gap-2 bg-yellow-100 text-yellow-800 
-                            px-4 py-2 rounded-full shadow-md border border-yellow-300">
-              <span className="text-xl">🪙</span>
-              <span className="font-semibold text-lg">{user.rewardCoins}</span>
-            </div>
+      {/* TOP: Back + Title */}
+      <div className="flex items-center gap-3 px-4 mb-4">
+        <button onClick={() => navigate(-1)} className="text-2xl text-gray-600 font-light">
+          ←
+        </button>
+        <h1 className="text-gray-600 font-semibold">My Account</h1>
+      </div>
+
+      {/* PROFILE CARD */}
+      <div className="bg-white rounded-2xl shadow-sm mx-4 p-5">
+        <div className="flex items-center gap-4">
+          {/* Avatar */}
+          <img
+            src={
+              user?.avatar
+                ? user.avatar
+                : `https://ui-avatars.com/api/?name=${(user?.name || "User").replace(
+                    " ",
+                    "+"
+                  )}&background=0D8ABC&color=fff&size=100`
+            }
+            className="w-16 h-16 rounded-full border border-gray-200"
+            alt="User Avatar"
+          />
+
+          {/* User Details */}
+          <div>
+            <p className="font-semibold text-gray-600 text-lg">{user ? user.name : "Guest User"}</p>
+            <p className="text-sm text-gray-600">{user?.email}</p>
+            <p className="text-sm text-gray-600">{user?.mobile}</p>
           </div>
-        )}
-
-        {/* Profile Image */}
-        <div className="flex flex-col items-center">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 p-[3px] animate-pulse"></div>
-
-            <img
-              src={
-                user?.avatar && user.avatar.trim() !== ""
-                  ? user.avatar
-                  : `https://ui-avatars.com/api/?name=${(user?.name || "User")
-                      .replace(" ", "+")}&background=0D8ABC&color=fff&size=150`
-              }
-              alt="Profile"
-              className="relative w-32 h-32 rounded-full object-cover bg-white shadow-lg"
-            />
-          </div>
-
-          {/* Name */}
-          <h2 className="mt-4 text-2xl sm:text-3xl font-bold text-gray-900 tracking-wide whitespace-nowrap overflow-hidden text-ellipsis max-w-full">
-            {user ? user.name : "Guest User"}
-          </h2>
-
-          {/* ⭐ Role Badge */}
-          {user ? (
-            <span
-              className={`mt-2 px-4 py-1 text-sm rounded-full uppercase tracking-wider font-semibold ${
-                user.role === "admin"
-                  ? "bg-green-100 text-green-700 border border-green-300"
-                  : "bg-blue-100 text-blue-700 border border-blue-300"
-              }`}
-            >
-              {user.role}
-            </span>
-          ) : (
-            <span className="mt-2 px-4 py-1 text-sm rounded-full bg-gray-100 text-gray-400 border">
-              Not Logged In
-            </span>
-          )}
         </div>
 
         {/* Divider */}
-        <div className="my-6 border-t border-gray-200"></div>
+        <div className="border-t my-4"></div>
 
-        {/* Details */}
-        <div className="space-y-4 text-center">
-          <p className="text-gray-700 text-lg">
-            <strong className="text-gray-900">Mobile:</strong>{" "}
-            {user ? user.mobile : "Login to view"}
-          </p>
+        {/* HOME TAG */}
+        <div className="flex justify-start">
+  {user ? (
+    <span
+      className={`mt-2 px-4 py-1 text-sm rounded-full uppercase tracking-wider font-semibold ${
+        user.role === "admin"
+          ? "bg-green-100 text-green-700 border border-green-300"
+          : "bg-blue-100 text-blue-700 border border-blue-300"
+      }`}
+    >
+      {user.role}
+    </span>
+  ) : (
+    <span className="mt-2 px-4 py-1 text-sm rounded-full bg-gray-100 text-gray-400 border">
+      Not Logged In
+    </span>
+  )}
+</div>
+
+      </div>
+
+      {/* OPTIONS ROW */}
+      <div className="bg-white rounded-2xl shadow-sm mx-4 mt-4 p-4 grid grid-cols-2 gap-3">
+        <div
+          className="flex flex-col items-center py-3 border-r border-gray-200 cursor-pointer"
+          onClick={() => navigate("/add-address")}
+        >
+          <MdLocationOn className="text-2xl text-gray-700" />
+          <span className="mt-2 text-sm text-gray-600 font-medium">Manage Address</span>
+        </div>
+        <div
+          className="flex flex-col items-center py-3 cursor-pointer"
+          onClick={() => navigate("/my-orders")}
+        >
+          <MdOutlineShoppingBag className="text-2xl text-gray-700" />
+          <span className="mt-2 text-sm text-gray-600 font-medium">My Orders</span>
+        </div>
+      </div>
+
+      {/* REWARDS CARD */}
+      <div className="bg-white rounded-2xl shadow-sm mx-4 mt-4 p-4">
+        <div className="flex justify-between items-center">
+          <p className="font-semibold">Rewards</p>
+          <MdArrowForwardIos className="text-gray-400 text-sm" />
         </div>
 
-        {/* Buttons */}
-        <div className="mt-8 space-y-3">
-          {user ? (
-            <>
-              {/* Logged-in buttons */}
-              <button
-                onClick={() => navigate("/add-address")}
-                className="w-full py-3 rounded-xl bg-gray-50 border border-gray-200 
-                           text-gray-800 font-medium shadow-sm 
-                           hover:bg-gray-100 hover:shadow-md transition-all duration-200"
-              >
-                Add Address
-              </button>
-              <button
-                onClick={() => navigate("/edit-profile")}
-                className="w-full py-3 rounded-xl bg-gray-50 border border-gray-200 
-                           text-gray-800 font-medium shadow-sm 
-                           hover:bg-gray-100 hover:shadow-md transition-all duration-200"
-              >
-                Edit Profile
-              </button>
+        <div className="mt-4 bg-gray-50 rounded-lg p-4">
+          <p className="text-gray-500 text-sm">Available Reward Points</p>
+          <span className="text-xl">🪙</span> <span className="font-semibold text-gray-600 text-lg">{user.rewardCoins}</span>
 
-              <button
-                onClick={() => navigate("/change-password")}
-                className="w-full py-3 rounded-xl bg-gray-50 border border-gray-200 
-                           text-gray-800 font-medium shadow-sm
-                           hover:bg-gray-100 hover:shadow-md transition-all duration-200"
-              >
-                Change Password
-              </button>
-              <button
-                onClick={() => navigate("/my-orders")}
-                className="w-full py-3 rounded-xl bg-gray-50 border border-gray-200 
-                           text-gray-800 font-medium shadow-sm 
-                           hover:bg-gray-100 hover:shadow-md transition-all duration-200"
-              >
-                My Orders
-              </button>
-
-              <button
-                onClick={handleLogout}
-                className="w-full py-3 rounded-xl bg-red-50 border border-red-200 
-                           text-red-700 font-medium shadow-sm
-                           hover:bg-red-100 hover:shadow-md transition-all duration-200"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              {/* NOT logged in */}
-              <button
-                onClick={() => navigate("/login")}
-                className="w-full py-3 rounded-xl bg-black text-white font-medium
-                           hover:bg-gray-900 transition-all duration-200"
-              >
-                Login
-              </button>
-
-              <button
-                onClick={() => navigate("/signup")}
-                className="w-full py-3 rounded-xl bg-gray-100 border border-gray-300 
-                           text-gray-700 font-medium hover:bg-gray-200 transition"
-              >
-                Create Account
-              </button>
-            </>
-          )}
+          <div className="flex justify-between text-blue-500 text-sm mt-3">
+            <button>How to earn</button>
+            <button>How to redeem</button>
+          </div>
         </div>
+      </div>
+
+      {/* MORE SECTION */}
+      <div className="bg-white rounded-2xl shadow-sm mx-4 mt-4 p-2">
+        <p className="px-4 py-3 font-semibold text-gray-700">More</p>
+
+        {[
+          { label: "Notification Center", icon: <MdNotificationsNone /> },
+          { label: "Help and Support", icon: <MdHelpOutline /> },
+          { label: "FAQs", icon: <MdQuestionAnswer /> },
+          { label: "Terms & conditions", icon: <MdGavel /> },
+          { label: "Get in touch", icon: <MdCall /> },
+        ].map((item, idx) => (
+          <div
+            key={idx}
+            className="flex justify-between items-center px-4 py-3 border-t cursor-pointer"
+          >
+            <div className="flex items-center gap-3 text-gray-700">
+              <span className="text-xl">{item.icon}</span>
+              <span>{item.label}</span>
+            </div>
+            <MdArrowForwardIos className="text-gray-400 text-sm" />
+          </div>
+        ))}
+      </div>
+
+      {/* LOGOUT BUTTON */}
+      <div className="mx-4 mt-6">
+        <button
+          onClick={handleLogout}
+          className="w-full py-3 rounded-xl bg-red-50 border border-red-200 
+                    text-red-700 font-semibold shadow-sm
+                    hover:bg-red-100 transition-all"
+        >
+          Logout
+        </button>
       </div>
     </div>
   );
