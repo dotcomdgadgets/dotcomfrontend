@@ -148,15 +148,27 @@ const UserProfile = () => {
 
       {/* LOGOUT BUTTON */}
       <div className="mx-4 mt-6">
-        <button
-          onClick={handleLogout}
-          className="w-full py-3 rounded-xl bg-red-50 border border-red-200 
-                    text-red-700 font-semibold shadow-sm
-                    hover:bg-red-100 transition-all"
-        >
-          Logout
-        </button>
+  {user ? (
+    <button
+      onClick={handleLogout}
+      className="w-full py-3 rounded-xl bg-red-50 border border-red-200 
+                 text-red-700 font-semibold shadow-sm
+                 hover:bg-red-100 transition-all"
+    >
+      Logout
+    </button>
+  ) : (
+    <button
+      onClick={() => navigate("/login")}
+      className="w-full py-3 rounded-xl bg-indigo-600 
+                 text-white font-semibold shadow-sm
+                 hover:bg-indigo-700 transition-all"
+    >
+      Login
+    </button>
+  )}
       </div>
+
     </div>
   );
 };
