@@ -14,7 +14,7 @@ import {
 export default function CheckoutPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { user } = useSelector((state) => state.auth);
   const { items } = useSelector((state) => state.cart);
   const { addresses } = useSelector((state) => state.address);
 
@@ -40,8 +40,8 @@ export default function CheckoutPage() {
 
   const discount = Math.floor(total * 0.45);
 //   const saveMore = 238;
-  const deleveryCharges = 49;
-  const promiseFee = 9;
+  const deleveryCharges = 1;
+  const promiseFee = 1;
 
   const finalAmount = total + promiseFee + deleveryCharges;
 
@@ -71,6 +71,7 @@ const placeOrder = async () => {
   );
 
   if (!res.payload) return;
+  console.log(import.meta.env.VITE_RAZORPAY_KEY);
 
   const options = {
     key: import.meta.env.VITE_RAZORPAY_KEY,
@@ -280,7 +281,5 @@ const placeOrder = async () => {
     </div>
   );
 }
-
-
 
 
