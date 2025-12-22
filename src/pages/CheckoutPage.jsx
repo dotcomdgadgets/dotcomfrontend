@@ -30,8 +30,8 @@ export default function CheckoutPage() {
 
   const discount = Math.floor(total * 0.45);
   //   const saveMore = 238;
-  const deleveryCharges = 1;
-  const promiseFee = 1;
+  const deleveryCharges = 0;
+  const promiseFee = 0;
 
   const finalAmount = total + promiseFee + deleveryCharges;
 
