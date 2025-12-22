@@ -22,135 +22,158 @@ export default function AddAddressForm() {
 
   const submitAddress = () => {
     dispatch(addAddress(form)).then((res) => {
-      if (!res.error) alert("✅ Address added successfully");
+      if (!res.error) {
+        alert("Address added successfully");
+      }
     });
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-start justify-center py-10 px-4">
-      <div className="w-full max-w-xl bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
+    <div className="min-h-screen bg-gray-50 flex justify-center px-4 py-10">
+      <div className="w-full max-w-xl bg-white rounded-xl shadow-md border border-gray-200 p-6">
 
-        {/* Header */}
-        <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold text-gray-900">
-            Add Delivery Address
-          </h1>
-          <p className="text-gray-500 mt-1 text-sm">
-            This address will be used for order delivery
-          </p>
-        </div>
+        <h2 className="text-xl font-semibold text-gray-900 mb-1">
+          Add Delivery Address
+        </h2>
+        <p className="text-sm text-gray-500 mb-6">
+          Enter your shipping details
+        </p>
 
-        {/* Form */}
-        <div className="space-y-6">
+        <div className="space-y-5">
 
-          {/* Name + Phone */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <FloatingInput
-              label="Full Name"
+          {/* Full Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Full Name
+            </label>
+            <input
               name="fullName"
               value={form.fullName}
               onChange={handleChange}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2
+              focus:outline-none focus:ring-1 focus:ring-black text-gray-600"
+              placeholder="Enter full name"
             />
-            <FloatingInput
-              label="Phone Number"
+          </div>
+
+          {/* Phone */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Phone Number
+            </label>
+            <input
               name="phone"
               value={form.phone}
               onChange={handleChange}
               inputMode="numeric"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2
+              focus:outline-none focus:ring-1 focus:ring-black text-gray-600"
+              placeholder="10 digit mobile number"
             />
           </div>
 
           {/* Pincode */}
-          <FloatingInput
-            label="Pincode"
-            name="pincode"
-            value={form.pincode}
-            onChange={handleChange}
-            inputMode="numeric"
-          />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Pincode
+            </label>
+            <input
+              name="pincode"
+              value={form.pincode}
+              onChange={handleChange}
+              inputMode="numeric"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2
+              focus:outline-none focus:ring-1 focus:ring-black text-gray-600"
+              placeholder="Area pincode"
+            />
+          </div>
 
-          {/* Address */}
-          <FloatingInput
-            label="House / Flat / Building"
-            name="houseNo"
-            value={form.houseNo}
-            onChange={handleChange}
-          />
+          {/* House */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              House / Flat / Building
+            </label>
+            <input
+              name="houseNo"
+              value={form.houseNo}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2
+              focus:outline-none focus:ring-1 focus:ring-black text-gray-600"
+              placeholder="House no, flat, building"
+            />
+          </div>
 
-          <FloatingInput
-            label="Area / Locality"
-            name="area"
-            value={form.area}
-            onChange={handleChange}
-          />
+          {/* Area */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Area / Locality
+            </label>
+            <input
+              name="area"
+              value={form.area}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2
+              focus:outline-none focus:ring-1 focus:ring-black text-gray-600"
+              placeholder="Area, street, locality text-gray-600"
+            />
+          </div>
 
-          {/* City + State */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <FloatingInput
-              label="City"
+          {/* City */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              City
+            </label>
+            <input
               name="city"
               value={form.city}
               onChange={handleChange}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2
+              focus:outline-none focus:ring-1 focus:ring-black text-gray-600"
+              placeholder="City"
             />
-            <FloatingInput
-              label="State"
+          </div>
+
+          {/* State */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              State
+            </label>
+            <input
               name="state"
               value={form.state}
               onChange={handleChange}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2
+              focus:outline-none focus:ring-1 focus:ring-black text-gray-600"
+              placeholder="State"
             />
           </div>
 
           {/* Landmark */}
-          <FloatingInput
-            label="Landmark (Optional)"
-            name="landmark"
-            value={form.landmark}
-            onChange={handleChange}
-          />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Landmark (Optional)
+            </label>
+            <input
+              name="landmark"
+              value={form.landmark}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2
+              focus:outline-none focus:ring-1 focus:ring-black text-gray-600"
+              placeholder="Nearby landmark"
+            />
+          </div>
 
           {/* Button */}
           <button
             onClick={submitAddress}
-            className="w-full mt-6 bg-black text-white py-3 rounded-xl text-lg font-semibold
-            hover:bg-gray-900 transition-all duration-200 shadow-lg"
+            className="w-full bg-black text-white py-3 rounded-lg text-lg font-semibold
+            hover:bg-gray-900 transition"
           >
             Save Address
           </button>
+
         </div>
       </div>
-    </div>
-  );
-}
-
-/* ===================================
-   🔹 Professional Floating Input
-=================================== */
-function FloatingInput({
-  label,
-  name,
-  value,
-  onChange,
-  inputMode = "text",
-}) {
-  return (
-    <div className="relative">
-      <input
-        name={name}
-        value={value}
-        onChange={onChange}
-        placeholder=" "
-        inputMode={inputMode}
-        className="peer w-full px-4 py-3 rounded-xl border border-gray-300
-        outline-none text-gray-900 bg-white
-        focus:border-black focus:ring-1 focus:ring-black transition"
-      />
-      <label
-        className="absolute left-4 top-3 text-gray-500 bg-white px-1 transition-all
-        peer-focus:-top-2 peer-focus:text-xs peer-focus:text-black
-        peer-placeholder-shown:top-3 peer-placeholder-shown:text-base"
-      >
-        {label}
-      </label>
     </div>
   );
 }
