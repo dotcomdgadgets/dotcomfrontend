@@ -313,7 +313,7 @@ setTimeout(() => {
             checked={paymentMethod === "Online"}
             onChange={() => setPaymentMethod("Online")}
           />
-          Online Payment
+          Online Payment method
         </label>
       </section>
 
