@@ -17,7 +17,7 @@ export default function CheckoutPage() {
   const { user } = useSelector((state) => state.auth);
   const { items } = useSelector((state) => state.cart);
   const { addresses } = useSelector((state) => state.address);
-
+  const [razorpayOrder, setRazorpayOrder] = useState(null);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("COD");
   const { loading } = useSelector((state) => state.payment);
@@ -25,6 +25,17 @@ export default function CheckoutPage() {
     dispatch(fetchCartThunk());
     dispatch(fetchAddresses());
   }, []);
+  useEffect(() => {
+  if (paymentMethod === "Online") {
+    dispatch(createPaymentOrderThunk({ amount: finalAmount }))
+      .then((res) => {
+        if (res.payload) {
+          setRazorpayOrder(res.payload);
+        }
+      });
+  }
+}, [paymentMethod]);
+
 
   useEffect(() => {
     if (addresses.length > 0) {
@@ -46,13 +57,13 @@ export default function CheckoutPage() {
   const finalAmount = total + promiseFee + deleveryCharges;
 
 
-const placeOrder = async () => {
+const placeOrder = () => {
   if (!selectedAddress) {
     alert("Please select a delivery address");
     return;
   }
 
-  // 🔴 COD FLOW
+  // 🔴 CASH ON DELIVERY
   if (paymentMethod === "COD") {
     dispatch(
       placeOrderThunk({
@@ -65,21 +76,19 @@ const placeOrder = async () => {
     return;
   }
 
-  // 🟢 ONLINE PAYMENT (REDUX)
-  const res = await dispatch(
-    createPaymentOrderThunk({ amount: finalAmount })
-  );
-
-  if (!res.payload) return;
-  console.log(import.meta.env.VITE_RAZORPAY_KEY);
+  // 🟢 ONLINE PAYMENT (MOBILE SAFE)
+  if (!razorpayOrder) {
+    alert("Payment is preparing, please wait...");
+    return;
+  }
 
   const options = {
     key: import.meta.env.VITE_RAZORPAY_KEY,
-    amount: res.payload.amount,
+    amount: razorpayOrder.amount,
     currency: "INR",
     name: "Dotcom Gadgets",
     description: "Order Payment",
-    order_id: res.payload.id,
+    order_id: razorpayOrder.id,
 
     handler: async (response) => {
       await dispatch(
@@ -98,8 +107,10 @@ const placeOrder = async () => {
     theme: { color: "#000000" },
   };
 
-  new window.Razorpay(options).open();
+  const rzp = new window.Razorpay(options);
+  rzp.open();
 };
+
 
 
   return (
@@ -273,11 +284,11 @@ const placeOrder = async () => {
       {/* PLACE ORDER BUTTON */}
       <button
         onClick={placeOrder}
-        className="w-full mt-10 py-4 bg-black text-white rounded-lg text-lg font-semibold shadow hover:bg-gray-900 transition"
+        disabled={paymentMethod === "Online" && !razorpayOrder}
+        className="w-full mt-10 py-4 bg-black text-white rounded-lg text-lg font-semibold"
       >
         Place Order
       </button>
-
     </div>
   );
 }
