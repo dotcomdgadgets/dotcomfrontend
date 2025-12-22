@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API = "http://localhost:5000/api/payment";
+const API = "https://dotcombackend-xu8o.onrender.com/api/payment";
 
 // 🟢 Create Razorpay Order
 export const createPaymentOrderThunk = createAsyncThunk(
@@ -15,14 +15,21 @@ export const createPaymentOrderThunk = createAsyncThunk(
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
+          timeout: 15000, // ⏱️ 15 seconds MAX
         }
       );
       return res.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED") {
+        return rejectWithValue(
+          "Payment service is slow. Please try again in a few seconds."
+        );
+      }
       return rejectWithValue("Failed to create payment order");
     }
   }
 );
+
 
 // 🟢 Verify Payment & Place Order
 export const verifyPaymentThunk = createAsyncThunk(
