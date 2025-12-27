@@ -36,6 +36,7 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import CancellationRefund from "./pages/CancellationRefund";
 import ShippingDelivery from "./pages/policyPages/ShippingDelivery";
 import AllProduct from "./components/AllProduct";
+import OrderDashboard from "./pages/admin/OrderDashboard";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -68,7 +69,7 @@ const App = () => {
         <Route path="/pay-with-reward" element={<PayWithReward />} />
         <Route path="/location-dashboard" element={<LocationDashboard />} />
         <Route path="/reward-dashboard" element={<RewardDetail />} />
-
+        <Route path="/order-dashboard" element={<OrderDashboard />} />
 
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />

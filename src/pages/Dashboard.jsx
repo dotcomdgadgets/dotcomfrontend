@@ -1,182 +1,144 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import {
+  MapPin,
+  Coins,
+  Gift,
+  ShoppingCart,
+  PlusCircle,
+  Users
+} from "lucide-react";
 
 const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br pt-20 from-blue-100 via-sky-200 to-amber-100 flex flex-col items-center justify-center px-6 py-12 font-[Poppins] relative overflow-hidden">
-      {/* Animated background shapes */}
-      <div className="absolute top-0 left-0 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
-      <div className="absolute bottom-0 right-0 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-150"></div>
 
-      {/* Main content */}
-      <div className="z-10 w-full max-w-4xl text-center">
-        <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight">
+      {/* Background Shapes */}
+      <div className="absolute top-0 left-0 w-72 h-72 bg-blue-300 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+      <div className="absolute bottom-0 right-0 w-72 h-72 bg-yellow-300 rounded-full blur-3xl opacity-20 animate-pulse delay-150"></div>
+
+      <div className="z-10 w-full max-w-5xl text-center">
+        <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-4">
           📊 Admin Control Center
         </h2>
-        <p className="text-slate-600 text-lg mb-10 max-w-2xl mx-auto">
-          Manage user activity dashboards effortlessly — monitor location data and reward statistics in real-time.
+        <p className="text-slate-600 text-lg mb-12 max-w-2xl mx-auto">
+          Manage users, products, orders, rewards, and payments from one place.
         </p>
 
-        {/* Dashboard Links */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
           {/* Location Dashboard */}
-          <Link
-            to="/location-dashboard"
-            className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-transparent hover:border-blue-500"
-          >
-            <div className="flex flex-col items-center justify-center space-y-3">
-              <div className="p-4 bg-gradient-to-br from-blue-500 to-sky-500 text-white rounded-full shadow-md">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-8 h-8"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 21.75c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 7.5v6l4 2"
-                  />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-semibold text-slate-800 group-hover:text-blue-600">
-                User Location Dashboard
-              </h2>
-              <p className="text-slate-500 text-sm">
-                Track and analyze live user locations on an interactive map.
-              </p>
-            </div>
-          </Link>
-          {/* Reward Dashboard */}
-          <Link
-            to="/pay-with-reward"
-            className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-transparent hover:border-amber-500"
-          >
-            <div className="flex flex-col items-center justify-center space-y-3">
-              <div className="p-4 bg-gradient-to-br from-amber-400 to-orange-500 text-white rounded-full shadow-md">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-8 h-8"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 8.25h19.5M2.25 12h19.5m-19.5 0A2.25 2.25 0 0 1 4.5 9.75h15a2.25 2.25 0 0 1 2.25 2.25v6.75A2.25 2.25 0 0 1 19.5 21H4.5A2.25 2.25 0 0 1 2.25 18.75v-6.75z"
-                  />
-                </svg>
-
-              </div>
-              <h2 className="text-2xl font-semibold text-slate-800 group-hover:text-amber-600">
-                Pay for Coins
-              </h2>
-              <p className="text-slate-500 text-sm">
-                Pay securely and earn bonus rewards in coins instantly.
-              </p>
-            </div>
-          </Link>
-          {/* Reward Dashboard */}
-          <Link
-            to="/reward-dashboard"
-            className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-transparent hover:border-amber-500"
-          >
-            <div className="flex flex-col items-center justify-center space-y-3">
-              <div className="p-4 bg-gradient-to-br from-amber-400 to-orange-500 text-white rounded-full shadow-md">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-8 h-8"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 8.25v7.5m3.75-3.75h-7.5M12 3.75a8.25 8.25 0 100 16.5 8.25 8.25 0 000-16.5z"
-                  />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-semibold text-slate-800 group-hover:text-amber-600">
-                User Reward Dashboard
-              </h2>
-              <p className="text-slate-500 text-sm">
-                Manage reward records, balances, and performance reports easily.
-              </p>
-            </div>
+          <Link to="/location-dashboard" className="group dashboard-card hover:border-blue-500">
+            <DashboardIcon color="blue">
+              <MapPin size={28} />
+            </DashboardIcon>
+            <h3 className="dashboard-title">User Location Dashboard</h3>
+            <p className="dashboard-desc">
+              Track and monitor real-time user locations on the map.
+            </p>
           </Link>
 
-          <Link
-            to="/addproduct"
-            className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-transparent hover:border-amber-500"
-          >
-            <div className="flex flex-col items-center justify-center space-y-3">
-              <div className="p-4 bg-gradient-to-br from-amber-400 to-orange-500 text-white rounded-full shadow-md">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-8 h-8"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 8.25v7.5m3.75-3.75h-7.5M12 3.75a8.25 8.25 0 100 16.5 8.25 8.25 0 000-16.5z"
-                  />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-semibold text-slate-800 group-hover:text-amber-600">
-                Add Product
-              </h2>
-              <p className="text-slate-500 text-sm">
-                Manage reward records, balances, and performance reports easily.
-              </p>
-            </div>
+          {/* Pay with Reward */}
+          <Link to="/pay-with-reward" className="group dashboard-card hover:border-amber-500">
+            <DashboardIcon color="amber">
+              <Coins size={28} />
+            </DashboardIcon>
+            <h3 className="dashboard-title">Pay with Coins</h3>
+            <p className="dashboard-desc">
+              Accept payments using reward coins and manage transactions.
+            </p>
           </Link>
+
           {/* Reward Dashboard */}
-          <Link
-            to="/user-management"
-            className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-transparent hover:border-amber-500"
-          >
-            <div className="flex flex-col items-center justify-center space-y-3">
-              <div className="p-4 bg-gradient-to-br from-amber-400 to-orange-500 text-white rounded-full shadow-md">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-8 h-8"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 8.25v7.5m3.75-3.75h-7.5M12 3.75a8.25 8.25 0 100 16.5 8.25 8.25 0 000-16.5z"
-                  />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-semibold text-slate-800 group-hover:text-amber-600">
-                User Management Dashboard
-              </h2>
-              <p className="text-slate-500 text-sm">
-                Manage User records.
-              </p>
-            </div>
+          <Link to="/reward-dashboard" className="group dashboard-card hover:border-amber-500">
+            <DashboardIcon color="amber">
+              <Gift size={28} />
+            </DashboardIcon>
+            <h3 className="dashboard-title">Reward Dashboard</h3>
+            <p className="dashboard-desc">
+              View, assign, and manage user reward balances.
+            </p>
           </Link>
+
+          {/* Order Dashboard */}
+          <Link to="/order-dashboard" className="group dashboard-card hover:border-amber-500">
+            <DashboardIcon color="amber">
+              <ShoppingCart size={28} />
+            </DashboardIcon>
+            <h3 className="dashboard-title">Order Dashboard</h3>
+            <p className="dashboard-desc">
+              Track orders, order status, and sales performance.
+            </p>
+          </Link>
+
+          {/* Add Product */}
+          <Link to="/addproduct" className="group dashboard-card hover:border-amber-500">
+            <DashboardIcon color="amber">
+              <PlusCircle size={28} />
+            </DashboardIcon>
+            <h3 className="dashboard-title">Add Product</h3>
+            <p className="dashboard-desc">
+              Add new products and manage your inventory.
+            </p>
+          </Link>
+
+          {/* User Management */}
+          <Link to="/user-management" className="group dashboard-card hover:border-amber-500">
+            <DashboardIcon color="amber">
+              <Users size={28} />
+            </DashboardIcon>
+            <h3 className="dashboard-title">User Management</h3>
+            <p className="dashboard-desc">
+              Manage user accounts, roles, and permissions.
+            </p>
+          </Link>
+
         </div>
       </div>
+
+      {/* Reusable Styles */}
+      <style>
+        {`
+          .dashboard-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid transparent;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+          }
+          .dashboard-card:hover {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+          }
+          .dashboard-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-top: 1rem;
+          }
+          .dashboard-desc {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+          }
+        `}
+      </style>
+    </div>
+  );
+};
+
+const DashboardIcon = ({ children, color }) => {
+  const colors = {
+    blue: "from-blue-500 to-sky-500",
+    amber: "from-amber-400 to-orange-500",
+  };
+
+  return (
+    <div
+      className={`mx-auto w-fit p-4 rounded-full text-white shadow-md bg-gradient-to-br ${colors[color]}`}
+    >
+      {children}
     </div>
   );
 };

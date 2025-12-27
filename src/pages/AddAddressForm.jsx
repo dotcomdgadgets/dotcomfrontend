@@ -29,151 +29,148 @@ export default function AddAddressForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex justify-center px-4 py-10">
-      <div className="w-full max-w-xl bg-white rounded-xl shadow-md border border-gray-200 p-6">
+    <div className="min-h-screen bg-[#eafff5] px-4 py-20">
+      <div className="max-w-4xl mx-auto">
 
-        <h2 className="text-xl font-semibold text-gray-900 mb-1">
-          Add Delivery Address
-        </h2>
-        <p className="text-sm text-gray-500 mb-6">
-          Enter your shipping details
+        {/* Header */}
+        <h3 className="text-xl font-semibold text-[#0b6b4f]">
+          Delivery Address
+        </h3>
+        <p className="text-sm text-[#0b6b4f]/80 mt-1">
+          Please enter your complete shipping details
         </p>
 
-        <div className="space-y-5">
+        <hr className="my-5 border-[#7be0b5]" />
 
-          {/* Full Name */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Full Name
-            </label>
-            <input
+        {/* Form */}
+        <div className="space-y-4">
+
+          {/* Name + Phone */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <MintInput
+              label="Full Name"
               name="fullName"
               value={form.fullName}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2
-              focus:outline-none focus:ring-1 focus:ring-black text-gray-600"
               placeholder="Enter full name"
             />
-          </div>
-
-          {/* Phone */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Phone Number
-            </label>
-            <input
+            <MintInput
+              label="Phone Number"
               name="phone"
               value={form.phone}
               onChange={handleChange}
-              inputMode="numeric"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2
-              focus:outline-none focus:ring-1 focus:ring-black text-gray-600"
               placeholder="10 digit mobile number"
+              inputMode="numeric"
             />
           </div>
 
           {/* Pincode */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Pincode
-            </label>
-            <input
-              name="pincode"
-              value={form.pincode}
-              onChange={handleChange}
-              inputMode="numeric"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2
-              focus:outline-none focus:ring-1 focus:ring-black text-gray-600"
-              placeholder="Area pincode"
-            />
-          </div>
+          <MintInput
+            label="Pincode"
+            name="pincode"
+            value={form.pincode}
+            onChange={handleChange}
+            placeholder="Area pincode"
+            inputMode="numeric"
+          />
 
-          {/* House */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              House / Flat / Building
-            </label>
-            <input
-              name="houseNo"
-              value={form.houseNo}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2
-              focus:outline-none focus:ring-1 focus:ring-black text-gray-600"
-              placeholder="House no, flat, building"
-            />
-          </div>
+          {/* Address */}
+          <MintInput
+            label="House / Flat / Building"
+            name="houseNo"
+            value={form.houseNo}
+            onChange={handleChange}
+            placeholder="House no, flat, building"
+          />
 
-          {/* Area */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Area / Locality
-            </label>
-            <input
-              name="area"
-              value={form.area}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2
-              focus:outline-none focus:ring-1 focus:ring-black text-gray-600"
-              placeholder="Area, street, locality text-gray-600"
-            />
-          </div>
+          <MintInput
+            label="Area / Locality"
+            name="area"
+            value={form.area}
+            onChange={handleChange}
+            placeholder="Area, street, locality"
+          />
 
-          {/* City */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              City
-            </label>
-            <input
+          {/* City + State */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <MintInput
+              label="City"
               name="city"
               value={form.city}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2
-              focus:outline-none focus:ring-1 focus:ring-black text-gray-600"
               placeholder="City"
             />
-          </div>
-
-          {/* State */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              State
-            </label>
-            <input
+            <MintInput
+              label="State"
               name="state"
               value={form.state}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2
-              focus:outline-none focus:ring-1 focus:ring-black text-gray-600"
               placeholder="State"
             />
           </div>
 
           {/* Landmark */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Landmark (Optional)
-            </label>
-            <input
-              name="landmark"
-              value={form.landmark}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2
-              focus:outline-none focus:ring-1 focus:ring-black text-gray-600"
-              placeholder="Nearby landmark"
-            />
-          </div>
+          <MintInput
+            label="Landmark (Optional)"
+            name="landmark"
+            value={form.landmark}
+            onChange={handleChange}
+            placeholder="Nearby landmark"
+          />
 
-          {/* Button */}
+          {/* Submit Button */}
           <button
             onClick={submitAddress}
-            className="w-full bg-black text-white py-3 rounded-lg text-lg font-semibold
-            hover:bg-gray-900 transition"
+            className="
+              mt-6 w-full py-2.5
+              rounded-lg text-sm font-medium
+              bg-[#0b6b4f] text-white
+              hover:bg-[#095a42]
+              transition
+            "
           >
             Save Address
           </button>
-
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ============================
+   🔹 Compact Professional Input
+============================ */
+function MintInput({
+  label,
+  name,
+  value,
+  onChange,
+  placeholder,
+  inputMode = "text",
+}) {
+  return (
+    <div>
+      <label className="block text-xs font-medium text-[#0b6b4f] mb-1">
+        {label}
+      </label>
+      <input
+        name={name}
+        value={value}
+        onChange={onChange}
+        inputMode={inputMode}
+        placeholder={placeholder}
+        className="
+          w-full px-3 py-2
+          rounded-md
+          border border-[#b6e7d2]
+          bg-[#f5fffb]
+          text-sm text-gray-700
+          outline-none
+          focus:border-[#0b6b4f]
+          focus:ring-1 focus:ring-[#0b6b4f]/30
+          transition
+        "
+      />
     </div>
   );
 }
