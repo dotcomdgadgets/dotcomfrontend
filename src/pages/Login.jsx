@@ -4,12 +4,14 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../redux/slices/authSlice"; // ⭐ Redux action
+import { loginUser } from "../redux/slices/authSlice";
+import { Eye, EyeOff } from "lucide-react"; // 👁️ icons
 
 const Login = () => {
   const [formData, setFormData] = useState({ mobile: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // 👁️ toggle
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -28,23 +30,17 @@ const Login = () => {
       );
 
       if (res.status === 200) {
-        alert("Login Successful!");
-
         const { token, user } = res.data;
 
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
         dispatch(loginUser({ token, user }));
 
         navigate("/");
-      } else {
-        setError("Login failed. Please try again.");
       }
     } catch (err) {
-      console.error("Login error:", err);
       setError(
         err.response?.data?.message ||
-          "Login failed. Please check credentials and try again."
+          "Login failed. Please check credentials."
       );
     } finally {
       setLoading(false);
@@ -65,8 +61,7 @@ const Login = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
-
-          {/* MOBILE LOGIN */}
+          {/* MOBILE */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Mobile Number
@@ -85,20 +80,33 @@ const Login = () => {
 
           {/* PASSWORD */}
           <div>
-            <label className="block text-sm text-black font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700">
               Password
             </label>
-            <input
-              type="password"
-              name="password"
-              required
-              value={formData.password}
-              onChange={handleChange}
-              className="mt-1 block w-full text-black rounded-md border border-gray-300 p-2.5 focus:ring-2 focus:ring-black outline-none"
-              placeholder="Enter your password"
-            />
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                required
+                value={formData.password}
+                onChange={handleChange}
+                className="mt-1 block w-full text-black rounded-md border border-gray-300 p-2.5 pr-10 focus:ring-2 focus:ring-black outline-none"
+                placeholder="Enter your password"
+              />
+
+              {/* 👁️ Toggle Button */}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-black"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
 
+          {/* SUBMIT */}
           <button
             type="submit"
             disabled={loading}

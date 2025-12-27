@@ -55,7 +55,7 @@ export default function AddToCart() {
         </div>
       ) : (
         <>
-          {items.map((item) => {
+          {items.filter(item => item.product).map((item) => {
             // ❗ SKIP BROKEN CART ITEMS
             if (!item?.product) return null;
 
