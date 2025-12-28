@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Edit, Trash2, UserPlus } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../../redux/slices/authSlice.js"; // adjust path if needed
+import { setUser,logoutUser } from "../../redux/slices/authSlice.js"; // adjust path if needed
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -46,6 +46,39 @@ const UserManagement = () => {
     }
   };
 
+  const deleteUser = async (userId) => {
+  const onceconfirm = window.confirm("Are you sure you want to delete this user?");
+  if (!onceconfirm) return;
+
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios.delete(
+      `https://dotcombackend-xu8o.onrender.com/api/useroutes/delete-user/${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (res.status === 200) {
+      alert("User deleted successfully");
+
+      // refresh list
+      fetchUsers();
+
+      // if admin deletes himself
+      if (loggedInUser?._id === userId) {
+        dispatch(logoutUser());
+      }
+    }
+  } catch (err) {
+    console.error("Delete user error:", err);
+    alert(err.response?.data?.message || "Failed to delete user");
+  }
+};
+
   return (
     <div className="p-6 pt-20">
       <div className="flex items-center justify-between mb-6">
@@ -86,7 +119,10 @@ const UserManagement = () => {
                       <button className="p-2 rounded-md bg-blue-100 text-blue-700 hover:bg-blue-200 transition">
                         <Edit size={18} />
                       </button>
-                      <button className="p-2 rounded-md bg-red-100 text-red-700 hover:bg-red-200 transition">
+                      <button
+                       className="p-2 rounded-md bg-red-100 text-red-700 hover:bg-red-200 transition"
+                       onClick={(e)=>deleteUser(u._id)}
+                      >
                         <Trash2 size={18} />
                       </button>
                     </div>
@@ -108,3 +144,6 @@ const UserManagement = () => {
 };
 
 export default UserManagement;
+
+
+
