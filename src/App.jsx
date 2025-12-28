@@ -39,6 +39,7 @@ import AllProduct from "./components/AllProduct";
 import OrderDashboard from "./pages/admin/OrderDashboard";
 import AdminOrderDashboard from "./pages/admin/AdminOrderDashboard";
 import ChangePassword from "./pages/ChangePassword";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -66,8 +67,7 @@ const App = () => {
         <Route path="/products" element={<AllProduct />} />
         <Route path="/products/:category" element={<AllProduct />} />
 
-
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute> } />
         <Route path="/pay-with-reward" element={<PayWithReward />} />
         <Route path="/location-dashboard" element={<LocationDashboard />} />
         <Route path="/reward-dashboard" element={<RewardDetail />} />

@@ -1,60 +1,23 @@
-import React, { useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const ProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem("token");
-  const navigate = useNavigate();
+export default function ProtectedRoute({ children }) {
+  const { user, loading } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (!token) {
-      alert(
-        "You must be logged in to access this page.\n" +
-        "Please log in to continue.\n" +
-        "Thank you!"
-      );
-      navigate("/login", { replace: true });
-    }
-  }, [token, navigate]);
-
-  if (!token) {
-    // Show nothing or a loader while waiting for useEffect to navigate
-    return null;
+  if (loading) {
+    return <p className="pt-20 text-center">Loading...</p>;
   }
 
+  // ❌ Not logged in
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // ❌ Logged in but not admin
+  if (user.role !== "admin") {
+    return <Navigate to="/" replace />;
+  }
+
+  // ✅ Admin allowed
   return children;
-};
-
-export default ProtectedRoute;
-
-
-
-
-
-
-// import React, { useEffect, useState } from "react";
-// import { Navigate } from "react-router-dom";
-
-// const ProtectedRoute = ({ children }) => {
-//   const token = localStorage.getItem("token");
-//   const [showAlert, setShowAlert] = useState(false);
-
-//   useEffect(() => {
-//     if (!token) {
-//       alert(
-//         "You must be logged in to access this page.\n" +
-//         "Please log in to continue.\n" +
-//         "Thank you!"
-//       );
-//       setShowAlert(true);
-//     }
-//   }, [token]);
-
-//   if (!token && showAlert) {
-//     return <Navigate to="/login" replace />;
-//   }
-
-//   // If token exists, render children (protected page)
-//   return children;
-// };
-
-// export default ProtectedRoute;
+}
