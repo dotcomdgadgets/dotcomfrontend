@@ -18,7 +18,9 @@ export default function AdminOrderDashboard() {
   const handleStatusChange = (orderId, status) => {
     dispatch(updateOrderStatusThunk({ orderId, status }));
   };
-
+  console.log('====================================');
+  console.log(orders);
+  console.log('====================================');
   return (
     <div className="min-h-screen bg-gray-100 px-6 ">
       <div className="max-w-7xl mx-auto pt-20">
@@ -42,7 +44,7 @@ export default function AdminOrderDashboard() {
                     Order ID
                   </th>
                   <th className="px-4 py-3 text-left font-semibold">
-                    User
+                    Product
                   </th>
                   <th className="px-4 py-3 text-left font-semibold">
                     Amount
@@ -83,7 +85,7 @@ export default function AdminOrderDashboard() {
                       </td>
 
                       <td className="px-4 py-3">
-                        {order.user?.mobile || "—"}
+                        {order.items?.[0]?.product?.name || "Product removed"}
                       </td>
 
                       <td className="px-4 py-3 font-semibold text-gray-900">
