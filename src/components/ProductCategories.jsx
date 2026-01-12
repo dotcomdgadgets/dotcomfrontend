@@ -8,6 +8,8 @@ import headphone from "../assets/categories/headphone.jpg"
 import soundbox from "../assets/categories/soundbox.jpg"
 import watch from "../assets/categories/watch.jpg"
 import covers from "../assets/categories/covers.avif"
+import laptop from "../assets/categories/laptop.jpg"
+
 
 export default function ProductCategories() {
   const navigate=useNavigate();
@@ -25,17 +27,17 @@ export default function ProductCategories() {
     {
       label: "Ear-buds",
       img: buds,
-      category:"buds",
-    },
-    {
-      label: "Gadgets",
-      img: gadgets,
-      category:"gadgets",
+      category:"earbuds",
     },
     {
       label: "Head-phone",
       img: headphone,
       category:"head-phones",
+    },
+    {
+      label: "Gadgets",
+      img: gadgets,
+      category:"gadgets",
     },
     {
       label: "Sound-Box",
@@ -48,12 +50,15 @@ export default function ProductCategories() {
       img: covers,
       category:"covers",
     },
+    {
+      label: "Laptop",
+      img: laptop,
+      category:"laptop",
+    },
   ];
 
   return (
     <div className=" mx-auto p-4">
-
-
       {/* Category cards – always in one row */}
       <div className="mt-5 overflow-x-auto overflow-y-hidden">
         <div className="flex gap-4 min-w-max">

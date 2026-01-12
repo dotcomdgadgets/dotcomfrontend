@@ -40,6 +40,7 @@ export default function AddProduct() {
         name: "",
         mrp: "",
         price: "",
+        stock: "",
         category: "",
         hsnCode: "",
         gst: "",
@@ -104,6 +105,13 @@ export default function AddProduct() {
               <option value="head-phones">Headphone</option>
               <option value="phone-covers">Phone Cover</option>
               <option value="sound-boxes">Sound Box</option>
+              <option value="watches">WATCHES</option>
+              <option value="earbuds">EARBUDS</option>
+              <option value="charger-cable">CHARGER/CABLE</option>
+              <option value="laptop">Laptop</option>
+              <option value="keypad-phones">Keypad Phones</option>
+              <option value="tablets">Tablets</option>
+              <option value="gadgets">Gadgets</option>
             </select>
           </div>
 
@@ -134,7 +142,9 @@ export default function AddProduct() {
               min={0}          // ✅ minimum 0
               max={99}         // ✅ maximum 99
               onChange={(e) => {
-                const value = Math.max(0, Math.min(99, e.target.value));
+                const raw = e.target.value;
+                const value =
+                  raw === "" ? "" : Math.max(0, Math.min(99, Number(raw)));
                 setForm({ ...form, stock: value });
               }}
               className={inputClass}
