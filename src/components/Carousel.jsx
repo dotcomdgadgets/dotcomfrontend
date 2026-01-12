@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import gadgets from "../assets/carousel/gadgets.jpg";
-import smartwatch from "../assets/carousel/smartwatch.jpg"
+import smartwatch from "../assets/carousel/smartwatch.jpg";
 
 const images = [
   gadgets,
@@ -9,7 +9,7 @@ const images = [
   smartwatch,
 ];
 
-export default function Carousel({ className = "" }) {
+export default function Carousel() {
   const [current, setCurrent] = useState(0);
 
   const prevSlide = () => {
@@ -21,72 +21,60 @@ export default function Carousel({ className = "" }) {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) =>
-        prev === images.length - 1 ? 0 : prev + 1
-      );
-    }, 4000);
-
+    const interval = setInterval(nextSlide, 4000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className={`relative w-full h-[40vh] md:h-[60vh] overflow-hidden ${className}`}>
-      <div
-        className="flex transition-transform duration-700 ease-out h-full"
-        style={{ transform: `translateX(-${current * 100}%)` }}
-      >
-        {images.map((img, idx) => (
-          <div key={idx} className="relative w-full h-full flex-shrink-0 overflow-hidden">
+    /* 🔥 BREAK OUT OF CONTAINER */
+    <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
+      <div className="relative h-[220px] md:h-[380px] overflow-hidden bg-black ml-6 mr-6">
 
-            {/* 🔥 Blurred Background */}
-            <img
-              src={img}
-              className="absolute inset-0 w-full h-full object-cover blur-xl scale-110"
-              alt=""
-            />
-
-            {/* ✅ Main Sharp Image */}
-            <div className="relative z-10 w-full h-full flex items-center justify-center">
+        {/* SLIDES */}
+        <div
+          className="flex h-full transition-transform duration-700 ease-out"
+          style={{ transform: `translateX(-${current * 100}%)` }}
+        >
+          {images.map((img, idx) => (
+            <div key={idx} className="w-full h-full flex-shrink-0">
               <img
                 src={img}
-                alt={`carousel-${idx}`}
-                className="max-w-full max-h-full object-contain"
+                alt={`slide-${idx}`}
+                className="w-full h-full object-cover"
               />
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      {/* Controls */}
-      <button
-        onClick={prevSlide}
-        className="absolute top-1/2 left-4 -translate-y-1/2 bg-white/20 backdrop-blur p-2 rounded-full hover:bg-white/40 transition"
-      >
-        <ChevronLeft size={20} />
-      </button>
+        {/* LEFT ARROW */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-3 top-1/2 -translate-y-1/2 bg-white text-gray-700 shadow-lg p-2 rounded-full hover:scale-105 transition"
+        >
+          <ChevronLeft size={22} />
+        </button>
 
-      <button
-        onClick={nextSlide}
-        className="absolute top-1/2 right-4 -translate-y-1/2 bg-white/20 backdrop-blur p-2 rounded-full hover:bg-white/40 transition"
-      >
-        <ChevronRight size={20} />
-      </button>
+        {/* RIGHT ARROW */}
+        <button
+          onClick={nextSlide}
+          className="absolute right-3 top-1/2 -translate-y-1/2 bg-white text-gray-700 shadow-lg p-2 rounded-full hover:scale-105 transition"
+        >
+          <ChevronRight size={22} />
+        </button>
 
-      {/* Dots */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-        {images.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => setCurrent(idx)}
-            className={`w-3 h-3 rounded-full ${
-              current === idx ? "bg-white" : "bg-white/50"
-            }`}
-          />
-        ))}
+        {/* DOTS */}
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+          {images.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrent(idx)}
+              className={`h-2 w-2 rounded-full transition ${
+                current === idx ? "bg-white" : "bg-white/50"
+              }`}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
 }
-
-

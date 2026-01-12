@@ -69,6 +69,7 @@ const downloadInvoice = async () => {
 };
 
 
+
   return (
     <div className="min-h-screen bg-gray-100 px-4 pt-20 pb-10">
       <div className="max-w-4xl mx-auto space-y-6 text-gray-600">
@@ -91,6 +92,17 @@ const downloadInvoice = async () => {
             ← Back
           </button>
         </div>
+        {/* ================= ORDER STATUS ================= */}
+<div className="bg-white rounded-xl border p-5 text-gray-600">
+  <h3 className="font-semibold text-gray-700 mb-4">
+    Order Status
+  </h3>
+
+  <OrderTimeline
+    status={order.orderStatus}
+    createdAt={order.createdAt}
+  />
+</div>
 
         {/* ITEMS */}
         <div className="bg-white rounded-xl border p-5 text-gray-600">
@@ -191,3 +203,67 @@ const Row = ({ label, value, bold }) => (
     <span>₹{Number(value).toFixed(2)}</span>
   </div>
 );
+
+
+function OrderTimeline({ status, createdAt }) {
+  const steps = [
+    "Pending",
+    "Confirmed",
+    "Shipped",
+    "Delivered",
+    "Cancelled",
+  ];
+
+  const isCancelled = status === "Cancelled";
+  const activeIndex = steps.indexOf(status);
+
+  return (
+    <div className="space-y-4">
+      {steps.map((step, index) => {
+        let dotColor = "bg-gray-300";
+        let lineColor = "bg-gray-200";
+        let textColor = "text-gray-400";
+
+        // 🔴 Cancelled logic
+        if (isCancelled) {
+          if (step === "Cancelled") {
+            dotColor = "bg-red-500";
+            textColor = "text-red-600";
+          }
+        } 
+        // 🟢 Normal order flow
+        else {
+          if (index <= activeIndex) {
+            dotColor = "bg-green-500";
+            lineColor = "bg-green-300";
+            textColor = "text-gray-900";
+          }
+        }
+
+        return (
+          <div key={step} className="flex gap-4">
+            <div className="flex flex-col items-center">
+              <div className={`w-3 h-3 rounded-full ${dotColor}`} />
+              {index !== steps.length - 1 && (
+                <div className={`w-[2px] h-8 ${lineColor}`} />
+              )}
+            </div>
+
+            <div>
+              <p className={`text-sm font-medium ${textColor}`}>
+                {step}
+              </p>
+
+              {step === status && (
+                <p className="text-xs text-gray-500">
+                  {new Date(createdAt).toLocaleDateString()}
+                </p>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+

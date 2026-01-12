@@ -97,7 +97,7 @@ const Header = () => {
       {/* ================= SIDEBAR ================= */}
       <div
         className={`fixed top-0 left-0 h-full bg-white sidebar-menu shadow-2xl z-40 transition-transform duration-300
-        ${menuOpen ? "translate-x-0 w-[75%] sm:w-[45%] md:w-[30%]" : "-translate-x-full w-[75%]"}`}
+        ${menuOpen ? "translate-x-0 w-[50%] sm:w-[50%] md:w-[50%]" : "-translate-x-full w-[75%]"}`}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-indigo-600 to-purple-600">

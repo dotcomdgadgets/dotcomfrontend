@@ -29,18 +29,18 @@ export default function AdminOrderDetails() {
   const order = orderDetails;
 
   /* ✅ READ PRICES DIRECTLY FROM ORDER (DB ONLY) */
-  const {
-    subTotal,
-    gstAmount,
-    deliveryCharge,
-    promiseFee = 0,
-    grandTotal,
-    paymentMethod,
-    paymentStatus,
-  } = order;
+const subTotal = Number(order.subTotal || 0);
+const gstAmount = Number(order.gstAmount || 0);
+const deliveryCharge = Number(order.deliveryCharge || 0);
+const promiseFee = Number(order.promiseFee || 0);
+const grandTotal = Number(order.grandTotal || 0);
 
-  const cgst = gstAmount / 2;
-  const sgst = gstAmount / 2;
+const paymentMethod = order.paymentMethod || "N/A";
+const paymentStatus = order.paymentStatus || "N/A";
+
+const cgst = +(gstAmount / 2).toFixed(2);
+const sgst = +(gstAmount / 2).toFixed(2);
+
 
   /* ================= DOWNLOAD INVOICE ================= */
   const downloadInvoice = async () => {
@@ -63,6 +63,26 @@ export default function AdminOrderDetails() {
       alert("Failed to download invoice");
     }
   };
+  const downloadPackingSlip = async () => {
+  try {
+    const res = await axiosInstance.get(
+      `/orders/packing-slip/${order._id}`,
+      { responseType: "blob" }
+    );
+
+    const url = window.URL.createObjectURL(res.data);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `packing-slip-${order._id}.pdf`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  } catch (err) {
+    alert("Failed to download packing slip");
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-slate-100 px-4 py-10">
@@ -92,6 +112,14 @@ export default function AdminOrderDetails() {
           >
             Download Invoice
           </button>
+          <button
+            onClick={downloadPackingSlip}
+            className="px-4 py-2 border rounded text-gray-600"
+          >
+            📦 Download Packing Slip
+          </button>
+
+
           {showToast && (
             <div className="
               fixed top-6 right-6 z-50
@@ -100,7 +128,7 @@ export default function AdminOrderDetails() {
               shadow-lg
               animate-fade-in
             ">
-              ✅ Invoice downloaded successfully
+              ✅ Downloaded successfully
             </div>
           )}
 
@@ -130,7 +158,7 @@ export default function AdminOrderDetails() {
               <Info label="Status" value={paymentStatus} />
               <Info
                 label="Grand Total"
-                value={`₹${grandTotal.toFixed(2)}`}
+                value={`₹${Number(grandTotal).toFixed(2)}`}
                 strong
               />
             </InfoCard>
@@ -254,45 +282,55 @@ function OrderTimeline({ status, createdAt }) {
     "Cancelled",
   ];
 
+  const isCancelled = status === "Cancelled";
   const activeIndex = steps.indexOf(status);
 
   return (
     <div className="space-y-4">
-      {steps.map((step, index) => (
-        <div key={step} className="flex gap-4 text-gray-600">
-          <div className="flex flex-col items-center">
-            <div
-              className={`w-3 h-3 rounded-full ${
-                index <= activeIndex ? "bg-green-500" : "bg-gray-300"
-              }`}
-            />
-            {index !== steps.length - 1 && (
-              <div
-                className={`w-[2px] h-8 ${
-                  index <= activeIndex ? "bg-green-300" : "bg-gray-200"
-                }`}
-              />
-            )}
-          </div>
+      {steps.map((step, index) => {
+        let dotColor = "bg-gray-300";
+        let lineColor = "bg-gray-200";
+        let textColor = "text-gray-400";
 
-          <div>
-            <p
-              className={`text-sm font-medium ${
-                index <= activeIndex
-                  ? "text-gray-900"
-                  : "text-gray-400"
-              }`}
-            >
-              {step}
-            </p>
-            {index === activeIndex && (
-              <p className="text-xs text-gray-600">
-                {new Date(createdAt).toLocaleDateString()}
+        // 🔴 Cancelled logic
+        if (isCancelled) {
+          if (step === "Cancelled") {
+            dotColor = "bg-red-500";
+            textColor = "text-red-600";
+          }
+        } 
+        // 🟢 Normal order flow
+        else {
+          if (index <= activeIndex) {
+            dotColor = "bg-green-500";
+            lineColor = "bg-green-300";
+            textColor = "text-gray-900";
+          }
+        }
+
+        return (
+          <div key={step} className="flex gap-4">
+            <div className="flex flex-col items-center">
+              <div className={`w-3 h-3 rounded-full ${dotColor}`} />
+              {index !== steps.length - 1 && (
+                <div className={`w-[2px] h-8 ${lineColor}`} />
+              )}
+            </div>
+
+            <div>
+              <p className={`text-sm font-medium ${textColor}`}>
+                {step}
               </p>
-            )}
+
+              {step === status && (
+                <p className="text-xs text-gray-500">
+                  {new Date(createdAt).toLocaleDateString()}
+                </p>
+              )}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

@@ -14,6 +14,7 @@ const productSlice = createSlice({
     loading: false,
     error: null,
     success: false,
+    hasFetched: false, // ✅ IMPORTANT FOR UX
   },
 
   reducers: {
@@ -26,7 +27,7 @@ const productSlice = createSlice({
   extraReducers: (builder) => {
     builder
 
-      // ✅ ADD PRODUCT
+      /* ================= ADD PRODUCT ================= */
       .addCase(addProductThunk.pending, (state) => {
         state.loading = true;
       })
@@ -43,35 +44,36 @@ const productSlice = createSlice({
         state.error = action.payload;
       })
 
-      // ✅ FETCH PRODUCTS
+      /* ================= FETCH PRODUCTS ================= */
       .addCase(fetchProductsThunk.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(fetchProductsThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.products = action.payload;
+        state.hasFetched = true; // ✅ API finished
       })
       .addCase(fetchProductsThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        state.hasFetched = true; // ✅ API finished even on error
       })
-      
 
+      /* ================= FETCH SINGLE PRODUCT ================= */
       .addCase(fetchSingleProductThunk.pending, (state) => {
         state.loading = true;
-        })
-        .addCase(fetchSingleProductThunk.fulfilled, (state, action) => {
+      })
+      .addCase(fetchSingleProductThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.singleProduct = action.payload;
-        })
-        .addCase(fetchSingleProductThunk.rejected, (state, action) => {
+      })
+      .addCase(fetchSingleProductThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        })
+      })
 
-
-
-      // ✅ DELETE PRODUCT
+      /* ================= DELETE PRODUCT ================= */
       .addCase(deleteProductThunk.fulfilled, (state, action) => {
         state.products = state.products.filter(
           (p) => p._id !== action.payload
