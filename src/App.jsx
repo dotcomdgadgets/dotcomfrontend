@@ -46,6 +46,7 @@ import OrderDetails from "./pages/OrderDetails";
 import SavedAddresses from "./pages/SavedAdresses";
 import PaymentLogs from "./pages/admin/PaymentLogs";
 import FailedPayments from "./pages/admin/FailedPayments";
+import { fetchCartThunk } from "./redux/thunks/cartThunk";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -53,7 +54,9 @@ const App = () => {
 
   useEffect(() => {
     if (!token) return;
-    dispatch(refreshUser());
+      dispatch(refreshUser());
+      dispatch(fetchProductsThunk());
+      dispatch(fetchCartThunk());
   }, [dispatch, token]);
 
   return (

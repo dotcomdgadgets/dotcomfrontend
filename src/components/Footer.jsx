@@ -18,7 +18,7 @@ const Footer = () => {
           {/* BRAND */}
           <div>
             <h2 className="text-3xl font-serif font-semibold text-amber-300 tracking-wide">
-              DOTCOM
+              DOTCOM GADGETS
             </h2>
             <p className="mt-4 text-sm text-gray-400 leading-relaxed">
               Smart design. Powerful performance.  
@@ -51,13 +51,13 @@ const Footer = () => {
           </div>
 
           {/* SHOP */}
-          <FooterColumn title="Shop">
+          {/* <FooterColumn title="Shop">
             <FooterLink to="/">Home</FooterLink>
             <FooterText>Mobile</FooterText>
             <FooterText>Laptop</FooterText>
             <FooterText>Desktop</FooterText>
             <FooterText>Accessories & Gadgets</FooterText>
-          </FooterColumn>
+          </FooterColumn> */}
 
           {/* SUPPORT */}
           <FooterColumn title="Support">

@@ -78,6 +78,13 @@ const Dashboard = () => {
             icon={<Users size={26} />}
             gradient="from-slate-700 to-gray-900"
           />
+          <DashboardCard
+            to="/redeem-reward"
+            title="Redeem Reward"
+            desc="Redeem reward from user accounts."
+            icon={<Users size={26} />}
+            gradient="from-slate-700 to-gray-900"
+          />
         </div>
       </div>
     </div>

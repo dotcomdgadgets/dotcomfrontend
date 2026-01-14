@@ -80,7 +80,7 @@ const Header = () => {
               {cartCount > 0 && (
                 <span className="
                     absolute -top-2 -right-2
-                    bg-red-600 text-white
+                    bg-amber-300 text-gray-700
                     text-[10px] font-bold
                     h-5 min-w-[20px]
                     px-1 rounded-full
@@ -100,8 +100,8 @@ const Header = () => {
         ${menuOpen ? "translate-x-0 w-[50%] sm:w-[50%] md:w-[50%]" : "-translate-x-full w-[75%]"}`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-indigo-600 to-purple-600">
-          <h2 className="text-white font-bold text-lg tracking-wide">
+        <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-b from-[#0f0d0d] via-[#121212] to-[#1a1414]">
+          <h2 className="text-amber-300 font-bold text-lg tracking-wide">
             DOTCOM
           </h2>
           <button
