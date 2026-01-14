@@ -32,7 +32,12 @@ const Header = () => {
     }
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, [menuOpen]);
-
+  /* ================= SEARCH HANDLER ================= */
+  const handleSearch = () => {
+    if (!searchText.trim()) return;
+    navigate(`/products?search=${encodeURIComponent(searchText.trim())}`);
+    setMenuOpen(false);
+  };
   return (
     <header className="fixed top-0 left-0 z-50 w-full bg-white border-b shadow-sm">
       {/* ================= TOP BAR ================= */}
@@ -56,12 +61,7 @@ const Header = () => {
             type="text"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                navigate(`/products?search=${searchText}`);
-                setMenuOpen(false);
-              }
-            }}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             placeholder="Search products..."
             className="w-full rounded-full border border-gray-200 py-1.5 pl-9 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-500"
           />

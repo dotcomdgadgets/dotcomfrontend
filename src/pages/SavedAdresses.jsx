@@ -140,7 +140,7 @@ const SavedAddresses = () => {
           </div>
 
           {/* ================= FOOTER INFO ================= */}
-          <div className="mt-6 text-xs text-gray-500 bg-gray-50 border rounded-lg p-3">
+          <div className="mt-6 text-xs text-gray-500 bg-gray-50 border rounded-lg p-3 mb-4">
             ℹ You can add or change your delivery address anytime before placing
             the order.
           </div>

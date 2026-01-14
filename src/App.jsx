@@ -53,9 +53,7 @@ const App = () => {
 
   useEffect(() => {
     if (!token) return;
-
     dispatch(refreshUser());
-    dispatch(fetchProductsThunk());
   }, [dispatch, token]);
 
   return (

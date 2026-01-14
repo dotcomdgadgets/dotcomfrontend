@@ -32,11 +32,17 @@ export const addProductThunk = createAsyncThunk(
 ===================================================== */
 export const fetchProductsThunk = createAsyncThunk(
   "product/getAll",
-  async ({ category = "", search = "" }, { rejectWithValue }) => {
+  async ({ category, search } = {}, { rejectWithValue }) => {
     try {
+      const params = new URLSearchParams();
+
+      if (category) params.append("category", category);
+      if (search) params.append("search", search);
+
       const res = await axiosInstance.get(
-        `/products?category=${category}&search=${search}`
+        `/products?${params.toString()}`
       );
+
       return res.data.products;
     } catch (err) {
       return rejectWithValue(
@@ -45,6 +51,7 @@ export const fetchProductsThunk = createAsyncThunk(
     }
   }
 );
+
 
 /* =====================================================
    ✅ GET SINGLE PRODUCT

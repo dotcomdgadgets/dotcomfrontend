@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import axiosInstance from "../api/axiosInstance";
 
+const MAX_AMOUNT = 150000;
+
 const PayWithReward = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -13,21 +15,28 @@ const PayWithReward = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    // 💰 Amount logic
     if (name === "amount") {
-      const numericValue = Number(value);
+      let numericValue = Number(value);
+
+      if (numericValue > MAX_AMOUNT) {
+        numericValue = MAX_AMOUNT;
+      }
+
       const coins = numericValue > 0 ? Math.ceil(numericValue / 100) : 0;
 
       setFormData((prev) => ({
         ...prev,
-        amount: value,
+        amount: numericValue === 0 ? "" : numericValue,
         rewardCoins: coins,
       }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
+      return;
     }
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -39,14 +48,22 @@ const PayWithReward = () => {
       return;
     }
 
-    try {
-      const res = await axiosInstance.post(
-        "/paywithreward",
-        formData
+    // 💰 Amount validation
+    if (
+      Number(formData.amount) <= 0 ||
+      Number(formData.amount) > MAX_AMOUNT
+    ) {
+      alert(
+        `❌ Amount must be between ₹1 and ₹${MAX_AMOUNT.toLocaleString()}`
       );
+      return;
+    }
+
+    try {
+      const res = await axiosInstance.post("/paywithreward", formData);
 
       if (res.status === 200 || res.status === 201) {
-        alert("✅ Submitted successfully!");
+        alert("✅ Payment submitted successfully!");
 
         setFormData({
           name: "",
@@ -62,111 +79,154 @@ const PayWithReward = () => {
   };
 
   return (
-    <div className="min-h-screen flex pt-20 items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 px-4">
-
+    <div className="min-h-screen pt-20 flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-amber-50 px-4">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="bg-white shadow-xl rounded-3xl p-8 w-full max-w-lg border border-blue-100"
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-lg bg-white rounded-3xl shadow-xl border border-blue-100 p-8"
       >
+        {/* HEADER */}
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-slate-800">
-            Pay for Reward
+            Pay with Rewards
           </h2>
-          <p className="text-slate-500 mt-1 text-sm">
-            Enter details to earn instant reward coins 💰
+          <p className="text-sm text-slate-500 mt-2">
+            Pay securely and earn reward coins instantly
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        {/* FORM */}
+        <form onSubmit={handleSubmit} className="space-y-6">
 
-          {/* Full Name */}
-          <div>
-            <label className="block text-gray-600 mb-1 font-medium">
-              Full Name
-            </label>
-            <input
-              type="text"
-              name="name"
-              required
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Enter name"
-              className="w-full border border-gray-300 text-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-blue-400 outline-none"
-            />
-          </div>
+          <Input
+            label="Full Name"
+            name="name"
+            placeholder="Enter your full name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
 
-          {/* Mobile */}
-          <div>
-            <label className="block text-gray-600 mb-1 font-medium">
-              Mobile Number
-            </label>
-            <input
-              type="tel"
-              name="mobile"
-              required
-              maxLength="10"
-              value={formData.mobile}
-              onChange={handleChange}
-              placeholder="Enter 10-digit mobile"
-              className="w-full border border-gray-300 text-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-blue-400 outline-none"
-            />
-          </div>
+          <Input
+            label="Mobile Number"
+            name="mobile"
+            type="tel"
+            maxLength={10}
+            placeholder="Enter 10-digit mobile number"
+            value={formData.mobile}
+            onChange={handleChange}
+            required
+            helper="We’ll use this number for verification"
+          />
 
-          {/* Amount */}
+          {/* AMOUNT */}
           <div>
-            <label className="block text-gray-600 mb-1 font-medium">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Amount to Pay (₹)
             </label>
+
             <input
               type="number"
               name="amount"
-              required
               value={formData.amount}
               onChange={handleChange}
-              placeholder="Enter amount"
-              className="w-full border border-gray-300 text-gray-600 rounded-lg p-3 focus:ring-2 focus:ring-blue-400 outline-none"
+              min={1}
+              max={MAX_AMOUNT}
+              placeholder={`Max ₹${MAX_AMOUNT.toLocaleString()}`}
+              onWheel={(e) => e.target.blur()} // 🚫 disable scroll
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-800 focus:ring-2 focus:ring-blue-400 outline-none"
+              required
             />
+
+            <div className="flex justify-between mt-1 text-xs text-gray-500">
+              <span>Minimum ₹1</span>
+              <span>Maximum ₹{MAX_AMOUNT.toLocaleString()}</span>
+            </div>
 
             {formData.amount && (
               <motion.p
                 initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-2 text-sm text-green-700 font-medium"
+                className="mt-3 text-sm text-green-700 font-medium"
               >
-                🎉 You will earn {formData.rewardCoins} reward coin
-                {formData.rewardCoins > 1 ? "s" : ""}
+                🎉 You will earn{" "}
+                <span className="font-semibold">
+                  {formData.rewardCoins}
+                </span>{" "}
+                reward coin{formData.rewardCoins > 1 ? "s" : ""}
               </motion.p>
             )}
           </div>
 
-          {/* Reward Coins */}
-          <div>
-            <label className="block text-gray-600 mb-1 font-medium">
-              Reward Coins
-            </label>
-            <input
-              type="text"
-              readOnly
-              value={formData.rewardCoins}
-              className="w-full bg-gray-50 border text-gray-600 border-gray-300 rounded-lg p-3"
-            />
-          </div>
+          <Input
+            label="Reward Coins"
+            value={formData.rewardCoins}
+            readOnly
+            helper="1 coin for every ₹100 spent"
+          />
 
-          {/* Submit */}
+          {/* SUBMIT */}
           <motion.button
             whileTap={{ scale: 0.97 }}
             type="submit"
-            className="w-full bg-gradient-to-r from-blue-500 to-sky-500 text-white font-semibold py-3 rounded-lg hover:from-blue-600 hover:to-sky-600 transition shadow-md"
+            className="w-full py-3 rounded-lg font-semibold text-white
+              bg-gradient-to-r from-blue-500 to-sky-500
+              hover:from-blue-600 hover:to-sky-600
+              transition shadow-md"
           >
-            Submit
+            Submit Payment
           </motion.button>
 
+          {/* TRUST */}
+          <p className="text-xs text-center text-gray-500 mt-4">
+            🔒 Secure submission • No card details required
+          </p>
         </form>
       </motion.div>
     </div>
   );
 };
+
+/* ================= REUSABLE INPUT ================= */
+const Input = ({
+  label,
+  name,
+  value,
+  onChange,
+  placeholder,
+  type = "text",
+  readOnly = false,
+  required = false,
+  maxLength,
+  helper,
+}) => (
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1">
+      {label}
+    </label>
+
+    <input
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      readOnly={readOnly}
+      required={required}
+      maxLength={maxLength}
+      className={`w-full rounded-lg px-4 py-3 outline-none border
+        ${
+          readOnly
+            ? "bg-gray-50 border-gray-300 text-gray-600"
+            : "border-gray-300 text-gray-800 focus:ring-2 focus:ring-blue-400"
+        }`}
+    />
+
+    {helper && (
+      <p className="text-xs text-gray-500 mt-1">{helper}</p>
+    )}
+  </div>
+);
 
 export default PayWithReward;
