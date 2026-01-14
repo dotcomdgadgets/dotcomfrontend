@@ -5,81 +5,132 @@ import { Link } from "react-router-dom";
 
 export default function MyOrders() {
   const dispatch = useDispatch();
-  const { myOrders, loading } = useSelector((state) => state.order);
+  const { myOrders = [], loading } = useSelector((state) => state.order);
 
   useEffect(() => {
     dispatch(getMyOrdersThunk());
-  }, []);
+  }, [dispatch]);
 
-  if (loading)
-    return <p className="pt-32 text-center text-lg text-gray-700">Loading orders...</p>;
+  /* ================= LOADING ================= */
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-600">
+        Loading your orders…
+      </div>
+    );
+  }
 
-  if (!myOrders || myOrders.length === 0)
-    return <p className="pt-32 text-center text-gray-600">No orders found</p>;
+  /* ================= EMPTY ================= */
+  if (!myOrders.length) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-6">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
+          alt="No Orders"
+          className="w-36 opacity-80"
+        />
+        <h2 className="text-2xl font-bold mt-4 text-gray-800">
+          No orders yet
+        </h2>
+        <p className="text-gray-600 mt-2 text-center max-w-md">
+          You haven’t placed any orders yet. Start shopping and your orders will
+          appear here.
+        </p>
+        <Link
+          to="/"
+          className="mt-6 px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-gray-800 transition"
+        >
+          Start Shopping
+        </Link>
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-4xl mx-auto pt-20 p-6 min-h-screen bg-white text-black">
-      <h2 className="text-3xl font-bold mb-6">My Orders</h2>
+    <div className="max-w-5xl mx-auto pt-20 px-4 pb-10 bg-gray-50 min-h-screen">
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">
+        My Orders
+      </h2>
 
       <div className="space-y-6">
         {myOrders.map((order) => (
           <div
             key={order._id}
-            className="border rounded-lg p-5 bg-gray-50 shadow-sm"
+            className="bg-white border rounded-xl p-5 shadow-sm"
           >
-            {/* Order Header */}
+            {/* ================= HEADER ================= */}
             <div className="flex justify-between items-center mb-4">
               <div>
-                {/* <p className="text-gray-700">
-                  <span className="font-semibold">Order ID:</span> {order._id}
-                </p> */}
-                <p className="text-gray-600 text-sm">
-                  Ordered on: {new Date(order.createdAt).toLocaleDateString()}
+                <p className="text-sm text-gray-500">
+                  Order placed on{" "}
+                  {new Date(order.createdAt).toLocaleDateString()}
+                </p>
+                <p className="text-sm mt-1">
+                  <span className="font-medium text-gray-700">
+                    Status:
+                  </span>{" "}
+                  <span
+                    className={`font-semibold ${
+                      order.orderStatus === "Delivered"
+                        ? "text-green-600"
+                        : order.orderStatus === "Cancelled"
+                        ? "text-red-600"
+                        : "text-blue-600"
+                    }`}
+                  >
+                    {order.orderStatus}
+                  </span>
                 </p>
               </div>
 
-              {/* <span
-                className={`px-3 py-1 text-sm rounded font-semibold ${
-                  order.orderStatus === "Delivered"
-                    ? "bg-green-100 text-green-600"
-                    : order.orderStatus === "Shipped"
-                    ? "bg-blue-100 text-blue-600"
-                    : order.orderStatus === "Confirmed"
-                    ? "bg-yellow-100 text-yellow-600"
-                    : "bg-gray-200 text-gray-600"
-                }`}
+              <Link
+                to={`/order/${order._id}`}
+                className="text-sm font-medium text-blue-600 hover:underline"
               >
-                {order.orderStatus}
-              </span> */}
+                View Details →
+              </Link>
             </div>
 
-            {/* Order Items */}
-            <div className="space-y-3">
+            {/* ================= ITEMS ================= */}
+            <div className="space-y-3 border-t pt-4">
               {order.items.map((item, i) => (
-                <div key={i} className="flex items-center  gap-4">
+                <div
+                  key={i}
+                  className="flex items-center gap-4"
+                >
                   <img
                     src={item.product?.image?.[0]}
-                    className="w-16 h-16 object-cover rounded"
+                    alt={item.product?.name}
+                    className="w-16 h-16 object-cover rounded-lg border"
                   />
-                  <div>
-                    <p className="font-medium">{item.product?.name}</p>
-                    <p className="text-gray-600 text-sm">
-                      Qty: {item.quantity} • Price: ₹{item.priceAtThatTime}
+
+                  <div className="flex-1">
+                    <p className="font-medium text-gray-800">
+                      {item.product?.name}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Qty: {item.quantity} × ₹{item.priceAtThatTime}
                     </p>
                   </div>
+
+                  <p className="font-semibold text-gray-800">
+                    ₹{item.quantity * item.priceAtThatTime}
+                  </p>
                 </div>
               ))}
             </div>
 
-            {/* Footer */}
-            <div className="flex justify-between items-center mt-5">
-              <p className="font-bold text-lg">Total: ₹{order.totalAmount}</p>
+            {/* ================= FOOTER ================= */}
+            <div className="flex justify-between items-center mt-5 pt-4 border-t">
+              <p className="text-lg font-bold text-gray-900">
+                Total: ₹{order.totalAmount}
+              </p>
 
               <Link
                 to={`/order/${order._id}`}
-                className="text-blue-600 font-medium hover:underline"
+                className="px-4 py-2 text-sm font-semibold border rounded-lg hover:bg-gray-100 transition"
               >
-                View Order Status →
+                Track Order
               </Link>
             </div>
           </div>
@@ -88,3 +139,5 @@ export default function MyOrders() {
     </div>
   );
 }
+
+

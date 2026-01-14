@@ -30,18 +30,15 @@ export default function OrderDetails() {
   const order = orderDetails;
 
   /* ✅ READ DIRECTLY FROM ORDER (DB) */
-  const {
-    subTotal,
-    gstAmount,
-    deliveryCharge,
-    promiseFee = 0,
-    grandTotal,
-    paymentMethod,
-    paymentStatus,
-  } = order;
+    const {
+      taxableValue = 0,
+      deliveryCharge = 0,
+      promiseFee = 0,   // ✅ DEFAULT
+      grandTotal = 0,
+      paymentMethod,
+      paymentStatus,
+    } = order;
 
-  const cgst = gstAmount / 2;
-  const sgst = gstAmount / 2;
 
   /* ================= DOWNLOAD INVOICE ================= */
 const downloadInvoice = async () => {
@@ -148,10 +145,10 @@ const downloadInvoice = async () => {
         <div className="bg-white rounded-xl border p-5 text-gray-600">
           <h3 className="font-semibold text-gray-700 mb-3">Price Details</h3>
 
-          <Row label="Subtotal" value={subTotal} />
+          <Row label="Taxable Value" value={taxableValue} />
           <Row label="Delivery Charges" value={deliveryCharge} />
-          <Row label="CGST (9%)" value={cgst} />
-          <Row label="SGST (9%)" value={sgst} />
+          {/* <Row label="Promise Fee" value={promiseFee} /> */}
+          {/* <Row label="SGST (9%)" value={sgst} /> */}
 
           {promiseFee > 0 && (
             <Row label="Promise Fee" value={promiseFee} />

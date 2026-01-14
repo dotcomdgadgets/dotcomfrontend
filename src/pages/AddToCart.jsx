@@ -1,12 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   fetchCartThunk,
   removeFromCartThunk,
   updateCartQtyThunk,
 } from "../redux/thunks/cartThunk";
 import { Minus, Plus, Trash2 } from "lucide-react";
-import { fetchAddresses } from "../redux/thunks/addressThunk";
 import { useNavigate } from "react-router-dom";
 
 export default function AddToCart() {
@@ -14,125 +13,168 @@ export default function AddToCart() {
   const navigate = useNavigate();
 
   const { items = [], loading } = useSelector((state) => state.cart);
-  const { addresses = [] } = useSelector((state) => state.address);
-
-  const [selectedAddress, setSelectedAddress] = useState(null);
 
   useEffect(() => {
     dispatch(fetchCartThunk());
-    dispatch(fetchAddresses());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (addresses.length > 0) {
-      const defaultAddr = addresses.find((a) => a.isDefault);
-      setSelectedAddress(defaultAddr ? defaultAddr._id : addresses[0]._id);
-    }
-  }, [addresses]);
-
-  // ✅ SAFE TOTAL CALCULATION
+  /* ================= TOTAL ================= */
   const total = items.reduce((acc, item) => {
     if (!item?.product?.price) return acc;
     return acc + item.product.price * item.quantity;
   }, 0);
 
   if (loading) {
-    return <p className="pt-32 text-center text-gray-600">Loading...</p>;
+    return <p className="pt-32 text-center text-gray-500">Loading cart…</p>;
   }
 
-  console.log('====================================');
-  console.log(items.length);
-  console.log('====================================');
+  /* ================= EMPTY CART ================= */
+  if (items.length === 0) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-6">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png"
+          className="w-36 opacity-80"
+          alt="Empty Cart"
+        />
+        <h2 className="text-2xl font-bold mt-4 text-gray-800">
+          Your cart is empty
+        </h2>
+        <p className="text-gray-600 mt-2 text-center max-w-md">
+          Looks like you haven’t added anything yet. Explore products and find
+          something you love.
+        </p>
+        <button
+          onClick={() => navigate("/")}
+          className="mt-6 px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-gray-800 transition"
+        >
+          Continue Shopping
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="max-w-4xl mx-auto pt-20 p-6 bg-white text-black min-h-screen">
-      {items.length === 0 ? (
-        /* EMPTY CART */
-        <div className="text-center mt-20">
-           <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" className="w-40 mx-auto opacity-80" alt="Empty Cart" />
-            <h2 className="text-2xl font-bold mt-4">Your cart is empty!</h2>
-             <p className="text-gray-600 mt-2"> Looks like your cart is feeling lonely 😢 Add something to make it smile 😊 </p>
-              <button onClick={() => navigate("/")} className="mt-5 px-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-gray-900 transition" > Continue Shopping </button>
-        </div>
-      ) : (
-        <>
-          {items.filter(item => item.product).map((item) => {
-            // ❗ SKIP BROKEN CART ITEMS
-            if (!item?.product) return null;
+    <div className="max-w-5xl mx-auto pt-20 px-4 pb-10 grid grid-cols-1 md:grid-cols-3 gap-6">
 
-            return (
-              <div
-                key={item._id}
-                className="flex items-center gap-4 border-b py-4"
-              >
-                <img
-                  src={item.product.image?.[0]}
-                  className="w-20 h-20 object-cover rounded"
-                  alt={item.product.name}
-                />
+      {/* ================= CART ITEMS ================= */}
+      <div className="md:col-span-2 space-y-5">
+        <h2 className="text-xl font-semibold text-gray-800">
+          Shopping Cart ({items.length} items)
+        </h2>
 
-                <div className="flex-1">
-                  <p className="font-semibold">{item.product.name}</p>
-                  <p className="text-gray-600">
-                    ₹{item.product.price}
-                  </p>
+        {items.map((item) => {
+          if (!item?.product) return null;
 
-                  <div className="flex items-center gap-3 mt-2">
-                    <button
-                      onClick={() =>
-                        dispatch(
-                          updateCartQtyThunk({
-                            cartItemId: item._id,
-                            quantity: Math.max(1, item.quantity - 1),
-                          })
-                        )
-                      }
-                    >
-                      <Minus size={18} />
-                    </button>
+          return (
+            <div
+              key={item._id}
+              className="bg-white border rounded-xl p-4 flex gap-4 items-center"
+            >
+              {/* IMAGE */}
+              <img
+                src={item.product.image?.[0]}
+                alt={item.product.name}
+                className="w-24 h-24 object-cover rounded-lg border"
+              />
 
-                    <span>{item.quantity}</span>
+              {/* DETAILS */}
+              <div className="flex-1">
+                <h3 className="font-semibold text-gray-800">
+                  {item.product.name}
+                </h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  ₹{item.product.price}
+                </p>
 
-                    <button
-                      onClick={() =>
-                        dispatch(
-                          updateCartQtyThunk({
-                            cartItemId: item._id,
-                            quantity: item.quantity + 1,
-                          })
-                        )
-                      }
-                    >
-                      <Plus size={18} />
-                    </button>
-                  </div>
+                {/* QUANTITY */}
+                <div className="flex items-center gap-3 mt-3">
+                  <button
+                    onClick={() =>
+                      dispatch(
+                        updateCartQtyThunk({
+                          cartItemId: item._id,
+                          quantity: Math.max(1, item.quantity - 1),
+                        })
+                      )
+                    }
+                    className="p-1 border rounded hover:bg-gray-100"
+                  >
+                    <Minus size={16} />
+                  </button>
+
+                  <span className="px-3 text-sm font-medium">
+                    {item.quantity}
+                  </span>
+
+                  <button
+                    onClick={() =>
+                      dispatch(
+                        updateCartQtyThunk({
+                          cartItemId: item._id,
+                          quantity: item.quantity + 1,
+                        })
+                      )
+                    }
+                    className="p-1 border rounded hover:bg-gray-100"
+                  >
+                    <Plus size={16} />
+                  </button>
                 </div>
+              </div>
+
+              {/* PRICE + REMOVE */}
+              <div className="text-right">
+                <p className="font-semibold text-gray-800">
+                  ₹{item.product.price * item.quantity}
+                </p>
 
                 <button
                   onClick={() =>
                     dispatch(removeFromCartThunk(item.product._id))
                   }
-                  className="text-red-600 hover:text-red-800"
+                  className="mt-2 text-sm text-red-600 hover:text-red-800 flex items-center gap-1"
                 >
-                  <Trash2 />
+                  <Trash2 size={16} /> Remove
                 </button>
               </div>
-            );
-          })}
+            </div>
+          );
+        })}
+      </div>
 
-          {/* TOTAL */}
-          <div className="mt-6 flex justify-between text-xl font-bold">
-            <span>Total:</span>
-            <span>₹{total}</span>
-          </div>
+      {/* ================= SUMMARY ================= */}
+      <div className="bg-white border rounded-xl p-5 h-fit text-gray-700">
+        <h3 className="text-lg font-semibold mb-4">Order Summary</h3>
 
-          <button
-            onClick={() => navigate("/check-out")}
-            className="w-full mt-6 py-3 bg-black text-white rounded-lg font-semibold hover:bg-gray-900 transition"
-          >
-            Checkout Details
-          </button>
-        </>
-      )}
+        <div className="flex justify-between text-sm mb-2">
+          <span>Subtotal</span>
+          <span>₹{total.toFixed(2)}</span>
+        </div>
+
+        <div className="flex justify-between text-sm mb-2 text-gray-500">
+          <span>Delivery</span>
+          <span>Calculated at checkout</span>
+        </div>
+
+        <hr className="my-3" />
+
+        <div className="flex justify-between font-bold text-lg">
+          <span>Total</span>
+          <span>₹{total.toFixed(2)}</span>
+        </div>
+
+        <button
+          onClick={() => navigate("/check-out")}
+          className="w-full mt-5 bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
+        >
+          Proceed to Checkout
+        </button>
+
+        <p className="text-xs text-gray-500 mt-3 text-center">
+          🔒 Secure checkout • GST invoice available
+        </p>
+      </div>
     </div>
   );
 }

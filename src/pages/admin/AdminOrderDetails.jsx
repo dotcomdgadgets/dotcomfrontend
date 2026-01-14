@@ -20,7 +20,7 @@ export default function AdminOrderDetails() {
 
   if (fetchingOrderDetails || !orderDetails) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-sm text-gray-500">
+      <div className="min-h-screen flex items-center justify-center text-gray-500">
         Loading order details…
       </div>
     );
@@ -28,77 +28,48 @@ export default function AdminOrderDetails() {
 
   const order = orderDetails;
 
-  /* ✅ READ PRICES DIRECTLY FROM ORDER (DB ONLY) */
-const subTotal = Number(order.subTotal || 0);
-const gstAmount = Number(order.gstAmount || 0);
-const deliveryCharge = Number(order.deliveryCharge || 0);
-const promiseFee = Number(order.promiseFee || 0);
-const grandTotal = Number(order.grandTotal || 0);
+  /* ================= PRICE ================= */
+  const taxableValue = Number(order.taxableValue || 0);
+  const gstAmount = Number(order.gstAmount || 0);
+  const deliveryCharge = Number(order.deliveryCharge || 0);
+  const promiseFee = Number(order.promiseFee || 0);
+  const grandTotal = Number(order.grandTotal || 0);
 
-const paymentMethod = order.paymentMethod || "N/A";
-const paymentStatus = order.paymentStatus || "N/A";
+  const cgst = +(gstAmount / 2).toFixed(2);
+  const sgst = +(gstAmount / 2).toFixed(2);
 
-const cgst = +(gstAmount / 2).toFixed(2);
-const sgst = +(gstAmount / 2).toFixed(2);
-
-
-  /* ================= DOWNLOAD INVOICE ================= */
-  const downloadInvoice = async () => {
+  /* ================= DOWNLOADS ================= */
+  const downloadFile = async (url, name) => {
     try {
-      const res = await axiosInstance.get(
-        `/orders/invoice/${order._id}`,
-        { responseType: "blob" }
-      );
-
-      const url = window.URL.createObjectURL(res.data);
+      const res = await axiosInstance.get(url, { responseType: "blob" });
+      const fileURL = window.URL.createObjectURL(res.data);
       const a = document.createElement("a");
-      a.href = url;
-      a.download = `invoice-${order._id}.pdf`;
+      a.href = fileURL;
+      a.download = name;
       a.click();
-      window.URL.revokeObjectURL(url);
-      // ✅ show popup
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
+      window.URL.revokeObjectURL(fileURL);
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2500);
     } catch {
-      alert("Failed to download invoice");
+      alert("Download failed");
     }
   };
-  const downloadPackingSlip = async () => {
-  try {
-    const res = await axiosInstance.get(
-      `/orders/packing-slip/${order._id}`,
-      { responseType: "blob" }
-    );
-
-    const url = window.URL.createObjectURL(res.data);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `packing-slip-${order._id}.pdf`;
-    a.click();
-    window.URL.revokeObjectURL(url);
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
-  } catch (err) {
-    alert("Failed to download packing slip");
-  }
-};
-
 
   return (
-    <div className="min-h-screen bg-slate-100 px-4 py-10">
+    <div className="min-h-screen bg-gray-100 pt-20 px-4 pb-10">
       <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow border">
 
         {/* ================= HEADER ================= */}
-        <div className="px-6 py-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b bg-slate-50">
+        <div className="px-6 py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b bg-gray-50">
           <div>
             <button
               onClick={() => navigate(-1)}
               className="text-sm text-gray-600 hover:text-gray-900"
             >
-              ← Back
+              ← Back to Orders
             </button>
 
-            <h2 className="mt-2 text-gray-800 font-medium">
+            <h2 className="mt-2 text-xl font-semibold text-gray-900">
               Order #{order._id.slice(-6)}
             </h2>
             <p className="text-sm text-gray-500">
@@ -106,64 +77,63 @@ const sgst = +(gstAmount / 2).toFixed(2);
             </p>
           </div>
 
-          <button
-            onClick={downloadInvoice}
-            className="px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
-          >
-            Download Invoice
-          </button>
-          <button
-            onClick={downloadPackingSlip}
-            className="px-4 py-2 border rounded text-gray-600"
-          >
-            📦 Download Packing Slip
-          </button>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() =>
+                downloadFile(
+                  `/orders/invoice/${order._id}`,
+                  `invoice-${order._id}.pdf`
+                )
+              }
+              className="px-4 py-2 text-sm rounded-lg bg-indigo-600 text-white hover:bg-indigo-700"
+            >
+              🧾 Invoice
+            </button>
 
-
-          {showToast && (
-            <div className="
-              fixed top-6 right-6 z-50
-              bg-green-600 text-white
-              px-5 py-3 rounded-lg
-              shadow-lg
-              animate-fade-in
-            ">
-              ✅ Downloaded successfully
-            </div>
-          )}
-
+            <button
+              onClick={() =>
+                downloadFile(
+                  `/orders/packing-slip/${order._id}`,
+                  `packing-slip-${order._id}.pdf`
+                )
+              }
+              className="px-4 py-2 text-sm rounded-lg border text-gray-700 hover:bg-gray-50"
+            >
+              📦 Packing Slip
+            </button>
+          </div>
         </div>
 
         {/* ================= BODY ================= */}
-        <div className="p-6 space-y-8">
+        <div className="p-6 space-y-8 text-gray-600">
 
-          {/* ================= STATUS ================= */}
-          <div className="bg-white rounded-xl border p-5 text-gray-600">
-            <h3 className="font-semibold text-gray-700 mb-4">Order Status</h3>
+          {/* STATUS */}
+          <Section title="Order Status">
             <OrderTimeline
               status={order.orderStatus}
               createdAt={order.createdAt}
             />
-          </div>
+          </Section>
 
-          {/* ================= INFO CARDS ================= */}
+          {/* INFO */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-600">
 
-            <InfoCard title="Customer Details">
+            <Section title="Customer Details">
+              <Info label="Name" value={order.address.fullName} />
               <Info label="Phone" value={order.address.phone} />
-            </InfoCard>
+            </Section>
 
-            <InfoCard title="Payment Summary">
-              <Info label="Method" value={paymentMethod} />
-              <Info label="Status" value={paymentStatus} />
+            <Section title="Payment Details">
+              <Info label="Method" value={order.paymentMethod} />
+              <Info label="Status" value={order.paymentStatus} />
               <Info
                 label="Grand Total"
-                value={`₹${Number(grandTotal).toFixed(2)}`}
+                value={`₹${grandTotal.toFixed(2)}`}
                 strong
               />
-            </InfoCard>
+            </Section>
 
-            <InfoCard title="Delivery Address" full>
+            <Section title="Delivery Address" full>
               <p className="font-medium text-gray-900">
                 {order.address.fullName}
               </p>
@@ -176,152 +146,125 @@ const sgst = +(gstAmount / 2).toFixed(2);
               <p className="text-sm text-gray-500">
                 Pincode: {order.address.pincode}
               </p>
-            </InfoCard>
+            </Section>
 
           </div>
 
-          {/* ================= ITEMS ================= */}
-          <div>
-            <h3 className="text-sm font-semibold text-gray-700 uppercase mb-3 text-gray-600">
-              Ordered Items
-            </h3>
-
-            <div className="overflow-x-auto rounded-xl border">
+          {/* ITEMS */}
+          <Section title="Ordered Items">
+            <div className="overflow-x-auto rounded-lg border">
               <table className="w-full text-sm">
-                <thead className="bg-slate-100 text-gray-600">
+                <thead className="bg-gray-100">
                   <tr>
-                    <th className="p-3 text-left">Product</th>
-                    <th className="p-3 text-center">Qty</th>
-                    <th className="p-3 text-center">Price</th>
+                    <Th>Product</Th>
+                    <Th center>Qty</Th>
+                    <Th center>Price</Th>
                   </tr>
                 </thead>
-
                 <tbody>
                   {order.items.map((item, i) => (
-                    <tr key={i} className="border-t text-gray-600">
-                      <td className="p-3">
-                        {item.product?.name || "Product removed"}
-                      </td>
-                      <td className="p-3 text-center">
-                        {item.quantity}
-                      </td>
-                      <td className="p-3 text-center font-medium">
-                        ₹{item.priceAtThatTime}
-                      </td>
+                    <tr key={i} className="border-t">
+                      <Td>{item.product?.name || "Removed Product"}</Td>
+                      <Td center>{item.quantity}</Td>
+                      <Td center>₹{item.priceAtThatTime}</Td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-          </div>
+          </Section>
 
-          {/* ================= PRICE BREAKUP ================= */}
-          <div className="bg-white rounded-xl border p-5 text-gray-600">
-            <h3 className="font-semibold text-gray-700 mb-3">
-              Price Breakdown
-            </h3>
-
-            <Row label="Subtotal" value={subTotal} />
+          {/* PRICE */}
+          <Section title="Price Breakdown">
+            <Row label="Taxable Value" value={taxableValue} />
             <Row label="Delivery Charges" value={deliveryCharge} />
             <Row label="CGST (9%)" value={cgst} />
             <Row label="SGST (9%)" value={sgst} />
-
-            {promiseFee > 0 && (
-              <Row label="Promise Fee" value={promiseFee} />
-            )}
-
+            {promiseFee > 0 && <Row label="Promise Fee" value={promiseFee} />}
             <hr className="my-3" />
             <Row label="Grand Total" value={grandTotal} bold />
-          </div>
+          </Section>
 
         </div>
       </div>
+
+      {/* TOAST */}
+      {showToast && (
+        <div className="fixed top-6 right-6 bg-green-600 text-white px-5 py-3 rounded-lg shadow-lg">
+          ✅ Download successful
+        </div>
+      )}
     </div>
   );
 }
 
 /* ================= UI HELPERS ================= */
 
-function InfoCard({ title, children, full }) {
-  return (
-    <div className={`border rounded-xl p-5 ${full ? "md:col-span-2" : ""}`}>
-      <h4 className="text-xs font-semibold text-gray-500 uppercase mb-3">
-        {title}
-      </h4>
-      <div className="text-sm text-gray-700 space-y-1">{children}</div>
-    </div>
-  );
-}
+const Section = ({ title, children, full }) => (
+  <div className={`border rounded-xl p-5 ${full ? "md:col-span-2" : ""}`}>
+    <h4 className="text-sm font-semibold text-gray-700 mb-3">{title}</h4>
+    {children}
+  </div>
+);
 
-function Info({ label, value, strong }) {
-  return (
-    <p>
-      <span className="text-gray-500">{label}: </span>
-      <span className={strong ? "font-semibold text-gray-900" : ""}>
-        {value}
-      </span>
-    </p>
-  );
-}
+const Info = ({ label, value, strong }) => (
+  <p className="text-sm">
+    <span className="text-gray-500">{label}: </span>
+    <span className={strong ? "font-semibold text-gray-900" : ""}>
+      {value}
+    </span>
+  </p>
+);
 
 const Row = ({ label, value, bold }) => (
-  <div className={`flex justify-between mb-2 ${bold ? "font-bold" : ""}`}>
+  <div className={`flex justify-between text-sm ${bold ? "font-bold" : ""}`}>
     <span>{label}</span>
     <span>₹{Number(value).toFixed(2)}</span>
   </div>
 );
 
-/* ================= ORDER TIMELINE ================= */
+const Th = ({ children, center }) => (
+  <th className={`p-3 text-gray-600 ${center ? "text-center" : "text-left"}`}>
+    {children}
+  </th>
+);
+
+const Td = ({ children, center }) => (
+  <td className={`p-3 ${center ? "text-center" : "text-left"}`}>
+    {children}
+  </td>
+);
+
+/* ================= TIMELINE ================= */
 
 function OrderTimeline({ status, createdAt }) {
-  const steps = [
-    "Pending",
-    "Confirmed",
-    "Shipped",
-    "Delivered",
-    "Cancelled",
-  ];
-
-  const isCancelled = status === "Cancelled";
+  const steps = ["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled"];
   const activeIndex = steps.indexOf(status);
 
   return (
     <div className="space-y-4">
       {steps.map((step, index) => {
-        let dotColor = "bg-gray-300";
-        let lineColor = "bg-gray-200";
-        let textColor = "text-gray-400";
-
-        // 🔴 Cancelled logic
-        if (isCancelled) {
-          if (step === "Cancelled") {
-            dotColor = "bg-red-500";
-            textColor = "text-red-600";
-          }
-        } 
-        // 🟢 Normal order flow
-        else {
-          if (index <= activeIndex) {
-            dotColor = "bg-green-500";
-            lineColor = "bg-green-300";
-            textColor = "text-gray-900";
-          }
-        }
+        const active = index <= activeIndex && status !== "Cancelled";
+        const cancelled = step === "Cancelled" && status === "Cancelled";
 
         return (
           <div key={step} className="flex gap-4">
             <div className="flex flex-col items-center">
-              <div className={`w-3 h-3 rounded-full ${dotColor}`} />
+              <div
+                className={`w-3 h-3 rounded-full ${
+                  cancelled
+                    ? "bg-red-500"
+                    : active
+                    ? "bg-green-500"
+                    : "bg-gray-300"
+                }`}
+              />
               {index !== steps.length - 1 && (
-                <div className={`w-[2px] h-8 ${lineColor}`} />
+                <div className="w-[2px] h-8 bg-gray-200" />
               )}
             </div>
-
             <div>
-              <p className={`text-sm font-medium ${textColor}`}>
-                {step}
-              </p>
-
+              <p className="text-sm font-medium">{step}</p>
               {step === status && (
                 <p className="text-xs text-gray-500">
                   {new Date(createdAt).toLocaleDateString()}

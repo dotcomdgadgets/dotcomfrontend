@@ -44,6 +44,8 @@ import ResetPassword from "./pages/ResetPassword";
 import AdminOrderDetails from "./pages/admin/AdminOrderDetails";
 import OrderDetails from "./pages/OrderDetails";
 import SavedAddresses from "./pages/SavedAdresses";
+import PaymentLogs from "./pages/admin/PaymentLogs";
+import FailedPayments from "./pages/admin/FailedPayments";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -95,7 +97,6 @@ const App = () => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/saved-addresses" element={<SavedAddresses />} />
 
-        
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/privacy-policy" element={<Privacy />} />
         <Route path="/terms-conditions" element={<TermsAndConditions />} />

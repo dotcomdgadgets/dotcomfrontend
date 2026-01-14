@@ -51,7 +51,7 @@ export default function CheckoutPage() {
 } = checkoutSummary || {};
 
 const {
-  subTotal = 0,
+  taxableValue = 0,
   deliveryCharge = 0,
   promiseFee = 0,
   cgst = 0,
@@ -114,30 +114,39 @@ const {
     setPaymentOpening(true);
 
     const options = {
-      key: import.meta.env.VITE_RAZORPAY_KEY,
-      amount: razorpayOrder.amount,
-      currency: "INR",
-      name: "Dotcom Gadgets",
-      description: "Order Payment",
-      order_id: razorpayOrder.id,
+  key: import.meta.env.VITE_RAZORPAY_KEY,
+  amount: razorpayOrder.amount,
+  currency: "INR",
+  name: "Dotcom Gadgets",
+  description: "Order Payment",
+  order_id: razorpayOrder.id,
 
-      handler: async (response) => {
-        await dispatch(
-          verifyPaymentThunk({
-            razorpayOrderId: response.razorpay_order_id,
-            razorpayPaymentId: response.razorpay_payment_id,
-            razorpaySignature: response.razorpay_signature,
-            addressId: selectedAddress,
-            totalAmount: finalAmount,
-          })
-        );
-        setPaymentOpening(false);
-        dispatch(clearCart()); 
-        navigate("/order-success");
-      },
+  handler: async (response) => {
+    await dispatch(
+      verifyPaymentThunk({
+        razorpayOrderId: response.razorpay_order_id,
+        razorpayPaymentId: response.razorpay_payment_id,
+        razorpaySignature: response.razorpay_signature,
+        addressId: selectedAddress,
+        totalAmount: finalAmount,
+      })
+    );
 
-      theme: { color: "#000000" },
-    };
+    setPaymentOpening(false);
+    dispatch(clearCart());
+    navigate("/order-success");
+  },
+
+  modal: {
+    ondismiss: () => {
+      alert("⚠ Payment not completed. You can try again.");
+      setPaymentOpening(false);
+    },
+  },
+
+  theme: { color: "#000000" },
+};
+
 
     if (!window.Razorpay) {
       alert("Payment service not loaded");
@@ -146,10 +155,18 @@ const {
     }
 
     const rzp = new window.Razorpay(options);
-    rzp.on("payment.failed", () => {
-      alert("Payment failed");
-      setPaymentOpening(false);
-    });
+  rzp.on("payment.failed", (response) => {
+  console.error("Payment Failed:", response.error);
+
+  alert(
+    "❌ Payment failed.\n\nReason: " +
+    (response.error.description || "Unknown error") +
+    "\n\nPlease try again."
+  );
+
+  setPaymentOpening(false);
+});
+
 
     rzp.open();
   };
@@ -215,10 +232,10 @@ const {
 
       {/* ================= PRICE ================= */}
       <section className="bg-gray-50 p-5 rounded text-gray-600">
-        <Row label="Subtotal" value={subTotal} />
+        <Row label="Taxable Value" value={taxableValue} />
         <Row label="Delivery Charges" value={deliveryCharge} />
-        <Row label="CGST (9%)" value={cgst} />
-        <Row label="SGST (9%)" value={sgst} />
+        {/* <Row label="CGST (9%)" value={cgst} /> */}
+        {/* <Row label="SGST (9%)" value={sgst} /> */}
 
         {promiseFee > 0 && (
           <Row label="Promise Fee" value={promiseFee} />

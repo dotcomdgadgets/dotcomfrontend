@@ -63,8 +63,9 @@ export const getCheckoutSummaryThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.get("/orders/checkout-summary");
-      return res.data; 
-      // { subTotal, gstAmount, deliveryCharge, promiseFee, grandTotal, cgst, sgst }
+      return res.data;
+      // { items, price: { subTotal, deliveryCharge, promiseFee, grandTotal } }
+      // 👉 GST INCLUDED in grandTotal
     } catch (err) {
       return rejectWithValue(
         err.response?.data?.message || "Failed to load checkout summary"
@@ -72,6 +73,7 @@ export const getCheckoutSummaryThunk = createAsyncThunk(
     }
   }
 );
+
 
 
 
