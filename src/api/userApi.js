@@ -8,5 +8,7 @@ export const verifyOtpApi = (mobile, otp) =>
   axiosInstance.post("/useroutes/verify-otp", { mobile, otp });
 
 export const resetPasswordApi = (mobile, newPassword) =>
-  axiosInstance.post("/useroutes/reset-password", { mobile, newPassword });
-
+  axiosInstance.post("/useroutes/reset-password", {
+    mobile,
+    newPassword,
+  });

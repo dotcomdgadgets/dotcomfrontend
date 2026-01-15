@@ -63,7 +63,8 @@ const App = () => {
     <BrowserRouter>
       <ScrollToTop />
       <Header />
-      <UnderDevelopmentPopup />
+      {/* <UnderDevelopmentPopup /> */}
+      <LocationPopup/>
 
       <Routes>
         <Route path="/" element={<Home />} />

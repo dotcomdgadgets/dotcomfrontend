@@ -1,6 +1,27 @@
 import React, { useEffect, useState, useMemo } from "react";
 import axiosInstance from "../api/axiosInstance";
 
+const formatAddress = (address) => {
+  if (!address) return "Not Available";
+
+  const {
+    district,
+    city,
+    pincode,
+    country,
+  } = address;
+
+  return [
+    district,
+    city,
+    pincode,
+    country,
+  ]
+    .filter(Boolean)
+    .join(", ");
+};
+
+
 const LocationDashboard = () => {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,14 +44,21 @@ const LocationDashboard = () => {
     fetchLocations();
   }, []);
 
+  /* ================= SEARCH (STRUCTURED SAFE) ================= */
   const filteredLocations = useMemo(() => {
     if (!query.trim()) return locations;
 
-    return locations.filter((loc) =>
-      Object.values(loc).some((v) =>
-        String(v).toLowerCase().includes(query.toLowerCase())
-      )
-    );
+    const q = query.toLowerCase();
+
+    return locations.filter((loc) => {
+      const addressText = formatAddress(loc.address).toLowerCase();
+
+      return (
+        String(loc.latitude).includes(q) ||
+        String(loc.longitude).includes(q) ||
+        addressText.includes(q)
+      );
+    });
   }, [locations, query]);
 
   return (
@@ -42,7 +70,7 @@ const LocationDashboard = () => {
           User Location Dashboard
         </h2>
         <p className="text-slate-600 mt-2 text-base">
-          Track and analyze real-time user-submitted locations 🌍
+          Track and analyze user-submitted locations 🌍
         </p>
       </div>
 
@@ -51,7 +79,7 @@ const LocationDashboard = () => {
         <div className="relative flex-1">
           <input
             type="text"
-            placeholder="Search by address, coordinates..."
+            placeholder="Search city, pincode, state, country..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="w-full pl-10 pr-3 py-2 rounded-xl border border-slate-200 text-slate-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"
@@ -67,7 +95,7 @@ const LocationDashboard = () => {
       </div>
 
       {/* TABLE */}
-      <div className="bg-white rounded-2xl shadow-xl ring-1 ring-slate-200 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-xl ring-1 ring-slate-200 overflow-hidden text-gray-500">
         {loading ? (
           <div className="p-8 text-center text-slate-600">
             Loading locations…
@@ -81,9 +109,9 @@ const LocationDashboard = () => {
             No locations found 😕
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto text-gray-500">
             <table className="min-w-full">
-              <thead className="bg-gradient-to-r from-blue-600 to-sky-500 text-white">
+              <thead className="bg-gradient-to-r from-blue-600 to-sky-500 text-gray-500">
                 <tr>
                   <th className="px-4 py-3 text-left text-sm">Latitude</th>
                   <th className="px-4 py-3 text-left text-sm">Longitude</th>
@@ -93,20 +121,18 @@ const LocationDashboard = () => {
               </thead>
 
               <tbody>
-                {filteredLocations.map((loc, index) => (
+                {filteredLocations.map((loc) => (
                   <tr
-                    key={loc._id || index}
-                    className="hover:bg-slate-50 transition border-b"
+                    key={loc._id}
+                    className="hover:bg-slate-50 transition border-b text-gray-500"
                   >
-                    <td className="px-4 py-3 text-sm">{loc.latitude}</td>
-                    <td className="px-4 py-3 text-sm">{loc.longitude}</td>
-                    <td className="px-4 py-3 text-sm max-w-xl break-words">
-                      {loc.address || "Not Available"}
+                    <td className="px-4 py-3 text-sm text-gray-500">{loc.latitude}</td>
+                    <td className="px-4 py-3 text-sm text-gray-500">{loc.longitude}</td>
+                    <td className="px-4 py-3 text-sm max-w-xl break-words text-gray-500">
+                      {formatAddress(loc.address)}
                     </td>
-                    <td className="px-4 py-3 text-sm whitespace-nowrap">
-                      {loc.createdAt
-                        ? new Date(loc.createdAt).toLocaleString()
-                        : "—"}
+                    <td className="px-4 py-3 text-sm whitespace-nowrap text-gray-500">
+                      {new Date(loc.createdAt).toLocaleString()}
                     </td>
                   </tr>
                 ))}
@@ -121,20 +147,20 @@ const LocationDashboard = () => {
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="bg-white rounded-2xl p-5 shadow ring-1 ring-slate-200">
             <p className="text-slate-500 text-sm">Total Locations</p>
-            <p className="text-2xl font-semibold">{locations.length}</p>
+            <p className="text-2xl font-semibold text-gray-500">{locations.length}</p>
           </div>
 
           <div className="bg-white rounded-2xl p-5 shadow ring-1 ring-slate-200">
-            <p className="text-slate-500 text-sm">Most Recent</p>
-            <p className="truncate">{locations[0]?.address || "N/A"}</p>
+            <p className="text-slate-500 text-sm">Most Recent Location</p>
+            <p className="truncate text-sm text-gray-500">
+              {formatAddress(locations[0]?.address)}
+            </p>
           </div>
 
           <div className="bg-white rounded-2xl p-5 shadow ring-1 ring-slate-200">
-            <p className="text-slate-500 text-sm">Last Updated</p>
+            <p className="text-slate-500 text-sm text-gray-500">Last Updated</p>
             <p>
-              {locations[0]?.createdAt
-                ? new Date(locations[0].createdAt).toLocaleDateString()
-                : "—"}
+              {new Date(locations[0]?.createdAt).toLocaleDateString()}
             </p>
           </div>
         </div>
