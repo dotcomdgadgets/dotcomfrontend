@@ -234,8 +234,8 @@ const {
       <section className="bg-gray-50 p-5 rounded text-gray-600">
         <Row label="Taxable Value" value={taxableValue} />
         <Row label="Delivery Charges" value={deliveryCharge} />
-        {/* <Row label="CGST (9%)" value={cgst} /> */}
-        {/* <Row label="SGST (9%)" value={sgst} /> */}
+        <Row label="CGST (9%)" value={cgst} />
+        <Row label="SGST (9%)" value={sgst} />
 
         {promiseFee > 0 && (
           <Row label="Promise Fee" value={promiseFee} />
