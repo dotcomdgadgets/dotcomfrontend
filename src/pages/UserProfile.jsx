@@ -116,7 +116,7 @@ const UserProfile = () => {
 
           <div className="flex justify-between text-blue-500 text-sm mt-3">
             <button>How to earn</button>
-            <button>How to redeem</button>
+            {/* <button>How to redeem</button> */}
           </div>
         </div>
       </div>

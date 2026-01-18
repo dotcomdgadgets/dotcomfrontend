@@ -43,7 +43,7 @@ export default function Terms() {
           <p className="text-gray-700">We may update these terms periodically. Continued use of our site after changes constitutes acceptance of the updated terms.</p>
 
           <h2 className="text-xl font-semibold text-gray-900 mt-6">11. Contact</h2>
-          <p className="text-gray-700">For questions regarding these terms, please contact us at <span className="font-medium">zafardesigner339@gmail.com</span> or visit the <a href="/contactus" className="text-amber-600 hover:text-amber-700">Contact Us</a> page.</p>
+          <p className="text-gray-700">For questions regarding these terms, please contact us at <span className="font-medium">dotcomdgadget@gmail.com</span> or visit the <a href="/contactus" className="text-amber-600 hover:text-amber-700">Contact Us</a> page.</p>
         </div>
       </div>
     </section>

@@ -10,6 +10,21 @@ body {
   min-height: 100vh;
 }
 
+/* Hide scrollbar but allow scrolling */
+.category-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -ms-overflow-style: none;  /* IE & Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.category-scroll::-webkit-scrollbar {
+  display: none;             /* Chrome, Safari */
+}
+
+.category-scroll {
+  scroll-behavior: smooth;
+}
 
 
 

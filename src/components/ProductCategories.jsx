@@ -9,63 +9,65 @@ import soundbox from "../assets/categories/soundbox.jpg"
 import watch from "../assets/categories/watch.jpg"
 import covers from "../assets/categories/covers.avif"
 import laptop from "../assets/categories/laptop.jpg"
-
+import { Truck, Star, Headset, RefreshCcw } from "lucide-react";
 
 export default function ProductCategories() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const categories = [
     {
       label: "Mobile",
       img: phones,
-      category:"mobiles",
+      category: "mobiles",
     },
     {
       label: "Smart-watches",
       img: watch,
-      category:"watches",
+      category: "watches",
     },
     {
       label: "Ear-buds",
       img: buds,
-      category:"earbuds",
+      category: "earbuds",
     },
     {
       label: "Head-phone",
       img: headphone,
-      category:"head-phones",
+      category: "head-phones",
     },
     {
       label: "Gadgets",
       img: gadgets,
-      category:"gadgets",
+      category: "gadgets",
     },
     {
       label: "Sound-Box",
       img: soundbox,
-      category:"sound-boxes",
+      category: "sound-boxes",
     },
-    
+
     {
       label: "phone-covers",
       img: covers,
-      category:"covers",
+      category: "covers",
     },
     {
       label: "Laptop",
       img: laptop,
-      category:"laptop",
+      category: "laptop",
     },
   ];
 
   return (
     <div className=" mx-auto p-4">
       {/* Category cards – always in one row */}
-      <div className="mt-5 overflow-x-auto overflow-y-hidden">
+      <div className="mt-5 category-scroll">
         <div className="flex gap-4 min-w-max">
           {categories.map((c, i) => (
             <div
               key={i}
-              className="relative rounded-lg overflow-hidden bg-white shadow hover:scale-105 transition w-32 sm:w-36 md:w-40 flex-shrink-0"
+              className="relative rounded-lg overflow-hidden bg-white shadow 
+                   hover:scale-105 transition w-32 sm:w-36 md:w-40 flex-shrink-0
+                   cursor-pointer"
               onClick={() => navigate(`/products/${c.category}`)}
             >
               <img
@@ -79,6 +81,7 @@ export default function ProductCategories() {
       </div>
 
 
+
       {/* Carousel Section with fullscreen trigger */}
       <section className="mx-auto max-w-7xl px-0 sm:px-6 lg:px-8">
         <div className="mt-4">
@@ -87,28 +90,54 @@ export default function ProductCategories() {
       </section>
 
       {/* FEATURES ROW */}
-      <section className="py-10 max-w-7xl mx-auto px-4 md:px-10">
-        <div className="grid grid-cols-4 gap-4 text-center">
-          {[
-            { title: "HOT DELIVERY", icon: "🚚" },
-            { title: "FEATURES", icon: "⭐" },
-            { title: "TECH SUPPORT", icon: "🛠️" },
-            { title: "EASY RETURN", icon: "💳" },
-          ].map((item, index) => (
-            <div key={index} className="flex flex-col items-center">
-              <span className="text-2xl md:text-3xl">{item.icon}</span>
 
-              <h3 className="mt-1 md:mt-2 font-semibold text-gray-800 text-xs md:text-sm">
+      <section className="py-5 max-w-7xl mx-auto px-4 md:px-10">
+        <div className="grid grid-cols-4 sm:grid-cols-4 gap-6 text-center">
+          {[
+            {
+              title: "Fast Delivery",
+              desc: "Quick & safe shipping",
+              icon: Truck,
+              path: "/shipping-delivery-policy",
+            },
+            {
+              title: "Premium Quality",
+              desc: "Top-rated gadgets",
+              icon: Star,
+              path: "/",
+            },
+            {
+              title: "Tech Support",
+              desc: "expert help",
+              icon: Headset,
+              path: "/contact-us",
+            },
+            {
+              title: "Easy Returns",
+              desc: "Hassle-free returns",
+              icon: RefreshCcw,
+              path: "/cancellation-refund-policy",
+            },
+          ].map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={index}
+                onClick={() => navigate(item.path)}
+                className="flex flex-col items-center gap-2 p-0 rounded-xl hover:bg-gray-50 transition"  >
+                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-indigo-50">
+                  <Icon className="w-6 h-6 text-indigo-600" />
+                </div>
+
+                <h3 className="font-medium text-gray-800 text-[11px] md:text-xs leading-tight">
                 {item.title}
               </h3>
-
-              <p className="hidden md:block text-gray-500 text-xs mt-1">
-                Lorem ipsum dolor sit amet.
-              </p>
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </div>
       </section>
+
 
       {/* Marquee Banner */}
       <div className="mt-3 bg-indigo-700 rounded p-2 overflow-hidden">
@@ -135,3 +164,6 @@ export default function ProductCategories() {
     </div>
   );
 }
+
+
+

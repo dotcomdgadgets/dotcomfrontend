@@ -132,9 +132,9 @@ function LocationPopup() {
           animate={{ y: 0 }}
           exit={{ y: "100%" }}
           transition={{ type: "spring", stiffness: 90 }}
-          className="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-2xl z-50 p-5"
+          className="fixed bottom-0 left-0 right-0 bg-white mx-auto w-full max-w-[420px] rounded-t-2xl shadow-2xl z-50 p-5"
         >
-          <div className="max-w-md mx-auto text-gray-700">
+          <div className="mx-auto w-full max-w-[400px] text-gray-700">
             {/* Header */}
             <div className="flex justify-between items-center mb-2">
               <div className="flex items-center gap-2">

@@ -146,7 +146,7 @@ export default function ShippingDelivery() {
           </p>
 
           <p className="mt-3 text-gray-700">
-            📩 <strong>Email:</strong> dotcominfo@gmail.com <br />
+            📩 <strong>Email:</strong> dotcomdgadget@gmail.com <br />
             📞 <strong>Phone:</strong> +91 9319058138
           </p>
         </section>
