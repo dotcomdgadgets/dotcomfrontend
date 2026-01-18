@@ -117,9 +117,15 @@ const Header = () => {
 
           <MenuItem to="/" icon="🏠" label="Home" close={setMenuOpen} />
 
-          {user?.role === "admin" && (
-            <MenuItem to="/dashboard" icon="📊" label="Dashboard" close={setMenuOpen} />
-          )}
+          {["admin", "superadmin"].includes(user?.role) && (
+  <MenuItem
+    to="/dashboard"
+    icon="📊"
+    label="Dashboard"
+    close={setMenuOpen}
+  />
+)}
+
 
           {!user && (
             <MenuItem

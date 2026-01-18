@@ -9,6 +9,8 @@ const UserManagement = () => {
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.auth.user);
 
+  const isSuperAdmin = loggedInUser?.role === "superadmin";
+
   /* ================= FETCH USERS ================= */
   const fetchUsers = async () => {
     try {
@@ -25,6 +27,8 @@ const UserManagement = () => {
 
   /* ================= UPDATE ROLE ================= */
   const handleRoleChange = async (userId, newRole) => {
+    if (!isSuperAdmin) return;
+
     if (!window.confirm("Change user role?")) return;
 
     try {
@@ -35,7 +39,7 @@ const UserManagement = () => {
 
       fetchUsers();
 
-      // 🔄 sync redux if admin updates self
+      // 🔄 sync redux if superadmin updates self (rare case)
       if (loggedInUser?._id === userId) {
         dispatch(setUser(res.data.updatedUser));
       }
@@ -46,6 +50,8 @@ const UserManagement = () => {
 
   /* ================= DELETE USER ================= */
   const deleteUser = async (userId) => {
+    if (!isSuperAdmin) return;
+
     if (
       !window.confirm(
         "This action is permanent.\nAre you sure you want to delete this user?"
@@ -66,19 +72,17 @@ const UserManagement = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20 px-6 text-gray-900 pb-2">
+    <div className="min-h-screen bg-gray-50 pt-20 px-6 text-gray-900 pb-6">
       <div className="max-w-6xl mx-auto">
 
         {/* HEADER */}
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
-              <Users size={22} /> User Management
-            </h2>
-            <p className="text-sm text-gray-500 mt-1">
-              Manage user roles, access levels, and accounts
-            </p>
-          </div>
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
+            <Users size={22} /> User Management
+          </h2>
+          <p className="text-sm text-gray-500 mt-1">
+            Manage user roles, access levels, and accounts
+          </p>
         </div>
 
         {/* TABLE */}
@@ -100,16 +104,21 @@ const UserManagement = () => {
                     key={u._id}
                     className="border-b last:border-none hover:bg-gray-50 transition"
                   >
-                    {/* NAME */}
+                    {/* USER */}
                     <td className="px-6 py-4">
-                      <p className="font-medium text-gray-900">
+                      <p className="font-medium text-gray-900 flex items-center gap-2">
                         {u.name}
+
+                        {u.role === "superadmin" && (
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">
+                            Super Admin
+                          </span>
+                        )}
+
+                        {loggedInUser?._id === u._id && (
+                          <span className="text-xs text-blue-600">(You)</span>
+                        )}
                       </p>
-                      {loggedInUser?._id === u._id && (
-                        <span className="text-xs text-blue-600">
-                          (You)
-                        </span>
-                      )}
                     </td>
 
                     {/* MOBILE */}
@@ -118,48 +127,59 @@ const UserManagement = () => {
                     </td>
 
                     {/* ROLE */}
-                    <td className="px-6 py-4 text-gray-600">
-                      <select
-                        value={u.role || "user"}
-                        onChange={(e) =>
-                          handleRoleChange(u._id, e.target.value)
-                        }
-                        className="
-                          px-3 py-2 rounded-md border text-sm
-                          bg-white focus:outline-none
-                          focus:ring-2 focus:ring-blue-500
-                        "
-                      >
-                        <option value="user">User</option>
-                        <option value="admin">Admin</option>
-                      </select>
+                    <td className="px-6 py-4">
+                      {u.role === "superadmin" ? (
+                        <span className="text-sm font-medium text-purple-700">
+                          Super Admin
+                        </span>
+                      ) : (
+                        <select
+                          value={u.role}
+                          disabled={!isSuperAdmin}
+                          onChange={(e) =>
+                            handleRoleChange(u._id, e.target.value)
+                          }
+                          className={`
+                            px-3 py-2 rounded-md border text-sm bg-white
+                            focus:outline-none focus:ring-2 focus:ring-blue-500
+                            ${!isSuperAdmin ? "opacity-60 cursor-not-allowed" : ""}
+                          `}
+                        >
+                          <option value="user">User</option>
+                          <option value="admin">Admin</option>
+                        </select>
+                      )}
                     </td>
 
                     {/* ACTIONS */}
                     <td className="px-6 py-4">
                       <div className="flex justify-center gap-3">
+
+                        {/* EDIT (future use) */}
                         <button
                           title="Edit user"
+                          disabled
                           className="
-                            p-2 rounded-md
-                            bg-blue-50 text-blue-600
-                            hover:bg-blue-100
+                            p-2 rounded-md bg-gray-100 text-gray-400
+                            cursor-not-allowed
                           "
                         >
                           <Edit size={16} />
                         </button>
 
-                        <button
-                          title="Delete user"
-                          onClick={() => deleteUser(u._id)}
-                          className="
-                            p-2 rounded-md
-                            bg-red-50 text-red-600
-                            hover:bg-red-100
-                          "
-                        >
-                          <Trash2 size={16} />
-                        </button>
+                        {/* DELETE (superadmin only & not superadmin row) */}
+                        {isSuperAdmin && u.role !== "superadmin" && (
+                          <button
+                            title="Delete user"
+                            onClick={() => deleteUser(u._id)}
+                            className="
+                              p-2 rounded-md bg-red-50 text-red-600
+                              hover:bg-red-100
+                            "
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -177,7 +197,7 @@ const UserManagement = () => {
 
         {/* FOOTER INFO */}
         <p className="text-xs text-gray-500 mt-4">
-          ⚠ Changing roles affects access permissions immediately.
+          ⚠ Only Super Admin can change roles or delete users.
         </p>
       </div>
     </div>

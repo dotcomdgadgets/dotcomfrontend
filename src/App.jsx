@@ -75,7 +75,15 @@ const App = () => {
         <Route path="/products" element={<AllProduct />} />
         <Route path="/products/:category" element={<AllProduct />} />
 
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute> } />
+<Route
+  path="/dashboard"
+  element={
+    <ProtectedRoute allowedRoles={["admin", "superadmin"]}>
+      <Dashboard />
+    </ProtectedRoute>
+  }
+/>
+
         <Route path="/pay-with-reward" element={<PayWithReward />} />
         <Route path="/location-dashboard" element={<LocationDashboard />} />
         <Route path="/reward-dashboard" element={<RewardDetail />} />
