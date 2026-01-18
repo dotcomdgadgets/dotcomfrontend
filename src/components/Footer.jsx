@@ -93,7 +93,7 @@ const Footer = () => {
         </div>
 
         {/* ===== BOTTOM BAR ===== */}
-        <div className="mt-12 border-t border-gray-800 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+        <div className="mt-12 border-t border-gray-800 pt-6 flex flex-col md:flex-row items-center justify-center gap-4 text-xs text-gray-500">
           <p>
             © {new Date().getFullYear()}{" "}
             <span className="text-amber-400">DotCom Gadgets</span>.  
